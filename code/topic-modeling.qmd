@@ -1,0 +1,235 @@
+---
+title: "Text mining with tidy data principles: topic modeling"
+author: "Julia Silge"
+output: html_document
+---
+
+```{r}
+#| include: false
+my_mirror <- "http://mirrors.xmission.com/gutenberg/"
+```
+
+## Download data
+
+First download data to use in modeling:
+
+https://www.gutenberg.org/browse/scores/top
+
+Replace one to four of the books below with your own choice(s).
+
+```{r}
+library(tidyverse)
+library(gutenbergr)
+
+books <- gutenberg_download(c(36, 158, 164, 345),
+                            meta_fields = "title",
+                            mirror = my_mirror)
+books %>%
+  count(title)
+```
+
+What do you predict will happen if we run the following code?
+
+**PREDICT WITH YOUR NEIGHBOR BEFORE YOU RUN**
+
+```{r}
+books_by_document <- books %>%
+  group_by(title) %>%
+  mutate(document = row_number() %/% 500) %>%
+  ungroup() %>%
+  unite(document, title, document)
+
+books_by_document
+```
+
+Someone has TORN YOUR BOOKS APART!!!
+
+## Let's use topic modeling to put your books back together
+
+As a first step, let's tokenize and tidy these chapters.
+
+```{r}
+library(tidytext)
+
+word_counts <- books_by_document %>%
+  ___ %>%
+  anti_join(___) %>%
+  count(document, word, sort = TRUE)
+
+word_counts
+```
+
+Next, let's **cast** to a sparse matrix. 
+
+How many features and observations do you have?
+
+```{r}
+words_sparse <- word_counts %>%
+  ___(document, word, n)
+
+___(words_sparse)
+___(words_sparse)
+```
+
+Train a topic model.
+
+```{r}
+library(stm)
+
+topic_model <- stm(___, K = 4, 
+                   init.type = "Spectral")
+
+summary(topic_model)
+```
+
+## Explore the output of topic modeling
+
+The word-topic probabilities are called the "beta" matrix.
+
+```{r}
+document_topics <- tidy(topic_model, ___)
+
+document_topics
+```
+
+What are the highest probability words in each topic?
+
+**U N S C R A M B L E**
+
+```{r}
+top_terms <- document_topics %>%
+
+ungroup() %>%
+
+group_by(topic) %>%
+
+arrange(topic, -beta)
+
+slice_max(beta, n = 10) %>%
+```
+
+Let's build a visualization.
+
+```{r}
+top_terms %>%
+  mutate(term = fct_reorder(term, beta)) %>%
+  ggplot(___) +
+  geom_col(show.legend = FALSE) +
+  facet_wrap(vars(topic), scales = "free")
+```
+
+People who work with topic models have come up with alternate metrics for identifying important words:
+
+- FREX = high frequency *and* high exclusivity
+- lift = topic-word distribution divided by word count distribution
+
+```{r}
+tidy(___, matrix = "frex")
+tidy(___, matrix = "lift")
+```
+
+The document-topic probabilities are called "gamma".
+
+```{r}
+documents_gamma <- tidy(topic_model, ___,
+                        document_names = rownames(words_sparse))
+
+documents_gamma
+```
+
+How well did we do in putting our books back together into the 4 topics?
+
+What do you predict will happen if we run the following code?
+
+**PREDICT WITH YOUR NEIGHBOR BEFORE YOU RUN**
+
+```{r}
+documents_parsed <- document_gamma %>%
+  ___(document, c("title", "document"), 
+           sep = "_", convert = TRUE)
+
+documents_parsed
+```
+
+Let's visualize the results.
+
+**U N S C R A M B L E**
+
+```{r}
+documents_parsed %>%
+
+ggplot(aes(factor(topic), gamma)) +
+
+facet_wrap(vars(title))
+
+mutate(title = fct_reorder(title, gamma * topic)) %>%
+
+geom_boxplot() +
+```
+
+
+## Train many topic models
+
+Let's train a topic model at several different values for `K`.
+
+```{r}
+library(furrr)
+plan(multicore)
+
+many_models <- tibble(___) %>%
+  mutate(topic_model = future_map(
+    K, ~stm(words_sparse, K = ., verbose = FALSE))
+  )
+
+many_models
+```
+
+Now let's evaluate each of these models.
+
+```{r}
+heldout <- make.heldout(words_sparse)
+
+k_result <- many_models %>%
+  mutate(exclusivity        = map(topic_model, exclusivity),
+         semantic_coherence = map(topic_model, semanticCoherence, words_sparse),
+         eval_heldout       = map(topic_model, eval.heldout, heldout$missing),
+         residual           = map(topic_model, checkResiduals, words_sparse),
+         bound              = map_dbl(topic_model, function(x) max(x$convergence$bound)),
+         lfact              = map_dbl(topic_model, function(x) lfactorial(x$settings$dim$K)),
+         lbound             = bound + lfact,
+         iterations         = map_dbl(topic_model, function(x) length(x$convergence$bound)))
+
+k_result
+```
+
+We can visualize the model metrics.
+
+```{r}
+k_result %>%
+  transmute(K,
+            `Lower bound`         = lbound,
+            Residuals             = ___(residual, "dispersion"),
+            `Semantic coherence`  = ___(semantic_coherence, mean), 
+            `Held-out likelihood` = ___(eval_heldout, "expected.heldout")) %>%  
+  gather(Metric, Value, -K) %>%
+  ggplot(aes(K, Value, color = Metric)) +
+  geom_line() +
+  facet_wrap(~Metric, scales = "free_y")
+```
+
+We can also look at exclusivity and semantic coherence for _each_ topic.
+
+```{r}
+k_result %>%
+  select(K, exclusivity, semantic_coherence) %>%
+  filter(K %in% c(3, 6, 10)) %>%
+  unnest(cols = c(exclusivity, semantic_coherence)) %>%
+  ggplot(aes(semantic_coherence, exclusivity, 
+             color = factor(K))) +
+  geom_point()
+```
+
+
+**GO EXPLORE REAL-WORLD TEXT!**
+
+Thanks for learning with me! <3
