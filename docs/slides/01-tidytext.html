@@ -692,13 +692,13 @@ by Julia Silge adapted with a COA twist by Laurie Baker
 <h1>The Freeland Bunker Diaries</h1>
 
 </section>
-<section id="section-3" class="slide level2" data-background-image="figs/freeland_bunker.jpg" data-background-size="60%" data-background-color="white">
+<section id="section-3" class="slide level2" data-background-image="figs/freeland_bunker.jpg" data-background-size="40%" data-background-color="white">
 <h2></h2>
 <div class="footer">
 
 </div>
 </section>
-<section id="section-4" class="slide level2" data-background-image="figs/freeland_timeline.jpg" data-background-size="60%" data-background-color="white">
+<section id="section-4" class="slide level2" data-background-image="figs/freeland_timeline.jpg" data-background-size="40%" data-background-color="white">
 <h2></h2>
 <div class="footer">
 
@@ -752,25 +752,29 @@ by Julia Silge adapted with a COA twist by Laurie Baker
 </section>
 <section id="tidy-journals" class="slide level2">
 <h2>Tidy Journals</h2>
-<div class="cell" data-hash="01-tidytext_cache/revealjs/unnamed-chunk-18_5800bce2038c4ee481c1662cef2352f2">
+<div class="cell" data-hash="01-tidytext_cache/revealjs/unnamed-chunk-18_9bb9762a4731d79439278107ff6b9247">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">library</span>(lubridate)</span>
 <span id="cb16-2"><a href="#cb16-2"></a>(tidy_journal <span class="ot">&lt;-</span> journals <span class="sc">%&gt;%</span></span>
 <span id="cb16-3"><a href="#cb16-3"></a>    <span class="fu">select</span>(date_mdy, month, journal_entry, journal) <span class="sc">%&gt;%</span></span>
-<span id="cb16-4"><a href="#cb16-4"></a>    <span class="fu">unnest_tokens</span>(word, journal_entry))</span>
-<span id="cb16-5"><a href="#cb16-5"></a><span class="co">#&gt; # A tibble: 12,356 x 4</span></span>
-<span id="cb16-6"><a href="#cb16-6"></a><span class="co">#&gt;    date_mdy   month    journal word   </span></span>
-<span id="cb16-7"><a href="#cb16-7"></a><span class="co">#&gt;    &lt;chr&gt;      &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;  </span></span>
-<span id="cb16-8"><a href="#cb16-8"></a><span class="co">#&gt;  1 12/23/1871 December       1 was    </span></span>
-<span id="cb16-9"><a href="#cb16-9"></a><span class="co">#&gt;  2 12/23/1871 December       1 married</span></span>
-<span id="cb16-10"><a href="#cb16-10"></a><span class="co">#&gt;  3 12/23/1871 December       1 at     </span></span>
-<span id="cb16-11"><a href="#cb16-11"></a><span class="co">#&gt;  4 12/23/1871 December       1 home   </span></span>
-<span id="cb16-12"><a href="#cb16-12"></a><span class="co">#&gt;  5 12/23/1871 December       1 in     </span></span>
-<span id="cb16-13"><a href="#cb16-13"></a><span class="co">#&gt;  6 12/23/1871 December       1 evening</span></span>
-<span id="cb16-14"><a href="#cb16-14"></a><span class="co">#&gt;  7 12/23/1871 December       1 by     </span></span>
-<span id="cb16-15"><a href="#cb16-15"></a><span class="co">#&gt;  8 12/23/1871 December       1 william</span></span>
-<span id="cb16-16"><a href="#cb16-16"></a><span class="co">#&gt;  9 12/23/1871 December       1 rand   </span></span>
-<span id="cb16-17"><a href="#cb16-17"></a><span class="co">#&gt; 10 12/23/1871 December       1 esqr   </span></span>
-<span id="cb16-18"><a href="#cb16-18"></a><span class="co">#&gt; # ... with 12,346 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb16-4"><a href="#cb16-4"></a>    <span class="fu">mutate</span>(<span class="at">date_mdy =</span> <span class="fu">mdy</span>(date_mdy)) <span class="sc">%&gt;%</span></span>
+<span id="cb16-5"><a href="#cb16-5"></a>    <span class="fu">mutate</span>(<span class="at">year =</span> <span class="fu">year</span>(date_mdy)) <span class="sc">%&gt;%</span></span>
+<span id="cb16-6"><a href="#cb16-6"></a>    <span class="fu">unnest_tokens</span>(word, journal_entry)  <span class="sc">%&gt;%</span></span>
+<span id="cb16-7"><a href="#cb16-7"></a>    <span class="fu">mutate</span>(<span class="at">word =</span> <span class="fu">case_when</span>(word <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"reed"</span>, <span class="st">"read"</span>) <span class="sc">~</span> <span class="st">"received"</span>,</span>
+<span id="cb16-8"><a href="#cb16-8"></a>                            <span class="cn">TRUE</span> <span class="sc">~</span> word)))</span>
+<span id="cb16-9"><a href="#cb16-9"></a><span class="co">#&gt; # A tibble: 12,356 x 5</span></span>
+<span id="cb16-10"><a href="#cb16-10"></a><span class="co">#&gt;    date_mdy   month    journal  year word   </span></span>
+<span id="cb16-11"><a href="#cb16-11"></a><span class="co">#&gt;    &lt;date&gt;     &lt;chr&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;  </span></span>
+<span id="cb16-12"><a href="#cb16-12"></a><span class="co">#&gt;  1 1871-12-23 December       1  1871 was    </span></span>
+<span id="cb16-13"><a href="#cb16-13"></a><span class="co">#&gt;  2 1871-12-23 December       1  1871 married</span></span>
+<span id="cb16-14"><a href="#cb16-14"></a><span class="co">#&gt;  3 1871-12-23 December       1  1871 at     </span></span>
+<span id="cb16-15"><a href="#cb16-15"></a><span class="co">#&gt;  4 1871-12-23 December       1  1871 home   </span></span>
+<span id="cb16-16"><a href="#cb16-16"></a><span class="co">#&gt;  5 1871-12-23 December       1  1871 in     </span></span>
+<span id="cb16-17"><a href="#cb16-17"></a><span class="co">#&gt;  6 1871-12-23 December       1  1871 evening</span></span>
+<span id="cb16-18"><a href="#cb16-18"></a><span class="co">#&gt;  7 1871-12-23 December       1  1871 by     </span></span>
+<span id="cb16-19"><a href="#cb16-19"></a><span class="co">#&gt;  8 1871-12-23 December       1  1871 william</span></span>
+<span id="cb16-20"><a href="#cb16-20"></a><span class="co">#&gt;  9 1871-12-23 December       1  1871 rand   </span></span>
+<span id="cb16-21"><a href="#cb16-21"></a><span class="co">#&gt; 10 1871-12-23 December       1  1871 esqr   </span></span>
+<span id="cb16-22"><a href="#cb16-22"></a><span class="co">#&gt; # ... with 12,346 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="most-common-words" class="slide level2">
@@ -975,6 +979,191 @@ by Julia Silge adapted with a COA twist by Laurie Baker
 <h2></h2>
 
 <img data-src="01-tidytext_files/figure-revealjs/unnamed-chunk-32-1.png" width="3000" class="r-stretch quarto-figure-center"></section></section>
+<section>
+<section id="was-freeland-sentimental" class="title-slide slide level1 center" data-background-image="figs/water.jpg" data-background-size="cover" data-background-opacity="0.5">
+<h1>Was Freeland Sentimental?</h1>
+<p><img data-src="figs/freeland_headshot.jpg" data-top="0" data-right="" width="180" height="200"></p>
+</section>
+<section id="implementing-sentiment-analysis-4" class="slide level2" data-background-color="white">
+<h2>Implementing sentiment analysis</h2>
+<div class="cell" data-hash="01-tidytext_cache/revealjs/unnamed-chunk-33_e1aebedbf6a02c68bc4004eed736e949">
+<div class="sourceCode cell-code" id="cb27" data-code-line-numbers="3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>tidy_journal <span class="sc">%&gt;%</span></span>
+<span id="cb27-2"><a href="#cb27-2"></a>    <span class="fu">inner_join</span>(<span class="fu">get_sentiments</span>(<span class="st">"bing"</span>)) <span class="sc">%&gt;%</span>            </span>
+<span id="cb27-3"><a href="#cb27-3"></a>    <span class="fu">count</span>(sentiment, word, <span class="at">sort =</span> <span class="cn">TRUE</span>)   </span>
+<span id="cb27-4"><a href="#cb27-4"></a><span class="co">#&gt; # A tibble: 84 x 3</span></span>
+<span id="cb27-5"><a href="#cb27-5"></a><span class="co">#&gt;    sentiment word         n</span></span>
+<span id="cb27-6"><a href="#cb27-6"></a><span class="co">#&gt;    &lt;chr&gt;     &lt;chr&gt;    &lt;int&gt;</span></span>
+<span id="cb27-7"><a href="#cb27-7"></a><span class="co">#&gt;  1 positive  work       182</span></span>
+<span id="cb27-8"><a href="#cb27-8"></a><span class="co">#&gt;  2 negative  cold        45</span></span>
+<span id="cb27-9"><a href="#cb27-9"></a><span class="co">#&gt;  3 positive  good        36</span></span>
+<span id="cb27-10"><a href="#cb27-10"></a><span class="co">#&gt;  4 positive  calm        33</span></span>
+<span id="cb27-11"><a href="#cb27-11"></a><span class="co">#&gt;  5 negative  staid       30</span></span>
+<span id="cb27-12"><a href="#cb27-12"></a><span class="co">#&gt;  6 positive  warm        29</span></span>
+<span id="cb27-13"><a href="#cb27-13"></a><span class="co">#&gt;  7 positive  breeze      25</span></span>
+<span id="cb27-14"><a href="#cb27-14"></a><span class="co">#&gt;  8 positive  pleasant    24</span></span>
+<span id="cb27-15"><a href="#cb27-15"></a><span class="co">#&gt;  9 positive  ready       17</span></span>
+<span id="cb27-16"><a href="#cb27-16"></a><span class="co">#&gt; 10 positive  worked      17</span></span>
+<span id="cb27-17"><a href="#cb27-17"></a><span class="co">#&gt; # ... with 74 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="implementing-sentiment-analysis-5" class="slide level2" data-background-color="white">
+<h2>Implementing sentiment analysis</h2>
+<div class="cell" data-hash="01-tidytext_cache/revealjs/unnamed-chunk-34_dde93cd555e30d5c207b69ca9cbd4e04">
+<div class="sourceCode cell-code" id="cb28" data-code-line-numbers="|7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>tidy_journal <span class="sc">%&gt;%</span></span>
+<span id="cb28-2"><a href="#cb28-2"></a>    <span class="fu">inner_join</span>(<span class="fu">get_sentiments</span>(<span class="st">"bing"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb28-3"><a href="#cb28-3"></a>    <span class="fu">count</span>(sentiment, word, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb28-4"><a href="#cb28-4"></a>    <span class="fu">group_by</span>(sentiment) <span class="sc">%&gt;%</span></span>
+<span id="cb28-5"><a href="#cb28-5"></a>    <span class="fu">slice_max</span>(n, <span class="at">n =</span> <span class="dv">10</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb28-6"><a href="#cb28-6"></a>    <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb28-7"><a href="#cb28-7"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(n, <span class="fu">fct_reorder</span>(word, n), <span class="at">fill =</span> sentiment)) <span class="sc">+</span></span>
+<span id="cb28-8"><a href="#cb28-8"></a>    <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb28-9"><a href="#cb28-9"></a>    <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(sentiment), <span class="at">scales =</span> <span class="st">"free"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="section-7" class="slide level2" data-background-color="white">
+<h2></h2>
+
+<img data-src="01-tidytext_files/figure-revealjs/unnamed-chunk-35-1.png" width="3000" class="r-stretch quarto-figure-center"></section></section>
+<section>
+<section id="what-was-the-weather-like" class="title-slide slide level1 center" data-background-image="figs/water.jpg" data-background-size="cover" data-background-opacity="0.5">
+<h1>What was the weather like?</h1>
+
+</section>
+<section id="section-8" class="slide level2" data-background-color="white">
+<h2></h2>
+
+<img data-src="01-tidytext_files/figure-revealjs/unnamed-chunk-36-1.png" width="3000" class="r-stretch quarto-figure-center"></section></section>
+<section>
+<section id="more-insight-from-bigrams" class="title-slide slide level1 center" data-background-image="figs/water.jpg" data-background-size="cover" data-background-opacity="0.5">
+<h1>More insight from bigrams!</h1>
+<div class="cell" data-hash="01-tidytext_cache/revealjs/unnamed-chunk-37_34c428804091af85667378bf3b14c794">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1"></a>(tidy_ngram <span class="ot">&lt;-</span> journals <span class="sc">%&gt;%</span></span>
+<span id="cb29-2"><a href="#cb29-2"></a>    <span class="fu">mutate</span>(<span class="at">journal_entry =</span> <span class="fu">str_replace_all</span>(journal_entry, <span class="st">"south west"</span>, <span class="st">"southwest"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb29-3"><a href="#cb29-3"></a>    <span class="fu">mutate</span>(<span class="at">journal_entry =</span> <span class="fu">str_replace_all</span>(journal_entry, <span class="st">"north west"</span>, <span class="st">"northwest"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb29-4"><a href="#cb29-4"></a>    <span class="fu">mutate</span>(<span class="at">journal_entry =</span> <span class="fu">str_replace_all</span>(journal_entry, <span class="st">"south east"</span>, <span class="st">"southeast"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb29-5"><a href="#cb29-5"></a>    <span class="fu">mutate</span>(<span class="at">journal_entry =</span> <span class="fu">str_replace_all</span>(journal_entry, <span class="st">"north east"</span>, <span class="st">"northeast"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb29-6"><a href="#cb29-6"></a>    <span class="fu">unnest_tokens</span>(bigram, journal_entry, <span class="at">token =</span> <span class="st">"ngrams"</span>, <span class="at">n =</span> <span class="dv">2</span>) <span class="sc">%&gt;%</span> </span>
+<span id="cb29-7"><a href="#cb29-7"></a>    <span class="fu">drop_na</span>(bigram) <span class="sc">%&gt;%</span></span>
+<span id="cb29-8"><a href="#cb29-8"></a>    <span class="fu">select</span>(journal, bigram, date_mdy))</span>
+<span id="cb29-9"><a href="#cb29-9"></a><span class="co">#&gt; # A tibble: 11,467 x 3</span></span>
+<span id="cb29-10"><a href="#cb29-10"></a><span class="co">#&gt;    journal bigram       date_mdy  </span></span>
+<span id="cb29-11"><a href="#cb29-11"></a><span class="co">#&gt;      &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt;     </span></span>
+<span id="cb29-12"><a href="#cb29-12"></a><span class="co">#&gt;  1       1 was married  12/23/1871</span></span>
+<span id="cb29-13"><a href="#cb29-13"></a><span class="co">#&gt;  2       1 married at   12/23/1871</span></span>
+<span id="cb29-14"><a href="#cb29-14"></a><span class="co">#&gt;  3       1 at home      12/23/1871</span></span>
+<span id="cb29-15"><a href="#cb29-15"></a><span class="co">#&gt;  4       1 home in      12/23/1871</span></span>
+<span id="cb29-16"><a href="#cb29-16"></a><span class="co">#&gt;  5       1 in evening   12/23/1871</span></span>
+<span id="cb29-17"><a href="#cb29-17"></a><span class="co">#&gt;  6       1 evening by   12/23/1871</span></span>
+<span id="cb29-18"><a href="#cb29-18"></a><span class="co">#&gt;  7       1 by william   12/23/1871</span></span>
+<span id="cb29-19"><a href="#cb29-19"></a><span class="co">#&gt;  8       1 william rand 12/23/1871</span></span>
+<span id="cb29-20"><a href="#cb29-20"></a><span class="co">#&gt;  9       1 rand esqr    12/23/1871</span></span>
+<span id="cb29-21"><a href="#cb29-21"></a><span class="co">#&gt; 10       1 went to      12/24/1871</span></span>
+<span id="cb29-22"><a href="#cb29-22"></a><span class="co">#&gt; # ... with 11,457 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="n-grams-and-beyond" class="slide level2" data-background-color="white">
+<h2>N-grams… and beyond! 🚀</h2>
+<div class="cell" data-hash="01-tidytext_cache/revealjs/unnamed-chunk-38_5ea93734f1d141e65b011be253cfaf75">
+<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a>tidy_ngram <span class="sc">%&gt;%</span></span>
+<span id="cb30-2"><a href="#cb30-2"></a>    <span class="fu">count</span>(bigram, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb30-3"><a href="#cb30-3"></a><span class="co">#&gt; # A tibble: 5,522 x 2</span></span>
+<span id="cb30-4"><a href="#cb30-4"></a><span class="co">#&gt;    bigram             n</span></span>
+<span id="cb30-5"><a href="#cb30-5"></a><span class="co">#&gt;    &lt;chr&gt;          &lt;int&gt;</span></span>
+<span id="cb30-6"><a href="#cb30-6"></a><span class="co">#&gt;  1 the wind         501</span></span>
+<span id="cb30-7"><a href="#cb30-7"></a><span class="co">#&gt;  2 went to          149</span></span>
+<span id="cb30-8"><a href="#cb30-8"></a><span class="co">#&gt;  3 in shop          110</span></span>
+<span id="cb30-9"><a href="#cb30-9"></a><span class="co">#&gt;  4 work in          108</span></span>
+<span id="cb30-10"><a href="#cb30-10"></a><span class="co">#&gt;  5 in the            99</span></span>
+<span id="cb30-11"><a href="#cb30-11"></a><span class="co">#&gt;  6 wind north        71</span></span>
+<span id="cb30-12"><a href="#cb30-12"></a><span class="co">#&gt;  7 in forenoon       55</span></span>
+<span id="cb30-13"><a href="#cb30-13"></a><span class="co">#&gt;  8 wind southerly    54</span></span>
+<span id="cb30-14"><a href="#cb30-14"></a><span class="co">#&gt;  9 letter to         53</span></span>
+<span id="cb30-15"><a href="#cb30-15"></a><span class="co">#&gt; 10 wrote letter      53</span></span>
+<span id="cb30-16"><a href="#cb30-16"></a><span class="co">#&gt; # ... with 5,512 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="jane-wants-to-know-2" class="slide level2" data-transition="slide-in">
+<h2>Jane wants to know…</h2>
+<p><img data-src="figs/blue_jane.png" class="absolute" style="top: 0px; right: 0px; width: 150px; height: 150px; "></p>
+<p>Can we use an <span class="codedarkbg">anti_join()</span> now to remove stop words?</p>
+<ul>
+<li>Yes! ✅</li>
+<li>No ☹️</li>
+</ul>
+</section>
+<section id="n-grams-and-beyond-1" class="slide level2" data-background-color="white">
+<h2>N-grams… and beyond! 🚀</h2>
+<div class="cell" data-hash="01-tidytext_cache/revealjs/unnamed-chunk-39_15c5c88806232e301569298b523710d9">
+<div class="sourceCode cell-code" id="cb31" data-code-line-numbers="|2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a>bigram_counts <span class="ot">&lt;-</span> tidy_ngram <span class="sc">%&gt;%</span></span>
+<span id="cb31-2"><a href="#cb31-2"></a>    <span class="fu">separate</span>(bigram, <span class="fu">c</span>(<span class="st">"word1"</span>, <span class="st">"word2"</span>), <span class="at">sep =</span> <span class="st">" "</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb31-3"><a href="#cb31-3"></a>    <span class="fu">filter</span>(<span class="sc">!</span>word1 <span class="sc">%in%</span> stop_words<span class="sc">$</span>word,</span>
+<span id="cb31-4"><a href="#cb31-4"></a>           <span class="sc">!</span>word2 <span class="sc">%in%</span> stop_words<span class="sc">$</span>word) <span class="sc">%&gt;%</span></span>
+<span id="cb31-5"><a href="#cb31-5"></a>    <span class="fu">count</span>(word1, word2, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="so-many-wind-directions" class="slide level2" data-background-color="white">
+<h2>So many wind directions…! 🚀</h2>
+<div class="cell" data-hash="01-tidytext_cache/revealjs/unnamed-chunk-40_3ecc895eed6dd43b13c89ff8fc6282e7">
+<div class="sourceCode cell-code" id="cb32"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb32-1"><a href="#cb32-1"></a>bigram_counts</span>
+<span id="cb32-2"><a href="#cb32-2"></a><span class="co">#&gt; # A tibble: 1,930 x 3</span></span>
+<span id="cb32-3"><a href="#cb32-3"></a><span class="co">#&gt;    word1 word2         n</span></span>
+<span id="cb32-4"><a href="#cb32-4"></a><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;     &lt;int&gt;</span></span>
+<span id="cb32-5"><a href="#cb32-5"></a><span class="co">#&gt;  1 wind  north        71</span></span>
+<span id="cb32-6"><a href="#cb32-6"></a><span class="co">#&gt;  2 wind  southerly    54</span></span>
+<span id="cb32-7"><a href="#cb32-7"></a><span class="co">#&gt;  3 wrote letter       53</span></span>
+<span id="cb32-8"><a href="#cb32-8"></a><span class="co">#&gt;  4 north west         48</span></span>
+<span id="cb32-9"><a href="#cb32-9"></a><span class="co">#&gt;  5 wind  south        47</span></span>
+<span id="cb32-10"><a href="#cb32-10"></a><span class="co">#&gt;  6 reed  letter       36</span></span>
+<span id="cb32-11"><a href="#cb32-11"></a><span class="co">#&gt;  7 wind  n.w          33</span></span>
+<span id="cb32-12"><a href="#cb32-12"></a><span class="co">#&gt;  8 south west         32</span></span>
+<span id="cb32-13"><a href="#cb32-13"></a><span class="co">#&gt;  9 wind  easterly     32</span></span>
+<span id="cb32-14"><a href="#cb32-14"></a><span class="co">#&gt; 10 wind  northerly    26</span></span>
+<span id="cb32-15"><a href="#cb32-15"></a><span class="co">#&gt; # ... with 1,920 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="lets-tidy-these-up" class="slide level2">
+<h2>Let’s tidy these up</h2>
+<div class="cell" data-hash="01-tidytext_cache/revealjs/unnamed-chunk-41_bc682d76946bae84b2b5f36352084827">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a>bigram_counts <span class="ot">&lt;-</span> tidy_ngram <span class="sc">%&gt;%</span></span>
+<span id="cb33-2"><a href="#cb33-2"></a>    <span class="fu">separate</span>(bigram, <span class="fu">c</span>(<span class="st">"word1"</span>, <span class="st">"word2"</span>), <span class="at">sep =</span> <span class="st">" "</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb33-3"><a href="#cb33-3"></a>    <span class="fu">filter</span>(<span class="sc">!</span>word1 <span class="sc">%in%</span> stop_words<span class="sc">$</span>word,</span>
+<span id="cb33-4"><a href="#cb33-4"></a>           <span class="sc">!</span>word2 <span class="sc">%in%</span> stop_words<span class="sc">$</span>word) <span class="sc">%&gt;%</span></span>
+<span id="cb33-5"><a href="#cb33-5"></a>    <span class="fu">mutate</span>(<span class="at">word1 =</span> <span class="fu">case_when</span>(word1 <span class="sc">==</span> <span class="st">"easterly"</span> <span class="sc">~</span> <span class="st">"east"</span>,</span>
+<span id="cb33-6"><a href="#cb33-6"></a>                             word1 <span class="sc">==</span> <span class="st">"southerly"</span> <span class="sc">~</span> <span class="st">"south"</span>,</span>
+<span id="cb33-7"><a href="#cb33-7"></a>                             word1 <span class="sc">==</span> <span class="st">"n.w"</span> <span class="sc">~</span> <span class="st">"northwest"</span>,</span>
+<span id="cb33-8"><a href="#cb33-8"></a>                             word1 <span class="sc">==</span> <span class="st">"northerly"</span> <span class="sc">~</span> <span class="st">"north"</span>,</span>
+<span id="cb33-9"><a href="#cb33-9"></a>                             word1 <span class="sc">==</span> <span class="st">"westerly"</span> <span class="sc">~</span> <span class="st">"west"</span>,</span>
+<span id="cb33-10"><a href="#cb33-10"></a>           <span class="cn">TRUE</span> <span class="sc">~</span> word1)) <span class="sc">%&gt;%</span></span>
+<span id="cb33-11"><a href="#cb33-11"></a>    <span class="fu">mutate</span>(<span class="at">word2 =</span> <span class="fu">case_when</span>(word2 <span class="sc">==</span> <span class="st">"easterly"</span> <span class="sc">~</span> <span class="st">"east"</span>,</span>
+<span id="cb33-12"><a href="#cb33-12"></a>                             word2 <span class="sc">==</span> <span class="st">"southerly"</span> <span class="sc">~</span> <span class="st">"south"</span>,</span>
+<span id="cb33-13"><a href="#cb33-13"></a>                             word2 <span class="sc">==</span> <span class="st">"n.w"</span> <span class="sc">~</span> <span class="st">"northwest"</span>,</span>
+<span id="cb33-14"><a href="#cb33-14"></a>                             word2 <span class="sc">==</span> <span class="st">"northerly"</span> <span class="sc">~</span> <span class="st">"north"</span>,</span>
+<span id="cb33-15"><a href="#cb33-15"></a>                             word2 <span class="sc">==</span> <span class="st">"westerly"</span> <span class="sc">~</span> <span class="st">"west"</span>,</span>
+<span id="cb33-16"><a href="#cb33-16"></a>           <span class="cn">TRUE</span> <span class="sc">~</span> word2)) <span class="sc">%&gt;%</span></span>
+<span id="cb33-17"><a href="#cb33-17"></a>    <span class="fu">count</span>(word1, word2, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="removing-wind" class="slide level2">
+<h2>Removing wind</h2>
+<div class="cell" data-hash="01-tidytext_cache/revealjs/unnamed-chunk-42_068718eebfbfff822325b272fa3a3006">
+<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a>bigram_counts <span class="sc">%&gt;%</span></span>
+<span id="cb34-2"><a href="#cb34-2"></a>    <span class="fu">filter</span>(word1 <span class="sc">!=</span> <span class="st">"wind"</span> <span class="sc">&amp;</span> word1 <span class="sc">!=</span> <span class="st">"north"</span> <span class="sc">&amp;</span> word1 <span class="sc">!=</span> <span class="st">"south"</span>)</span>
+<span id="cb34-3"><a href="#cb34-3"></a><span class="co">#&gt; # A tibble: 1,826 x 3</span></span>
+<span id="cb34-4"><a href="#cb34-4"></a><span class="co">#&gt;    word1   word2         n</span></span>
+<span id="cb34-5"><a href="#cb34-5"></a><span class="co">#&gt;    &lt;chr&gt;   &lt;chr&gt;     &lt;int&gt;</span></span>
+<span id="cb34-6"><a href="#cb34-6"></a><span class="co">#&gt;  1 wrote   letter       53</span></span>
+<span id="cb34-7"><a href="#cb34-7"></a><span class="co">#&gt;  2 reed    letter       36</span></span>
+<span id="cb34-8"><a href="#cb34-8"></a><span class="co">#&gt;  3 lbs     lobsters     24</span></span>
+<span id="cb34-9"><a href="#cb34-9"></a><span class="co">#&gt;  4 cc      burrill      20</span></span>
+<span id="cb34-10"><a href="#cb34-10"></a><span class="co">#&gt;  5 cutting wood         19</span></span>
+<span id="cb34-11"><a href="#cb34-11"></a><span class="co">#&gt;  6 thomas  smallidge    14</span></span>
+<span id="cb34-12"><a href="#cb34-12"></a><span class="co">#&gt;  7 letter  home         12</span></span>
+<span id="cb34-13"><a href="#cb34-13"></a><span class="co">#&gt;  8 supper  lodging      12</span></span>
+<span id="cb34-14"><a href="#cb34-14"></a><span class="co">#&gt;  9 capt    thomas       10</span></span>
+<span id="cb34-15"><a href="#cb34-15"></a><span class="co">#&gt; 10 dr      johnson      10</span></span>
+<span id="cb34-16"><a href="#cb34-16"></a><span class="co">#&gt; # ... with 1,816 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section></section>
 <section id="thanks" class="title-slide slide level1 center" data-background-image="figs/p_and_p_cover.png" data-background-size="cover" data-background-opacity="0.5">
 <h1>Thanks!</h1>
 <center>

@@ -1061,7 +1061,7 @@
     "href": "slides/01-tidytext.html#tidy-journals",
     "title": "Text Mining",
     "section": "Tidy Journals",
-    "text": "Tidy Journals\n\nlibrary(lubridate)\n(tidy_journal &lt;- journals %&gt;%\n    select(date_mdy, month, journal_entry, journal) %&gt;%\n    unnest_tokens(word, journal_entry))\n#&gt; # A tibble: 12,356 x 4\n#&gt;    date_mdy   month    journal word   \n#&gt;    &lt;chr&gt;      &lt;chr&gt;      &lt;dbl&gt; &lt;chr&gt;  \n#&gt;  1 12/23/1871 December       1 was    \n#&gt;  2 12/23/1871 December       1 married\n#&gt;  3 12/23/1871 December       1 at     \n#&gt;  4 12/23/1871 December       1 home   \n#&gt;  5 12/23/1871 December       1 in     \n#&gt;  6 12/23/1871 December       1 evening\n#&gt;  7 12/23/1871 December       1 by     \n#&gt;  8 12/23/1871 December       1 william\n#&gt;  9 12/23/1871 December       1 rand   \n#&gt; 10 12/23/1871 December       1 esqr   \n#&gt; # ... with 12,346 more rows"
+    "text": "Tidy Journals\n\nlibrary(lubridate)\n(tidy_journal &lt;- journals %&gt;%\n    select(date_mdy, month, journal_entry, journal) %&gt;%\n    mutate(date_mdy = mdy(date_mdy)) %&gt;%\n    mutate(year = year(date_mdy)) %&gt;%\n    unnest_tokens(word, journal_entry)  %&gt;%\n    mutate(word = case_when(word %in% c(\"reed\", \"read\") ~ \"received\",\n                            TRUE ~ word)))\n#&gt; # A tibble: 12,356 x 5\n#&gt;    date_mdy   month    journal  year word   \n#&gt;    &lt;date&gt;     &lt;chr&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;  \n#&gt;  1 1871-12-23 December       1  1871 was    \n#&gt;  2 1871-12-23 December       1  1871 married\n#&gt;  3 1871-12-23 December       1  1871 at     \n#&gt;  4 1871-12-23 December       1  1871 home   \n#&gt;  5 1871-12-23 December       1  1871 in     \n#&gt;  6 1871-12-23 December       1  1871 evening\n#&gt;  7 1871-12-23 December       1  1871 by     \n#&gt;  8 1871-12-23 December       1  1871 william\n#&gt;  9 1871-12-23 December       1  1871 rand   \n#&gt; 10 1871-12-23 December       1  1871 esqr   \n#&gt; # ... with 12,346 more rows"
   },
   {
     "objectID": "slides/01-tidytext.html#journal-1-work-boats-meals-goods",
@@ -1111,5 +1111,61 @@
     "title": "Text Mining",
     "section": "Your Turn: What were the most common words in Journal 3 and 4?",
     "text": "Your Turn: What were the most common words in Journal 3 and 4?"
+  },
+  {
+    "objectID": "slides/01-tidytext.html#implementing-sentiment-analysis-4",
+    "href": "slides/01-tidytext.html#implementing-sentiment-analysis-4",
+    "title": "Text Mining",
+    "section": "Implementing sentiment analysis",
+    "text": "Implementing sentiment analysis\n\ntidy_journal %&gt;%\n    inner_join(get_sentiments(\"bing\")) %&gt;%            \n    count(sentiment, word, sort = TRUE)   \n#&gt; # A tibble: 84 x 3\n#&gt;    sentiment word         n\n#&gt;    &lt;chr&gt;     &lt;chr&gt;    &lt;int&gt;\n#&gt;  1 positive  work       182\n#&gt;  2 negative  cold        45\n#&gt;  3 positive  good        36\n#&gt;  4 positive  calm        33\n#&gt;  5 negative  staid       30\n#&gt;  6 positive  warm        29\n#&gt;  7 positive  breeze      25\n#&gt;  8 positive  pleasant    24\n#&gt;  9 positive  ready       17\n#&gt; 10 positive  worked      17\n#&gt; # ... with 74 more rows"
+  },
+  {
+    "objectID": "slides/01-tidytext.html#implementing-sentiment-analysis-5",
+    "href": "slides/01-tidytext.html#implementing-sentiment-analysis-5",
+    "title": "Text Mining",
+    "section": "Implementing sentiment analysis",
+    "text": "Implementing sentiment analysis\n\ntidy_journal %&gt;%\n    inner_join(get_sentiments(\"bing\")) %&gt;%\n    count(sentiment, word, sort = TRUE) %&gt;%\n    group_by(sentiment) %&gt;%\n    slice_max(n, n = 10) %&gt;%\n    ungroup() %&gt;%\n    ggplot(aes(n, fct_reorder(word, n), fill = sentiment)) +\n    geom_col() +\n    facet_wrap(vars(sentiment), scales = \"free\")"
+  },
+  {
+    "objectID": "slides/01-tidytext.html#n-grams-and-beyond",
+    "href": "slides/01-tidytext.html#n-grams-and-beyond",
+    "title": "Text Mining",
+    "section": "N-grams… and beyond! 🚀",
+    "text": "N-grams… and beyond! 🚀\n\ntidy_ngram %&gt;%\n    count(bigram, sort = TRUE)\n#&gt; # A tibble: 5,522 x 2\n#&gt;    bigram             n\n#&gt;    &lt;chr&gt;          &lt;int&gt;\n#&gt;  1 the wind         501\n#&gt;  2 went to          149\n#&gt;  3 in shop          110\n#&gt;  4 work in          108\n#&gt;  5 in the            99\n#&gt;  6 wind north        71\n#&gt;  7 in forenoon       55\n#&gt;  8 wind southerly    54\n#&gt;  9 letter to         53\n#&gt; 10 wrote letter      53\n#&gt; # ... with 5,512 more rows"
+  },
+  {
+    "objectID": "slides/01-tidytext.html#jane-wants-to-know-2",
+    "href": "slides/01-tidytext.html#jane-wants-to-know-2",
+    "title": "Text Mining",
+    "section": "Jane wants to know…",
+    "text": "Jane wants to know…\n\nCan we use an anti_join() now to remove stop words?\n\nYes! ✅\nNo ☹️"
+  },
+  {
+    "objectID": "slides/01-tidytext.html#n-grams-and-beyond-1",
+    "href": "slides/01-tidytext.html#n-grams-and-beyond-1",
+    "title": "Text Mining",
+    "section": "N-grams… and beyond! 🚀",
+    "text": "N-grams… and beyond! 🚀\n\nbigram_counts &lt;- tidy_ngram %&gt;%\n    separate(bigram, c(\"word1\", \"word2\"), sep = \" \") %&gt;%\n    filter(!word1 %in% stop_words$word,\n           !word2 %in% stop_words$word) %&gt;%\n    count(word1, word2, sort = TRUE)"
+  },
+  {
+    "objectID": "slides/01-tidytext.html#so-many-wind-directions",
+    "href": "slides/01-tidytext.html#so-many-wind-directions",
+    "title": "Text Mining",
+    "section": "So many wind directions…! 🚀",
+    "text": "So many wind directions…! 🚀\n\nbigram_counts\n#&gt; # A tibble: 1,930 x 3\n#&gt;    word1 word2         n\n#&gt;    &lt;chr&gt; &lt;chr&gt;     &lt;int&gt;\n#&gt;  1 wind  north        71\n#&gt;  2 wind  southerly    54\n#&gt;  3 wrote letter       53\n#&gt;  4 north west         48\n#&gt;  5 wind  south        47\n#&gt;  6 reed  letter       36\n#&gt;  7 wind  n.w          33\n#&gt;  8 south west         32\n#&gt;  9 wind  easterly     32\n#&gt; 10 wind  northerly    26\n#&gt; # ... with 1,920 more rows"
+  },
+  {
+    "objectID": "slides/01-tidytext.html#lets-tidy-these-up",
+    "href": "slides/01-tidytext.html#lets-tidy-these-up",
+    "title": "Text Mining",
+    "section": "Let’s tidy these up",
+    "text": "Let’s tidy these up\n\nbigram_counts &lt;- tidy_ngram %&gt;%\n    separate(bigram, c(\"word1\", \"word2\"), sep = \" \") %&gt;%\n    filter(!word1 %in% stop_words$word,\n           !word2 %in% stop_words$word) %&gt;%\n    mutate(word1 = case_when(word1 == \"easterly\" ~ \"east\",\n                             word1 == \"southerly\" ~ \"south\",\n                             word1 == \"n.w\" ~ \"northwest\",\n                             word1 == \"northerly\" ~ \"north\",\n                             word1 == \"westerly\" ~ \"west\",\n           TRUE ~ word1)) %&gt;%\n    mutate(word2 = case_when(word2 == \"easterly\" ~ \"east\",\n                             word2 == \"southerly\" ~ \"south\",\n                             word2 == \"n.w\" ~ \"northwest\",\n                             word2 == \"northerly\" ~ \"north\",\n                             word2 == \"westerly\" ~ \"west\",\n           TRUE ~ word2)) %&gt;%\n    count(word1, word2, sort = TRUE)"
+  },
+  {
+    "objectID": "slides/01-tidytext.html#removing-wind",
+    "href": "slides/01-tidytext.html#removing-wind",
+    "title": "Text Mining",
+    "section": "Removing wind",
+    "text": "Removing wind\n\nbigram_counts %&gt;%\n    filter(word1 != \"wind\" & word1 != \"north\" & word1 != \"south\")\n#&gt; # A tibble: 1,826 x 3\n#&gt;    word1   word2         n\n#&gt;    &lt;chr&gt;   &lt;chr&gt;     &lt;int&gt;\n#&gt;  1 wrote   letter       53\n#&gt;  2 reed    letter       36\n#&gt;  3 lbs     lobsters     24\n#&gt;  4 cc      burrill      20\n#&gt;  5 cutting wood         19\n#&gt;  6 thomas  smallidge    14\n#&gt;  7 letter  home         12\n#&gt;  8 supper  lodging      12\n#&gt;  9 capt    thomas       10\n#&gt; 10 dr      johnson      10\n#&gt; # ... with 1,816 more rows"
   }
 ]
