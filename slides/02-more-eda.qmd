@@ -1,7 +1,7 @@
 ---
 title: "Text Mining"
 subtitle: "USING TIDY DATA PRINCIPLES"
-author: "Julia Silge"
+author: "by Julia Silge (adapted by Laurie Baker)"
 format:
   revealjs: 
     footer: <https://juliasilge.github.io/tidytext-tutorial/>

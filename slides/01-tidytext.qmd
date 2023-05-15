@@ -232,12 +232,12 @@ tidy_book %>%
 # The Freeland Bunker Diaries {background-image="figs/water.jpg" background-size="cover" background-opacity="0.5"}
 
 
-##  {background-image="figs/freeland_bunker.jpg" background-size="60%" background-color="white"}
+##  {background-image="figs/freeland_bunker.jpg" background-size="40%" background-color="white"}
 
 ::: footer
 :::
 
-##  {background-image="figs/freeland_timeline.jpg" background-size="60%" background-color="white"}
+##  {background-image="figs/freeland_timeline.jpg" background-size="40%" background-color="white"}
 
 ::: footer
 :::
@@ -286,7 +286,11 @@ journals <- rbind(journal_1871_1872, journal_1873, journal_1874, journal_1875)
 library(lubridate)
 (tidy_journal <- journals %>%
     select(date_mdy, month, journal_entry, journal) %>%
-    unnest_tokens(word, journal_entry))
+    mutate(date_mdy = mdy(date_mdy)) %>%
+    mutate(year = year(date_mdy)) %>%
+    unnest_tokens(word, journal_entry)  %>%
+    mutate(word = case_when(word %in% c("reed", "read") ~ "received",
+                            TRUE ~ word)))
 ```
 
 ## Most common words
@@ -333,7 +337,7 @@ tidy_journal %>%
     filter(journal == 2) %>%
     count(word, sort = TRUE) %>%
     slice_max(n, n = 25) %>%
-    mutate(color = case_when(word %in% c("wind", "n.w", "north", "east", "west", "south", "rainy", "heavy", "snow", "breeze", "easterly", "southerly", "moderate") ~ "wind and weather", TRUE ~ "other")) %>%
+    mutate(color = case_when(word %in% c("wind", "n.w", "north", "east", "west", "south", "rainy", "heavy", "snow", "breeze", "easterly", "southerly", "moderate", "cold", "rain") ~ "wind and weather", TRUE ~ "other")) %>%
     ggplot(aes(n, fct_reorder(word, n))) +  
     geom_col(aes(fill = color)) +
     labs(fill = "Word Type", y = "word")
@@ -452,6 +456,158 @@ tidy_book %>%
     scale_x_continuous(expand = c(0,0)) +
     labs(y = NULL, x = "Number of occurrences")
 ```
+
+# Was Freeland Sentimental? {background-image="figs/water.jpg" background-size="cover" background-opacity="0.5"}
+
+![](figs/freeland_headshot.jpg){top="0" right="" width="180" height="200"}
+
+
+## Implementing sentiment analysis {background-color="white"}
+
+```{r}
+#| code-line-numbers: "3"
+tidy_journal %>%
+    inner_join(get_sentiments("bing")) %>%            
+    count(sentiment, word, sort = TRUE)   
+```
+
+## Implementing sentiment analysis {background-color="white"}
+
+```{r, eval = FALSE}
+#| eval: false
+#| code-line-numbers: "|7"
+tidy_journal %>%
+    inner_join(get_sentiments("bing")) %>%
+    count(sentiment, word, sort = TRUE) %>%
+    group_by(sentiment) %>%
+    slice_max(n, n = 10) %>%
+    ungroup() %>%
+    ggplot(aes(n, fct_reorder(word, n), fill = sentiment)) +
+    geom_col() +
+    facet_wrap(vars(sentiment), scales = "free") 
+```
+
+## {background-color="white"}
+
+```{r}
+#| echo: false
+#| fig-align: center
+tidy_journal %>%
+    inner_join(get_sentiments("bing")) %>%
+    count(sentiment, word, sort = TRUE) %>%
+    group_by(sentiment) %>%
+    slice_max(n, n = 10) %>%
+    ungroup %>%
+    ggplot(aes(n, fct_reorder(word, n), fill = sentiment)) +
+    geom_col(alpha = 0.9, show.legend = FALSE) +
+    facet_wrap(vars(sentiment), scales = "free") +
+    scale_x_continuous(expand = c(0,0)) +
+    labs(y = NULL, x = "Number of occurrences")
+```
+
+# What was the weather like? {background-image="figs/water.jpg" background-size="cover" background-opacity="0.5"}
+
+
+## {background-color="white"}
+
+```{r}
+#| echo: false
+#| fig-align: center
+tidy_journal %>%
+    inner_join(get_sentiments("bing")) %>%
+    mutate(month = as.factor(month)) %>%
+    drop_na(month) %>%
+    filter(word %in% c("cold", "dark", "stormy", "rainy", "cloudy", "calm", "warm", "pleasant", "clear")) %>%
+    count(month, sentiment, word, sort = TRUE) %>%
+    mutate(word = as.factor(word)) %>%
+    mutate(word = fct_relevel(word, c("calm", "clear", "pleasant", "warm", "cloudy", "cold", "dark", "stormy"))) %>%
+    mutate(sentiment = fct_relevel(as.factor(sentiment), "positive", "negative")) %>%
+    ggplot(aes(x = fct_relevel(month, c("January", "February", "March", "April", "May", "June", "July", "August", "September")), y = n, fill = word)) +
+    geom_col(position = "stack") +
+    #facet_wrap(~sentiment, ncol = 1) +
+    labs(y = "Number of occurrences", x = "Month") +
+    scale_fill_brewer(palette = "Spectral") +
+    labs(title = "Whatever the weather") +
+    coord_polar()
+```
+# More insight from bigrams! {background-image="figs/water.jpg" background-size="cover" background-opacity="0.5"}
+
+```{r}
+(tidy_ngram <- journals %>%
+    mutate(journal_entry = str_replace_all(journal_entry, "south west", "southwest")) %>%
+    mutate(journal_entry = str_replace_all(journal_entry, "north west", "northwest")) %>%
+    mutate(journal_entry = str_replace_all(journal_entry, "south east", "southeast")) %>%
+    mutate(journal_entry = str_replace_all(journal_entry, "north east", "northeast")) %>%
+    unnest_tokens(bigram, journal_entry, token = "ngrams", n = 2) %>% 
+    drop_na(bigram) %>%
+    select(journal, bigram, date_mdy))
+```
+
+## N-grams... and beyond! 🚀 {background-color="white"}
+
+```{r}
+tidy_ngram %>%
+    count(bigram, sort = TRUE)
+```
+
+## Jane wants to know... {transition="slide-in"}
+
+![](figs/blue_jane.png){.absolute top="0" right="0" width="150"
+height="150"}
+
+Can we use an [anti_join()]{.codedarkbg} now to remove stop words?
+
+-   Yes! ✅
+-   No ☹️
+
+## N-grams... and beyond! 🚀 {background-color="white"}
+
+```{r}
+#| code-line-numbers: "|2"
+bigram_counts <- tidy_ngram %>%
+    separate(bigram, c("word1", "word2"), sep = " ") %>%
+    filter(!word1 %in% stop_words$word,
+           !word2 %in% stop_words$word) %>%
+    count(word1, word2, sort = TRUE)
+```
+
+## So many wind directions...! 🚀 {background-color="white"}
+
+```{r}
+bigram_counts
+```
+
+## Let's tidy these up 
+
+```{r}
+#| eval: true
+bigram_counts <- tidy_ngram %>%
+    separate(bigram, c("word1", "word2"), sep = " ") %>%
+    filter(!word1 %in% stop_words$word,
+           !word2 %in% stop_words$word) %>%
+    mutate(word1 = case_when(word1 == "easterly" ~ "east",
+                             word1 == "southerly" ~ "south",
+                             word1 == "n.w" ~ "northwest",
+                             word1 == "northerly" ~ "north",
+                             word1 == "westerly" ~ "west",
+           TRUE ~ word1)) %>%
+    mutate(word2 = case_when(word2 == "easterly" ~ "east",
+                             word2 == "southerly" ~ "south",
+                             word2 == "n.w" ~ "northwest",
+                             word2 == "northerly" ~ "north",
+                             word2 == "westerly" ~ "west",
+           TRUE ~ word2)) %>%
+    count(word1, word2, sort = TRUE)
+```
+
+## Removing wind
+
+```{r}
+bigram_counts %>%
+    filter(word1 != "wind" & word1 != "north" & word1 != "south")
+```
+
+
 
 # Thanks! {background-image="figs/p_and_p_cover.png" background-size="cover" background-opacity="0.5"}
 
