@@ -1,6 +1,6 @@
 ---
-title: "Mining Historical Texts"
-subtitle: "Wrangling and Visualizing Data"
+title: "Wrangling and Visualizing Historical Texts"
+subtitle: ""
 author: "By Laurie Baker"
 format:
   revealjs: 
