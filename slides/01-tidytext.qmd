@@ -114,7 +114,7 @@ library(gutenbergr)
 full_text <- gutenberg_download(1342, mirror = my_mirror)
 ```
 
-What book do *you* want to analyze today? 📖🥳📖
+<!-- What book do *you* want to analyze today? 📖🥳📖 -->
 
 ::: aside
 [https://docs.ropensci.org/gutenbergr/]{.blue}
@@ -248,13 +248,12 @@ tidy_book %>%
 ::: footer
 :::
 
-## Currently 2.5 journals transcribed from 1871-1874
+## Currently 9 journals transcribed from 1871-1880
 
 ```{r}
 
 library(readxl)
-journal_1871_1872 <- read_excel("data/journal_year_1871_1872.xlsx")
-
+journal_1871_1872 <- read_excel("data/journal_1871_1872.xlsx")
 journal_1871_1872 %>%
     select(date_mdy, month, journal_entry) %>%
     head()
@@ -264,19 +263,49 @@ journal_1871_1872 %>%
 ```{r}
 
 journal_1873 <- read_excel("data/journal_1873.xlsx")
-journal_1874 <- read_excel("data/journal_year_1874.xlsx")
+journal_1874 <- read_excel("data/journal_1874.xlsx")
 journal_1875 <- read_excel("data/journal_1875.xlsx")
+journal_1876 <- read_excel("data/journal_1876.xlsx")
+journal_1877 <- read_excel("data/journal_1877.xlsx")
+journal_1878 <- read_excel("data/journal_1878.xlsx")
+journal_1879 <- read_excel("data/journal_1879.xlsx")
+journal_1880 <- read_excel("data/journal_1880.xlsx")
 
+```
+
+## Keeping Track
+
+```{r echo = FALSE, message = FALSE, warning = FALSE}
+# We need to make sure the journals are the same type
+
+journal_1871_1872$temperature_night <- as.numeric(journal_1871_1872$temperature_night)
+journal_1873$temperature_night <- as.numeric(journal_1873$temperature_night)
+journal_1874$temperature_night <- as.numeric(journal_1874$temperature_night)
+journal_1875$temperature_night <- as.numeric(journal_1875$temperature_night)
+journal_1876$temperature_night <- as.numeric(journal_1876$temperature_night)
+journal_1877$temperature_night <- as.numeric(journal_1877$temperature_night)
+journal_1878$temperature_night <- as.numeric(journal_1878$temperature_night)
+journal_1879$temperature_night <- as.numeric(journal_1879$temperature_night)
+journal_1880$temperature_night <- as.numeric(journal_1880$temperature_night)
+```
+
+
+```{r}
 # We want to keep track of the journals
 
 journal_1871_1872$journal <- 1
 journal_1873$journal <- 2
 journal_1874$journal <- 3
 journal_1875$journal <- 4
+journal_1876$journal <- 5
+journal_1877$journal <- 6
+journal_1878$journal <- 7
+journal_1879$journal <- 8
+journal_1880$journal <- 9
 
-
-journals <- rbind(journal_1871_1872, journal_1873, journal_1874, journal_1875)
-
+journals <- dplyr::bind_rows(journal_1871_1872, journal_1873, journal_1874, 
+                             journal_1875, journal_1876, journal_1877, 
+                             journal_1878, journal_1879, journal_1880)
 ```
 
 

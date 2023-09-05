@@ -1,0 +1,352 @@
+---
+title: "Mining Historical Texts"
+subtitle: "Wrangling and Visualizing Data"
+author: "By Laurie Baker"
+format:
+  revealjs: 
+    footer: <https:coa-navigating-change.netlify.app>
+    theme: [dark, fbcustom.scss]
+    width: 1280
+    height: 720
+highlight-style: "arrow-light"      
+knitr:
+  opts_chunk: 
+    echo: true
+    collapse: true
+    comment: "#>"    
+---
+
+```{r}
+#| include: false
+#| file: setup.R
+```
+
+# Acknowledgements
+
+<center>
+
+<img src="figs/blue_jane.png" width="150px"/>
+
+Slide Structure and Design inspired by Julia Silge 
+
+[{{< fa brands github >}} \@juliasilge](https://github.com/juliasilge)
+
+</center>
+
+## Let's install some packages {background-color="white"}
+
+```{r}
+#| eval: false
+install.packages(c("tidyverse", # data wrangling
+                   "lubridate", # dates
+                   "readxl",
+                   "DT")) # reading data
+```
+
+## Learning Objectives:
+
+Gain familiarity with 
+- How to read in data using `read_excel`
+- How to select columns using `select`
+- How to create new variables using `mutate`
+- How to summarize and arrange data using `count` and `arrange`
+- How to group and calculate multiple things 
+- How to correct entries using `mutate` and `case_when`
+- How to visualize and map the data using `ggplot` and `leaflet`
+
+##  The Journals (1870-1906) {background-image="figs/freeland_bunker_journal.jpg" background-size="45%" background-color="white"}
+
+## 9 journals (1871-1880) transcribed
+
+
+```{r}
+
+library(readxl)
+journal_1871_1872 <- read_excel("data/journal_1871_1872.xlsx")
+journal_1873 <- read_excel("data/journal_1873.xlsx")
+journal_1874 <- read_excel("data/journal_1874.xlsx")
+journal_1875 <- read_excel("data/journal_1875.xlsx")
+journal_1876 <- read_excel("data/journal_1876.xlsx")
+journal_1877 <- read_excel("data/journal_1877.xlsx")
+journal_1878 <- read_excel("data/journal_1878.xlsx")
+journal_1879 <- read_excel("data/journal_1879.xlsx")
+journal_1880 <- read_excel("data/journal_1880.xlsx")
+
+```
+
+## Keeping Track
+
+```{r echo = FALSE, message = FALSE, warning = FALSE}
+# We need to make sure the journals are the same type
+
+journal_1871_1872$temperature_night <- as.numeric(journal_1871_1872$temperature_night)
+journal_1873$temperature_night <- as.numeric(journal_1873$temperature_night)
+journal_1874$temperature_night <- as.numeric(journal_1874$temperature_night)
+journal_1875$temperature_night <- as.numeric(journal_1875$temperature_night)
+journal_1876$temperature_night <- as.numeric(journal_1876$temperature_night)
+journal_1877$temperature_night <- as.numeric(journal_1877$temperature_night)
+journal_1878$temperature_night <- as.numeric(journal_1878$temperature_night)
+journal_1879$temperature_night <- as.numeric(journal_1879$temperature_night)
+journal_1880$temperature_night <- as.numeric(journal_1880$temperature_night)
+```
+
+```{r}
+# We want to keep track of the journals
+
+journal_1871_1872$journal <- 1
+journal_1873$journal <- 2
+journal_1874$journal <- 3
+journal_1875$journal <- 4
+journal_1876$journal <- 5
+journal_1877$journal <- 6
+journal_1878$journal <- 7
+journal_1879$journal <- 8
+journal_1880$journal <- 9
+
+journals <- dplyr::bind_rows(journal_1871_1872, journal_1873, journal_1874, 
+                             journal_1875, journal_1876, journal_1877, 
+                             journal_1878, journal_1879, journal_1880)
+```
+
+
+## We have a lot of variables recorded!
+
+```{r}
+glimpse(journals)
+```
+## Exploring a subset using `select`
+
+
+```{r}
+
+(journals_sub <- journals %>%
+    select(date_mdy, journal_entry, location))
+
+```
+
+
+## Creating date variables using `lubridate`
+
+```{r}
+library(lubridate)
+(journals_sub <- journals_sub %>%
+    mutate(date_mdy = mdy(date_mdy),
+           year = year(date_mdy),
+           month = month(date_mdy)))
+```
+## How often did Freeland write? 
+
+```{r, echo=FALSE, warning=FALSE}
+
+journals_sub %>%
+    filter(is.na(year) == FALSE) %>%
+    group_by(month, year) %>%
+    summarize(days_written = n()) %>%
+    ggplot(aes(x = month, y = days_written)) +
+    geom_line() +
+    geom_point() +
+    facet_wrap(~year) +
+    ylim(0, 36) +
+    scale_x_continuous(breaks = c(0, 3, 6, 9, 12)) +
+    labs(x = "Month", y = "Number of entries")
+```
+
+## How often did Freeland write? Code
+
+```{r, eval=FALSE, warning=FALSE}
+
+journals_sub %>%
+    filter(is.na(year) == FALSE) %>%
+    group_by(month, year) %>%
+    summarize(days_written = n()) %>%
+    ggplot(aes(x = month, y = days_written)) +
+    geom_line() +
+    geom_point() +
+    facet_wrap(~year) +
+    ylim(0, 36) +
+    scale_x_continuous(breaks = c(0, 3, 6, 9, 12)) +
+    labs(x = "Month", y = "Number of entries")
+```
+
+
+## Where did Freeland go?
+
+```{r}
+journals_sub %>%
+    filter(is.na(location) == FALSE, location != "NA") %>%
+    separate_rows(location, sep = ", ") %>%
+    count(location) %>%
+    arrange(desc(n))
+
+```
+
+## Less common places visited?
+
+```{r}
+journals_sub %>%
+    filter(is.na(location) == FALSE, location != "NA") %>%
+    separate_rows(location, sep = ", ") %>%
+    count(location) %>%
+    slice_min(n, n = 15, with_ties = FALSE) 
+```
+## Plotting frequency of visits 
+
+```{r}
+journals_sub %>%
+    filter(is.na(location) == FALSE, location != "NA") %>%
+    separate_rows(location, sep = ", ") %>%
+    count(location) %>%
+    slice_max(n, n = 15, with_ties = FALSE) %>%
+    ggplot(aes(x = n, y = fct_reorder(location, n))) +
+    geom_col() +
+    labs(x = "Number of mentions", y = "Location")
+```
+
+
+## Fixing Mispellings
+
+```{r}
+journals_sub %>%
+    separate_rows(location, sep = ", ") %>%
+    filter(str_detect(string = location, pattern = "C\\.|C |Cranberry")) %>%
+    distinct(location)
+```
+
+
+## Tidying words using `case_when`
+
+```{r}
+journals_sub <- journals_sub %>%
+    separate_rows(location, sep = ", ") %>%
+    mutate(location = case_when(location %in% c("C. Isle", "C. Isles", "C Isles", 
+                                                "C isles", "Cranberry IIsles", "Cranberry Isle", "Cranberry Isle harbor", "Cranberry Isles", "Cranberry Islands", "Cranberry Island") ~ "Cranberry Isles",
+                            TRUE ~ location))
+
+
+journals_sub %>%
+    separate_rows(location, sep = ", ") %>%
+    filter(str_detect(string = location, pattern = "C\\.|C |Cranberry")) %>%
+    distinct(location)
+```
+
+## Your Turn: Fix Bass Harbor misspellings
+
+
+```{r}
+journals_sub %>%
+    separate_rows(location, sep = ", ") %>%
+    filter(str_detect(string = location, pattern = "Bass|bass")) %>%
+    distinct(location)
+```
+
+```{r, eval = FALSE}
+
+journals_loc <- journals_loc %>%
+    mutate(location = case_when(location %in% c(__________) ~ _______,
+                            TRUE ~ location))
+
+```
+
+```{r, echo = FALSE}
+
+journals_sub <- journals_sub %>%
+    mutate(location = case_when(str_detect(location, "Bass|bass") == TRUE  ~ "Bass Harbor",
+                            TRUE ~ location))
+
+```
+
+## Where did Freeland visit
+
+```{r echo = FALSE}
+journals_sub %>%
+    filter(is.na(location) == FALSE, location != "NA", location != "Winter Harbor") %>%
+    separate_rows(location, sep = ", ") %>%
+    count(location) %>%
+    slice_max(n, n = 15) %>%
+    ggplot(aes(x = n, y = fct_reorder(location, n))) +
+    geom_col() +
+    labs(x = "Number of mentions", y = "Location")
+```
+
+## Where did Freeland visit each year?
+
+```{r echo = FALSE}
+journals_loc_count <- journals_sub %>%
+    separate_rows(location, sep = ", ") %>%
+    filter(location %in% c("West Gouldsboro", "Ellsworth", "Rockland", "Bar Harbor", "Sullivan", "Calais", "Prospect Harbor", "East Sullivan", "Boston", "Bass Harbor", "Cranberry Isles")) %>%
+    group_by(year) %>%
+    count(location)
+
+journals_loc_count %>%
+    ggplot(aes(x = year, y = n, color = location)) +
+    geom_line() +
+    labs(x = "Year", y = "Number of mentions", color = "Location", title = "Number of times place visited each year by Freeland Bunker", subtitle = "Locations don't include home, shop, factor, and Winter Harbor")
+```
+## Where did Freeland visit each year? Code
+
+```{r eval = FALSE}
+journals_loc_count <- journals_sub %>%
+    separate_rows(location, sep = ", ") %>%
+    filter(location %in% c("West Gouldsboro", "Ellsworth", "Rockland", "Bar Harbor", "Sullivan", "Calais", "Prospect Harbor", "East Sullivan", "Boston", "Bass Harbor", "Cranberry Isles")) %>%
+    group_by(year) %>%
+    count(location)
+
+journals_loc_count %>%
+    ggplot(aes(x = year, y = n, color = location)) +
+    geom_line() +
+    labs(x = "Year", y = "Number of mentions", color = "Location", title = "Number of times place visited each year by Freeland Bunker", subtitle = "Locations don't include home, shop, factor, and Winter Harbor")
+```
+
+## Mapping
+
+```{r}
+location_coordinates <- read_excel(path = "data/location_coordinates.xlsx")
+
+head(location_coordinates, n = 2)
+
+loc_df <- journals_sub %>%
+    separate_rows(location, sep = ", ")  %>%
+    count(location) %>%
+    left_join(location_coordinates, by = "location") %>%
+    drop_na(latitude)
+```
+
+Homework: Add 5 more sets of coordinates to the [location excel file](https://docs.google.com/spreadsheets/d/1vA5YjlsGHQBSmUOFsBpPSJhObK601zE3/edit?usp=sharing&ouid=104076949272458477636&rtpof=true&sd=true)
+
+## Where did Freeland go?
+
+```{r echo = FALSE}
+library(leaflet)
+
+leaflet(data = loc_df) %>%
+     setView(lng = -66, lat = 43.5, zoom = 9) %>%
+     addProviderTiles(providers$OpenStreetMap) %>%
+     addCircleMarkers(lng = ~longitude, lat = ~latitude, label = ~location, radius = ~n/100)
+```
+
+## Where did Freeland go?
+
+```{r eval = FALSE}
+library(leaflet)
+
+leaflet(data = loc_df) %>%
+     setView(lng = -66, lat = 43.5, zoom = 9) %>%
+     addProviderTiles(providers$OpenStreetMap) %>%
+     addCircleMarkers(lng = ~longitude, lat = ~latitude, label = ~location, radius = ~n/100)
+```
+
+# Thanks! {background-image="figs/p_and_p_cover.png" background-size="cover" background-opacity="0.5"}
+
+<center>
+
+<img src="figs/freeland_headshot.jpg" width="150px"/>
+
+[{{< fa brands github >}} \@LaurieLBaker](https://github.com/laurielbaker)
+
+[{{< fa link >}} lauriebaker@rbind.io](https://lauriebaker.rbind.io)
+
+</center>
+
+::: footer
+Slides created with [Quarto](https://quarto.org/)
+:::

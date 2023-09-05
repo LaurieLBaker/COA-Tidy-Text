@@ -1,0 +1,465 @@
+---
+title: "Comparing Historical Texts"
+subtitle: "USING TIDY DATA PRINCIPLES"
+author: "by Laurie Baker"
+format:
+  revealjs: 
+    footer: <https:coa-navigating-change.netlify.app>
+    theme: [dark, fbcustom.scss]
+    width: 1280
+    height: 720
+    title-slide-attributes: 
+      data-background-image: figs/water2.jpg
+      data-background-opacity: "0.7"
+highlight-style: "arrow-light"      
+knitr:
+  opts_chunk: 
+    echo: true
+    collapse: true
+    comment: "#>"    
+editor: 
+  markdown: 
+    wrap: 72
+---
+
+```{r}
+#| include: false
+#| file: setup.R
+```
+
+# Acknowledgements
+
+<center>
+
+<img src="figs/blue_jane.png" width="150px"/>
+
+Slide Structure, Content, and Design adapted from Julia Silge 
+
+[{{< fa brands github >}} \@juliasilge](https://github.com/juliasilge)
+
+[{{< fa link >}} juliasilge.com](https://juliasilge.com/)
+
+[{{< fa book >}} tidytextmining.com](https://tidytextmining.com)
+
+</center>
+ 
+## Let's install some packages {background-color="white"}
+
+```{r}
+#| eval: false
+install.packages(c("tidyverse", 
+                   "tidytext",
+                   "stopwords",
+                   "widyr",
+                   "tidygraph",
+                   "tidylo",
+                   "ggraph",
+                   "wordcloud"))
+```
+
+# WHAT IS A DOCUMENT ABOUT? 🤔 {background-image="figs/water2.jpg" background-size="cover" background-opacity="0.5"}
+
+## What is a document about?
+
+-   Term frequency
+-   Inverse document frequency
+
+. . .
+
+$$idf(\text{term}) = \ln{\left(\frac{n_{\text{documents}}}{n_{\text{documents containing term}}}\right)}$$
+
+. . .
+
+### tf-idf is about comparing **documents** within a **collection**.
+
+```{r, echo = FALSE, message = FALSE, warning = FALSE}
+
+library(readxl)
+journal_1871_1872 <- read_excel("data/journal_1871_1872.xlsx")
+journal_1873 <- read_excel("data/journal_1873.xlsx")
+journal_1874 <- read_excel("data/journal_1874.xlsx")
+journal_1875 <- read_excel("data/journal_1875.xlsx")
+journal_1876 <- read_excel("data/journal_1876.xlsx")
+journal_1877 <- read_excel("data/journal_1877.xlsx")
+journal_1878 <- read_excel("data/journal_1878.xlsx")
+journal_1879 <- read_excel("data/journal_1879.xlsx")
+journal_1880 <- read_excel("data/journal_1880.xlsx")
+
+```
+
+```{r echo = FALSE, message = FALSE, warning = FALSE}
+# We need to make sure the journals are the same type
+
+journal_1871_1872$temperature_night <- as.numeric(journal_1871_1872$temperature_night)
+journal_1873$temperature_night <- as.numeric(journal_1873$temperature_night)
+journal_1874$temperature_night <- as.numeric(journal_1874$temperature_night)
+journal_1875$temperature_night <- as.numeric(journal_1875$temperature_night)
+journal_1876$temperature_night <- as.numeric(journal_1876$temperature_night)
+journal_1877$temperature_night <- as.numeric(journal_1877$temperature_night)
+journal_1878$temperature_night <- as.numeric(journal_1878$temperature_night)
+journal_1879$temperature_night <- as.numeric(journal_1879$temperature_night)
+journal_1880$temperature_night <- as.numeric(journal_1880$temperature_night)
+```
+
+## Understanding tf-idf {background-color="white"}
+
+Make a collection (*corpus*) for yourself! 
+
+```{r}
+
+journal_1871_1872$journal <- 1
+journal_1873$journal <- 2
+journal_1874$journal <- 3
+journal_1875$journal <- 4
+journal_1876$journal <- 5
+journal_1877$journal <- 6
+journal_1878$journal <- 7
+journal_1879$journal <- 8
+journal_1880$journal <- 9
+
+journals <- dplyr::bind_rows(journal_1871_1872, journal_1873, journal_1874, 
+                             journal_1875, journal_1876, journal_1877, 
+                             journal_1878, journal_1879, journal_1880)
+```
+## Understanding tf-idf {background-color="white"}
+
+Make a collection (*corpus*) for yourself! 
+
+```{r}
+journals %>%
+    select(date_mdy, journal_entry, location)
+```
+
+## Counting word frequencies {background-color="white"}
+
+```{r}
+#| code-line-numbers: "|5"
+library(tidyverse)
+library(tidytext)
+
+(journal_words <- journals %>%
+    unnest_tokens(word, journal_entry) %>%
+    count(journal, word, sort = TRUE))
+```
+
+What do the columns of `journal_words` tell us?
+
+## Calculating tf-idf {background-color="white"}
+
+```{r}
+#| code-line-numbers: "|2"
+journal_tf_idf <- journal_words %>%
+    bind_tf_idf(word, journal, n)  
+```
+
+## Calculating tf-idf {background-color="white"}
+
+```{r}
+journal_tf_idf
+```
+
+. . .
+
+That's... super exciting???
+
+## Calculating tf-idf {background-color="white"}
+
+What do you predict will happen if we run the following code? 🤔
+
+```{r}
+#| eval: false
+journal_tf_idf %>%
+    arrange(-tf_idf)
+```
+
+## Calculating tf-idf {background-color="white"}
+
+What do you predict will happen if we run the following code? 🤔
+
+```{r}
+journal_tf_idf %>%
+    arrange(-tf_idf)
+```
+
+## Calculating tf-idf
+
+[U N S C R A M B L E]{.lavender}
+
+group_by(journal) %>%
+
+journal_tf_idf %>%
+
+slice_max(tf_idf, n = 10) %>%
+
+ggplot(aes(tf_idf, fct_reorder(word, tf_idf), fill = journal)) +
+
+facet_wrap(vars(journal), scales = "free")
+
+geom_col(show.legend = FALSE) +
+
+## Calculating tf-idf {background-color="white"}
+
+```{r, eval = FALSE}
+#| eval: false
+#| code-line-numbers: "|4"
+journal_tf_idf %>%
+    group_by(journal) %>%
+    slice_max(tf_idf, n = 10) %>%
+    ggplot(aes(tf_idf, fct_reorder(word, tf_idf), fill = journal)) +
+    geom_col(show.legend = FALSE) +
+    facet_wrap(vars(journal), scales = "free") +
+    scale_x_continuous(expand = c(0,0)) +
+    labs(y = NULL, x = "tf-idf", title = "Highest tf-idf words in Freeland Bunker's Journals")
+```
+
+##  {background-color="white"}
+
+```{r}
+#| echo: false
+#| fig-align: center
+#| fig-width: 8
+#| fig-height: 6
+journal_tf_idf %>%
+    group_by(journal) %>%
+    slice_max(tf_idf, n = 10) %>%
+    ggplot(aes(tf_idf,
+               fct_reorder(word, tf_idf), 
+               fill = journal)) +
+    geom_col(alpha = 0.9, show.legend = FALSE) +
+    facet_wrap(~journal, scales = "free") +
+    scale_x_continuous(expand = c(0,0)) +
+    labs(y = NULL, x = "tf-idf", title = "Highest tf-idf words in Freeland Bunker's Journals")
+```
+
+
+# WHAT IS A DOCUMENT ABOUT? 🤔 {background-image="figs/water2.jpg" background-size="cover" background-opacity="0.5"}
+
+## What is a document about?
+
+-   Term frequency
+-   Inverse document frequency
+
+. . .
+
+### Weighted log odds ⚖️
+
+- Log odds ratio expresses probabilities
+- Weighting helps deal with power law distribution
+
+## Weighted log odds ⚖️ {background-color="white"}
+
+```{r}
+library(tidylo)
+journal_words %>%
+    bind_log_odds(journal, word, n) %>%
+    arrange(-log_odds_weighted)
+```
+
+. . .
+
+Weighted log odds can distinguish between words that are used in all texts.
+
+
+# More insight from bigrams! {background-image="figs/water2.jpg" background-size="cover" background-opacity="1"}
+
+```{r}
+(tidy_ngram <- journals %>%
+    unnest_tokens(bigram, journal_entry, token = "ngrams", n = 2) %>% 
+    drop_na(bigram) %>%
+    select(journal, bigram, date_mdy, location))
+```
+
+<!-- "Photo by <a href="https://unsplash.com/@timmarshall?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Tim Marshall</a> on <a href="https://unsplash.com/photos/dYO_5KOMEkA?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>" -->
+
+## N-grams... and beyond! 🚀 {background-color="white"}
+
+```{r}
+tidy_ngram %>%
+    count(bigram, sort = TRUE)
+```
+
+## Freeland wants to know... {transition="slide-in"}
+
+![](figs/freeland_headshot.jpg){.absolute top="0" right="0" width="150"
+height="150"}
+
+Can we use an [anti_join()]{.codedarkbg} now to remove stop words?
+
+-   Yes! ✅
+-   No ☹️
+
+## N-grams... and beyond! 🚀 {background-color="white"}
+
+```{r}
+#| code-line-numbers: "|2"
+bigram_counts <- tidy_ngram %>%
+    separate(bigram, c("word1", "word2"), sep = " ") %>%
+    filter(!word1 %in% stop_words$word,
+           !word2 %in% stop_words$word) %>%
+    count(word1, word2, sort = TRUE)
+```
+
+## So many wind directions...! 🚀 {background-color="white"}
+
+```{r}
+bigram_counts
+```
+
+## How did Freeland refer to wind?
+
+```{r}
+library(wordcloud)
+bigram_counts %>%
+    filter(str_detect(string = word1, pattern = "wind|Wind")) %>% 
+    with(wordcloud::wordcloud(word2, n, random.order = FALSE, max.words = 50, colors = brewer.pal(8,"Dark2")))
+```
+
+
+## What can you do with n-grams? {background-image="figs/p_and_p_cover.png" background-size="cover" background-opacity="0.5"}
+
+::: incremental
+-   tf-idf of n-grams
+-   weighted log odds of n-grams
+-   network analysis
+-   negation
+:::
+
+##  {background-image="figs/austen-1.png" background-size="60%" background-color="white"}
+
+::: footer
+:::
+
+##  {background-image="figs/slider.gif" background-size="70%" background-color="white"}
+
+::: footer
+[https://pudding.cool/2017/08/screen-direction/]{.blue}
+:::
+
+##  {background-image="https://juliasilge.github.io/tidylo/articles/tidylo_files/figure-html/bigram_plot-1.png" background-size="60%" background-color="white"}
+
+::: footer
+:::
+
+## {background-image="figs/change_overall-1.svg" background-size="70%" background-color="white"}
+
+::: footer
+:::
+
+## Network analysis {background-color="white"}
+
+```{r}
+#| code-line-numbers: "|7"
+library(widyr)
+library(ggraph)
+library(tidygraph)
+
+bigram_graph <- bigram_counts %>%
+    filter(!word1 %in% c("Wind", "wind", "thermometer", "degrees", "oclock", "pm", "p.m"), !word2 %in% c("Wind", "wind", "thermometer", "degrees", "oclock", "pm", "p.m")) %>%
+    mutate(word1 = case_when(word1 %in% c("E", "easterly", "East") ~ "east",
+                             word1 %in% c("S", "S.", "southerly", "South") ~ "south",
+                             word1 %in% c("n.w", "N.W.") ~ "northwest",
+                             word1 %in% c("northerly", "N", "n", "North") ~ "north",
+                             word1 %in% c("westerly", "w", "W", "West") ~ "west",
+           TRUE ~ word1)) %>%
+    mutate(word2 = case_when(word2 %in% c("E", "easterly") ~ "east",
+                             word2 %in% c("S", "S.", "southerly") ~ "south",
+                             word2 %in% "n.w" ~ "northwest",
+                             word2 %in% c("northerly", "N", "n") ~ "north",
+                             word2 %in% c("westerly", "w", "W") ~ "west",
+           TRUE ~ word2)) %>%
+    mutate(word1 = case_when(word1 %in% c("reed", "recd") ~ "received",
+           TRUE ~ word1),
+           word2 = case_when(word2 %in% c("reed", "recd") ~ "received",
+           TRUE ~ word2)) %>%
+    mutate(word1 = case_when(word1 %in% c("letters") ~ "letter",
+           TRUE ~ word1),
+           word2 = case_when(word2 %in% c("letters") ~ "letter",
+           TRUE ~ word2)) %>%
+    mutate(word1 = case_when(word1 %in% c("lobster") ~ "lobsters",
+           TRUE ~ word1),
+           word2 = case_when(word2 %in% c("lobster") ~ "lobsters",
+           TRUE ~ word2)) %>%
+    filter(n > 15) %>%
+    as_tbl_graph() 
+```
+
+## Network analysis {background-color="white"}
+
+```{r}
+bigram_graph
+```
+
+## Jane wants to know... {transition="slide-in"}
+
+![](figs/blue_jane.png){.absolute top="0" right="0" width="150"
+height="150"}
+
+Is [bigram_graph]{.codedarkbg} a tidy dataset?
+
+-   Yes ☑️
+-   No 🚫
+
+## Network analysis
+
+```{r eval = FALSE}
+#| eval: false
+#| code-line-numbers: "|3,4"
+bigram_graph %>%
+    ggraph(layout = "kk") +
+    geom_edge_link(aes(edge_alpha = n)) + 
+    geom_node_text(aes(label = name)) +  
+    theme_graph() 
+```
+
+## Network analysis {background-color="white"}
+
+```{r}
+#| eval: false
+#| code-line-numbers: "|3,8"
+bigram_graph %>%
+    ggraph(layout = "kk") +
+    geom_edge_link(aes(edge_alpha = n), 
+                   show.legend = FALSE, 
+                   arrow = arrow(length = unit(1.5, 'mm')), 
+                   start_cap = circle(3, 'mm'),
+                   end_cap = circle(3, 'mm')) +
+    geom_node_text(aes(label = name)) + 
+    theme_graph()
+```
+
+##
+
+```{r}
+#| echo: false
+#| fig-height: 7
+#| fig-width: 8
+#| fig-align: center
+set.seed(2021)
+bigram_graph %>%
+    ggraph(layout = "kk") +
+    geom_edge_link(aes(edge_alpha = n), 
+                   show.legend = FALSE, 
+                   arrow = arrow(length = unit(1.5, 'mm')), 
+                   start_cap = circle(3.4, 'mm'),
+                   end_cap = circle(3.3, 'mm')) +
+    geom_node_text(aes(label = name)) +
+    theme_graph()
+```
+
+
+
+# Thanks! {background-image="figs/p_and_p_cover.png" background-size="cover" background-opacity="0.5"}
+
+<center>
+
+<img src="figs/freeland_headshot.jpg" width="150px"/>
+
+[{{< fa brands github >}} \@LaurieLBaker](https://github.com/laurielbaker)
+
+[{{< fa link >}} lauriebaker@rbind.io](https://lauriebaker.rbind.io)
+
+</center>
+
+::: footer
+Slides created with [Quarto](https://quarto.org/)
+:::

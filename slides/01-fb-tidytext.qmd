@@ -1,0 +1,554 @@
+---
+title: "Mining Historical Texts"
+subtitle: "USING TIDY DATA PRINCIPLES"
+author: "By Laurie Baker"
+format:
+  revealjs: 
+    footer: <https:coa-navigating-change.netlify.app>
+    theme: [dark, fbcustom.scss]
+    width: 1280
+    height: 720
+highlight-style: "arrow-light"      
+knitr:
+  opts_chunk: 
+    echo: true
+    collapse: true
+    comment: "#>"
+---
+
+```{r}
+#| include: false
+#| file: setup.R
+```
+
+# Acknowledgements
+
+<center>
+
+<img src="figs/blue_jane.png" width="150px"/>
+
+Slide Structure, Content, and Design adapted from Julia Silge 
+
+[{{< fa brands github >}} \@juliasilge](https://github.com/juliasilge)
+
+[{{< fa link >}} juliasilge.com](https://juliasilge.com/)
+
+[{{< fa book >}} tidytextmining.com](https://tidytextmining.com)
+
+</center>
+
+## Let's install some packages {background-color="white"}
+
+```{r}
+#| eval: false
+install.packages(c("tidyverse", # data wrangling
+                   "tidytext", # text analysis
+                   "stopwords", # stop words
+                   "lubridate", # dates
+                   "readxl")) # reading data
+```
+
+##  The Journals (1870-1906) {background-image="figs/freeland_bunker_journal.jpg" background-size="45%" background-color="white"}
+
+## What do we mean by tidy text? {background-color="white"}
+
+![](figs/freeland_headshot.jpg){.absolute top="-35" right="0" width="92"}
+
+```{r}
+journal_text <- c("Was married at home in evening by William Rand Esqr.",
+          "Went to meeting.",
+          "Shooting match all day in the evening to Christmas Tree at the Hall.",
+          "About home at work fobbing.",
+          "Work about home.",
+          "To work in shop.",
+          "To work in shop.",
+          "Went to meeting.")
+
+journal_text
+```
+
+## What do we mean by tidy text? {background-color="white"}
+
+![](figs/freeland_headshot.jpg){.absolute top="-35" right="0" width="92"}
+
+```{r}
+library(tidyverse)
+
+journal_df <- tibble(line = 1:8, text = journal_text)
+
+journal_df
+```
+
+## What do we mean by tidy text? {background-color="white"}
+
+![](figs/freeland_headshot.jpg){.absolute top="-35" right="0" width="92"}
+
+```{r}
+#| code-line-numbers: "|4"
+library(tidytext)
+
+journal_df %>%
+    unnest_tokens(word, text)
+```
+
+## Freeland wants to know... {transition="slide-in"}
+
+![](figs/freeland_headshot.jpg){.absolute top="0" right="0" width="150" height="150"}
+
+A tidy text dataset typically has
+
+-   [more]{.lavender}
+-   [fewer]{.lavender}
+
+rows than the original, non-tidy text dataset.
+
+
+## 9 journals (1871-1880) transcribed
+
+
+```{r}
+
+library(readxl)
+journal_1871_1872 <- read_excel("data/journal_1871_1872.xlsx")
+journal_1873 <- read_excel("data/journal_1873.xlsx")
+journal_1874 <- read_excel("data/journal_1874.xlsx")
+journal_1875 <- read_excel("data/journal_1875.xlsx")
+journal_1876 <- read_excel("data/journal_1876.xlsx")
+journal_1877 <- read_excel("data/journal_1877.xlsx")
+journal_1878 <- read_excel("data/journal_1878.xlsx")
+journal_1879 <- read_excel("data/journal_1879.xlsx")
+journal_1880 <- read_excel("data/journal_1880.xlsx")
+
+```
+
+*N.B. excel is just one format
+
+## Keeping Track
+
+```{r echo = FALSE, message = FALSE, warning = FALSE}
+# We need to make sure the journals are the same type
+
+journal_1871_1872$temperature_night <- as.numeric(journal_1871_1872$temperature_night)
+journal_1873$temperature_night <- as.numeric(journal_1873$temperature_night)
+journal_1874$temperature_night <- as.numeric(journal_1874$temperature_night)
+journal_1875$temperature_night <- as.numeric(journal_1875$temperature_night)
+journal_1876$temperature_night <- as.numeric(journal_1876$temperature_night)
+journal_1877$temperature_night <- as.numeric(journal_1877$temperature_night)
+journal_1878$temperature_night <- as.numeric(journal_1878$temperature_night)
+journal_1879$temperature_night <- as.numeric(journal_1879$temperature_night)
+journal_1880$temperature_night <- as.numeric(journal_1880$temperature_night)
+```
+
+```{r}
+# We want to keep track of the journals
+
+journal_1871_1872$journal <- 1
+journal_1873$journal <- 2
+journal_1874$journal <- 3
+journal_1875$journal <- 4
+journal_1876$journal <- 5
+journal_1877$journal <- 6
+journal_1878$journal <- 7
+journal_1879$journal <- 8
+journal_1880$journal <- 9
+
+journals <- dplyr::bind_rows(journal_1871_1872, journal_1873, journal_1874, 
+                             journal_1875, journal_1876, journal_1877, 
+                             journal_1878, journal_1879, journal_1880)
+```
+
+## Journal Date, Text, and Location
+
+```{r}
+journals %>%
+    select(date_mdy, journal_entry, location)
+```
+
+
+## Creating date variables using `lubridate`
+
+Recall: What functions can we use to extract the year and month?
+
+```{r, eval=FALSE, warning=FALSE}
+library(lubridate)
+journals <- journals %>%
+    select(date_mdy, journal_entry, journal, location) %>%
+    mutate(date_mdy = mdy(date_mdy),
+           year = _____(date_mdy),
+           month = _____(date_mdy))
+```
+
+Hint: Check the [lubridate cheatsheet](https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_lubridate.pdf)
+
+## Creating date variables using `lubridate`
+
+```{r, warning=FALSE}
+library(lubridate)
+(journals <- journals %>%
+    select(date_mdy, journal_entry, journal, location) %>%
+    mutate(date_mdy = mdy(date_mdy),
+           year = year(date_mdy),
+           month = month(date_mdy)))
+```
+
+## Making our text data tidy
+
+```{r}
+#| code-line-numbers: "|2"
+(tidy_journal <- journals %>%
+    unnest_tokens(word, journal_entry))
+```
+
+## How much did Freeland write?
+
+```{r}
+#| eval: false
+tidy_journal %>%
+  group_by(month, year) %>%
+  filter(is.na(year) == FALSE) %>%
+  summarize(nwords = n()) %>%
+  ggplot(aes(x = month, y = nwords, group = year)) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(~year) +
+  labs(title = "How much did Freeland write a month?",
+       y = "Number of words",
+       x = "Month") +
+  scale_x_continuous(breaks = c(0, 3, 6, 9, 12))
+```
+## How much did Freeland write?
+
+```{r}
+#| echo: false
+tidy_journal %>%
+  group_by(month, year) %>%
+  filter(is.na(year) == FALSE) %>%
+  summarize(nwords = n()) %>%
+  ggplot(aes(x = month, y = nwords, group = year)) +
+  geom_line() +
+  geom_point() +
+  facet_wrap(~year) +
+  labs(title = "How much did Freeland write a month?",
+       y = "Number of words",
+       x = "Month") +
+  scale_x_continuous(breaks = c(0, 3, 6, 9, 12))
+```
+
+
+```{r echo=FALSE}
+tidy_journal <- journals %>%
+    unnest_tokens(word, journal_entry) %>%
+    filter(word != "NA") %>%
+    mutate(word = case_when(word %in% c("reed", "recd") ~ "received",
+           TRUE ~ word)) %>%
+    drop_na(word)
+```
+
+## What are the most common words? {background-color="white"}
+
+What do you predict will happen if we run the following code? 🤔
+
+```{r}
+#| eval: false
+tidy_journal %>%
+    count(word, sort = TRUE)
+```
+
+## What are the most common words? {background-color="white"}
+
+What do you predict will happen if we run the following code? 🤔
+
+```{r}
+tidy_journal %>%
+    count(word, sort = TRUE)
+```
+
+## Stop words {background-color="white"}
+
+```{r}
+get_stopwords()
+```
+
+## Stop words {background-color="white"}
+
+```{r}
+get_stopwords(language = "es")
+```
+
+## Stop words {background-color="white"}
+
+```{r}
+get_stopwords(language = "de")
+```
+
+## Stop words {background-color="white"}
+
+```{r}
+get_stopwords(source = "smart")
+```
+
+## What are the most common words?
+
+[U N S C R A M B L E]{.lavender}
+
+anti_join(get_stopwords(source = "smart")) %>%
+
+tidy_journal %>%
+
+count(word, sort = TRUE) %>%
+
+geom_col() +
+
+slice_max(n, n = 20) %>%
+
+ggplot(aes(n, fct_reorder(word, n))) + 
+
+## What are the most common words? {background-color="white"}
+
+```{r, eval = FALSE}
+#| eval: false
+#| code-line-numbers: "|2|5"
+tidy_journal %>%
+    anti_join(get_stopwords(source = "smart")) %>%
+    count(word, sort = TRUE) %>%
+    slice_max(n, n = 20) %>%
+    ggplot(aes(n, fct_reorder(word, n))) +  
+    geom_col()
+```
+
+## {background-color="white"}
+
+```{r}
+#| echo: false
+#| fig-width: 7
+#| fig-align: center
+tidy_journal %>%
+    anti_join(get_stopwords(source = "smart")) %>%
+    count(word, sort = TRUE) %>%
+    slice_max(n, n = 20) %>%
+    ggplot(aes(n, fct_reorder(word, n))) +
+    geom_col(fill = "midnightblue", alpha = 0.9) +
+    scale_x_continuous(expand = c(0,0)) +
+    labs(y = NULL, x = "Number of occurrences")
+```
+
+## Journal 1: Boats, Meals, Goods 🍳 ⛵🦞 🪵  {background-color="white"}
+
+
+```{r}
+#| echo: false
+tidy_journal %>%
+    anti_join(get_stopwords(source = "smart")) %>%
+    filter(journal == 1) %>%
+    count(word, sort = TRUE) %>%
+    slice_max(n, n = 25) %>%
+    mutate(color = case_when(word %in% c("breakfast", "dinner", "supper", "tea") ~ "meal", 
+                             word %in% c("wood", "lobster", "lobsters") ~ "goods", 
+                             word %in% c("boat", "boats") ~ "boats",
+                             TRUE ~ "other")) %>%
+    ggplot(aes(n, fct_reorder(word, n))) +  
+    geom_col(aes(fill = color)) +
+    labs(fill = "Word Type", y = "word") +
+    scale_fill_viridis_d(direction = -1)
+```
+
+## Journal 2: Wind and Weather︎ NESW{background-color="white"}
+
+```{r}
+#| echo: false
+tidy_journal %>%
+    anti_join(get_stopwords(source = "smart")) %>%
+    filter(journal == 2) %>%
+    count(word, sort = TRUE) %>%
+    slice_max(n, n = 25) %>%
+    mutate(word = case_when(word %in% c("n.w.") ~ "northwest",
+                            TRUE ~ word)) %>%
+    mutate(color = case_when(word %in% c("wind", "northwest", "north", "east", "west", "south", "rainy", "heavy", "snow", "breeze", "easterly", "southerly", "moderate", "cold", "rain") ~ "wind and weather", TRUE ~ "other")) %>%
+    ggplot(aes(n, fct_reorder(word, n))) +  
+    geom_col(aes(fill = color)) +
+    labs(fill = "Word Type", y = "word") +
+    scale_fill_viridis_d(direction = -1)
+```
+## Comparing multiple journals
+
+```{r}
+#| echo: false
+tidy_journal %>%
+    anti_join(get_stopwords(source = "smart")) %>%
+    filter(journal %in% c(3, 4)) %>%
+    count(word, journal, sort = TRUE) %>%
+    slice_max(n, n = 25) %>%
+    mutate(word = case_when(word %in% c("n.w.") ~ "northwest",
+                            TRUE ~ word)) %>%
+    mutate(color = case_when(word %in% c("wind", "northwest", "north", "east", "west", "westerly", "south", "rainy", "heavy", "snow", "breeze", "easterly", "southerly", "moderate", "cold", "rain") ~ "wind and weather", TRUE ~ "other")) %>%
+    ggplot(aes(n, fct_reorder(word, n))) +  
+    geom_col(aes(fill = color)) +
+    labs(fill = "Word Type", y = "word") +
+    scale_fill_viridis_d(direction = -1) +
+    facet_wrap(~journal)
+```
+## Your Turn: What were the most common words in Journal 5 and 6? 
+
+## Looking at word trends through space
+
+```{r}
+#| echo: false
+tidy_journal %>%
+    anti_join(get_stopwords(source = "smart")) %>%
+    filter(str_detect(location, "home")) %>%
+    mutate(word = case_when(word %in% c("lobsters", "lobster") ~ "lobster",
+                            TRUE ~ word)) %>%
+    count(word, sort = TRUE) %>%
+    filter(word != "home") %>%
+    slice_max(n, n = 10, with_ties = FALSE) %>%
+    ggplot(aes(n, fct_reorder(word, n))) +  
+    geom_col() +
+    labs(fill = "Word Type", y = "word", title = "Home") +
+    scale_fill_viridis_d(direction = -1)
+```
+## Looking at word trends through space
+
+```{r}
+#| echo: false
+tidy_journal %>%
+    anti_join(get_stopwords(source = "smart")) %>%
+    filter(str_detect(location, "home")) %>%
+    mutate(word = case_when(word %in% c("lobsters", "lobster") ~ "lobster",
+                            TRUE ~ word)) %>%
+    count(word, sort = TRUE) %>%
+    filter(word != "home") %>%
+    slice_max(n, n = 10, with_ties = FALSE) %>%
+    ggplot(aes(n, fct_reorder(word, n))) +  
+    geom_col() +
+    labs(fill = "Word Type", y = "word", title = "Home") +
+    scale_fill_viridis_d(direction = -1)
+```
+
+## Recap
+
+-   We can put each word on its own row using `unnest_tokens`
+-   We can use `anti_join` to get rid of stop words
+-   We can use `filter` and `summarize` to see how word use has changed over time and space
+
+
+# What was the weather like? {background-image="figs/water2.jpg" background-size="cover" background-opacity="1"}
+
+
+## {background-color="white"}
+
+```{r}
+#| echo: false
+#| fig-align: center
+tidy_journal %>%
+    mutate(month = as.factor(month)) %>%
+    drop_na(month) %>%
+    filter(word %in% c("cold", "dark", "stormy", "rainy", "cloudy", "calm", "warm", "pleasant", "clear")) %>%
+    count(month, word, sort = TRUE) %>%
+    mutate(word = as.factor(word)) %>%
+    mutate(word = fct_relevel(word, c("calm", "clear", "pleasant", "warm", "cloudy", "cold", "dark", "stormy"))) %>%
+    ggplot(aes(x = fct_relevel(month, c("January", "February", "March", "April", "May", "June", "July", "August", "September")), y = n, fill = word)) +
+    geom_col(position = "stack") +
+    labs(y = "Number of occurrences", x = "Month") +
+    scale_fill_brewer(palette = "Spectral") +
+    labs(title = "Whatever the weather") +
+    coord_polar()
+```
+
+## Gathering context
+
+```{r}
+journals %>%
+    filter(str_detect(journal_entry, pattern = "Schr|schr|schooner")) %>%
+    select(date_mdy, journal_entry)
+```
+
+## Extracting Names of Schooners
+
+```{r}
+journals %>%
+    filter(str_detect(journal_entry, pattern = "Schr|schr|schooner")) %>%
+    mutate(schooners = str_extract(journal_entry, pattern = "\\b(Schr|Schr.|schr|schr.)(\\b\\s*([A-Z]\\w+|[A-Z]\\.\\w+\\.\\w+|[A-Z]\\. \\w+\\. \\w+)){0,4}")) %>%
+    distinct(schooners)
+```
+
+## Extracting Schooner name
+
+## Extracting the thermometer data
+
+```{r extract journal entries with the word thermometer ignore below code}
+#| eval: false
+journals %>%
+  filter(str_detect(string = journal_entry, pattern = "Thermometer | thermometer")) %>% # filter rows for mentions of word thermometer
+  mutate(temp = as.numeric(str_extract(journal_entry, pattern = '(?<=thermometer |Thermometer )\\d+'))) %>% # extract digits following the word thermometer in a sentence.
+  ggplot(aes(x = date_mdy, y = as.numeric(temp))) +
+  geom_point() +
+  labs(x = "Date", y = "Recorded Temperature")
+  
+```
+
+## Extracting the thermometer data
+
+```{r extract journal entries with the word thermometer ignore below}
+#| echo: false
+journals %>%
+  filter(str_detect(string = journal_entry, pattern = "Thermometer | thermometer")) %>% # filter rows for mentions of word thermometer
+  mutate(temp = as.numeric(str_extract(journal_entry, pattern = '(?<=thermometer |Thermometer )\\d+'))) %>% # extract digits following the word thermometer in a sentence.
+  ggplot(aes(x = date_mdy, y = as.numeric(temp))) +
+  geom_point() +
+  labs(x = "Date", y = "Recorded Temperature")
+  
+```
+
+
+## Extracting the thermometer data
+
+```{r extract journal entries with the word thermometer code}
+#| eval: false
+journals %>%
+  filter(str_detect(string = journal_entry, pattern = "Thermometer | thermometer")) %>% # filter rows for mentions of word thermometer
+  mutate(temp = as.numeric(str_extract(journal_entry, pattern = '(?<=thermometer |Thermometer )\\d+'))) %>% # extract digits following the word thermometer in a sentence.
+  mutate(temp_below = ifelse(str_detect(string = journal_entry, pattern = "below zero"), "yes", "no")) %>% # if the word below zero is included mark yes or no.
+  filter(is.na(temp) == FALSE) %>% # remove missing values
+  mutate(temp = case_when(temp_below == "yes" ~ temp*(-1), 
+                          TRUE ~ temp)) %>% # Make below zero values negative
+  ggplot(aes(x = date_mdy, y = as.numeric(temp))) +
+  geom_point() +
+  labs(x = "Date", y = "Recorded Temperature")
+  
+```
+
+## Extracting the thermometer data
+
+```{r extract journal entries with the word thermometer}
+#| echo: false
+journals %>%
+  filter(str_detect(string = journal_entry, pattern = "Thermometer | thermometer")) %>% # filter rows for mentions of word thermometer
+  mutate(temp = as.numeric(str_extract(journal_entry, pattern = '(?<=thermometer |Thermometer )\\d+'))) %>% # extract digits following the word thermometer in a sentence.
+  mutate(temp_below = ifelse(str_detect(string = journal_entry, pattern = "below zero"), "yes", "no")) %>% # if the word below zero is included mark yes or no.
+  filter(is.na(temp) == FALSE) %>% # remove missing values
+  mutate(temp = case_when(temp_below == "yes" ~ temp*(-1), 
+                          TRUE ~ temp)) %>% # Make below zero values negative
+  ggplot(aes(x = date_mdy, y = as.numeric(temp))) +
+  geom_point() +
+  labs(x = "Date", y = "Recorded Temperature")
+  
+```
+
+
+
+
+# Thanks! {background-image="figs/water2.jpg" background-size="cover" background-opacity="0.5"}
+
+<center>
+
+<img src="figs/freeland_headshot.jpg" width="150px"/>
+
+[{{< fa brands github >}} \@LaurieLBaker](https://github.com/laurielbaker)
+
+[{{< fa link >}} lauriebaker@rbind.io](https://lauriebaker.rbind.io)
+
+</center>
+
+::: footer
+Slides created with [Quarto](https://quarto.org/)
+:::
