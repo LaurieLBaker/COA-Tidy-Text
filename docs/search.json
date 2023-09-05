@@ -2217,5 +2217,12 @@
     "title": "Comparing Historical Texts",
     "section": "",
     "text": "https://pudding.cool/2017/08/screen-direction/"
+  },
+  {
+    "objectID": "slides/02-more-eda-fb.html#freeland-wants-to-know-1",
+    "href": "slides/02-more-eda-fb.html#freeland-wants-to-know-1",
+    "title": "Comparing Historical Texts",
+    "section": "Freeland wants to know…",
+    "text": "Freeland wants to know…\n\nIs bigram_graph a tidy dataset?\n\nYes ☑️\nNo 🚫"
   }
 ]

@@ -315,7 +315,7 @@ bigram_counts %>%
 ```
 
 
-## What can you do with n-grams? {background-image="figs/p_and_p_cover.png" background-size="cover" background-opacity="0.5"}
+## What can you do with n-grams? {background-image="figs/water2.jpg" background-size="cover" background-opacity="0.5"}
 
 ::: incremental
 -   tf-idf of n-grams
@@ -389,9 +389,9 @@ bigram_graph <- bigram_counts %>%
 bigram_graph
 ```
 
-## Jane wants to know... {transition="slide-in"}
+## Freeland wants to know... {transition="slide-in"}
 
-![](figs/blue_jane.png){.absolute top="0" right="0" width="150"
+![](figs/freeland_headshot.jpg){.absolute top="0" right="0" width="150"
 height="150"}
 
 Is [bigram_graph]{.codedarkbg} a tidy dataset?
