@@ -1570,14 +1570,14 @@
   {
     "objectID": "slides/01-fb-tidydata.html#lets-install-some-packages",
     "href": "slides/01-fb-tidydata.html#lets-install-some-packages",
-    "title": "Mining Historical Texts - Tidy Data",
+    "title": "Wrangling and Visualizing Historical Texts",
     "section": "Let’s install some packages",
     "text": "Let’s install some packages\n\ninstall.packages(c(\"tidyverse\", # data wrangling\n                   \"lubridate\", # dates\n                   \"readxl\",\n                   \"DT\")) # reading data"
   },
   {
     "objectID": "slides/01-fb-tidydata.html#the-journals-1870-1906",
     "href": "slides/01-fb-tidydata.html#the-journals-1870-1906",
-    "title": "Mining Historical Texts - Tidy Data",
+    "title": "Wrangling and Visualizing Historical Texts",
     "section": "The Journals (1870-1906)",
     "text": "The Journals (1870-1906)"
   },
@@ -1619,9 +1619,9 @@
   {
     "objectID": "slides/01-fb-tidydata.html#keeping-track",
     "href": "slides/01-fb-tidydata.html#keeping-track",
-    "title": "Mining Historical Texts - Tidy Data",
+    "title": "Wrangling and Visualizing Historical Texts",
     "section": "Keeping Track",
-    "text": "Keeping Track\n\n\n\n\n# We want to keep track of the journals\n\njournal_1871_1872$journal <- 1\njournal_1873$journal <- 2\njournal_1874$journal <- 3\njournal_1875$journal <- 4\njournal_1876$journal <- 5\njournal_1877$journal <- 6\njournal_1878$journal <- 7\njournal_1879$journal <- 8\njournal_1880$journal <- 9\n\njournals <- dplyr::bind_rows(journal_1871_1872, journal_1873, journal_1874, \n                             journal_1875, journal_1876, journal_1877, \n                             journal_1878, journal_1879, journal_1880)"
+    "text": "Keeping Track\n\n\n\n\n# We want to keep track of the journals\n\nlibrary(tidyverse)\n\njournal_1871_1872$journal <- 1\njournal_1873$journal <- 2\njournal_1874$journal <- 3\njournal_1875$journal <- 4\njournal_1876$journal <- 5\njournal_1877$journal <- 6\njournal_1878$journal <- 7\njournal_1879$journal <- 8\njournal_1880$journal <- 9\n\njournals <- dplyr::bind_rows(journal_1871_1872, journal_1873, journal_1874, \n                             journal_1875, journal_1876, journal_1877, \n                             journal_1878, journal_1879, journal_1880)"
   },
   {
     "objectID": "slides/01-fb-tidydata.html#journal-date-and-text",
@@ -1640,7 +1640,7 @@
   {
     "objectID": "slides/01-fb-tidydata.html#where-did-freeland-visit",
     "href": "slides/01-fb-tidydata.html#where-did-freeland-visit",
-    "title": "Mining Historical Texts - Tidy Data",
+    "title": "Wrangling and Visualizing Historical Texts",
     "section": "Where did Freeland visit",
     "text": "Where did Freeland visit"
   },
@@ -1661,16 +1661,16 @@
   {
     "objectID": "slides/01-fb-tidydata.html#fixing-mispellings",
     "href": "slides/01-fb-tidydata.html#fixing-mispellings",
-    "title": "Mining Historical Texts - Tidy Data",
+    "title": "Wrangling and Visualizing Historical Texts",
     "section": "Fixing Mispellings",
-    "text": "Fixing Mispellings\n\njournals_sub %>%\n    separate_rows(location, sep = \", \") %>%\n    filter(str_detect(string = location, pattern = \"C\\\\.|C |Cranberry\")) %>%\n    distinct(location)\n#> # A tibble: 9 × 1\n#>   location             \n#>   <chr>                \n#> 1 C. Isles             \n#> 2 C Isles              \n#> 3 C isles              \n#> 4 Cranberry Isle harbor\n#> 5 Cranberry Isle       \n#> 6 Cranberry Isles      \n#> 7 Cranberry Islands    \n#> 8 Cranberry Island     \n#> 9 Cranberry IIsles"
+    "text": "Fixing Mispellings\n\njournals_sub %>%\n    separate_rows(location, sep = \", \") %>%\n    filter(str_detect(string = location, pattern = \"Cranberry\")) %>%\n    distinct(location)\n#> # A tibble: 4 × 1\n#>   location        \n#>   <chr>           \n#> 1 Cranberry Isles \n#> 2 Cranberry Isle  \n#> 3 Cranberry Island\n#> 4 Cranberry IIsles"
   },
   {
     "objectID": "slides/01-fb-tidydata.html#tidying-words-using-case_when",
     "href": "slides/01-fb-tidydata.html#tidying-words-using-case_when",
-    "title": "Mining Historical Texts - Tidy Data",
+    "title": "Wrangling and Visualizing Historical Texts",
     "section": "Tidying words using case_when",
-    "text": "Tidying words using case_when\n\njournals_sub <- journals_sub %>%\n    separate_rows(location, sep = \", \") %>%\n    mutate(location = case_when(location %in% c(\"C. Isle\", \"C. Isles\", \"C Isles\", \n                                                \"C isles\", \"Cranberry IIsles\", \"Cranberry Isle\", \"Cranberry Isle harbor\", \"Cranberry Isles\", \"Cranberry Islands\", \"Cranberry Island\") ~ \"Cranberry Isles\",\n                            TRUE ~ location))\n\n\njournals_sub %>%\n    separate_rows(location, sep = \", \") %>%\n    filter(str_detect(string = location, pattern = \"C\\\\.|C |Cranberry\")) %>%\n    distinct(location)\n#> # A tibble: 1 × 1\n#>   location       \n#>   <chr>          \n#> 1 Cranberry Isles"
+    "text": "Tidying words using case_when\n\njournals_sub <- journals_sub %>%\n    separate_rows(location, sep = \", \") %>%\n    mutate(location = case_when(location %in% c(\"Cranberry IIsles\", \"Cranberry Isle\", \"Cranberry Island\") ~ \"Cranberry Isles\",\n                            TRUE ~ location))\n\n\njournals_sub %>%\n    separate_rows(location, sep = \", \") %>%\n    filter(str_detect(string = location, pattern = \"Cranberry\")) %>%\n    distinct(location)\n#> # A tibble: 1 × 1\n#>   location       \n#>   <chr>          \n#> 1 Cranberry Isles"
   },
   {
     "objectID": "slides/01-fb-tidydata.html#your-turn-fix-the-mispellings-of-bass-harbor",
@@ -1703,44 +1703,44 @@
   {
     "objectID": "slides/01-fb-tidydata.html#exploring-a-subset-using-select",
     "href": "slides/01-fb-tidydata.html#exploring-a-subset-using-select",
-    "title": "Mining Historical Texts - Tidy Data",
+    "title": "Wrangling and Visualizing Historical Texts",
     "section": "Exploring a subset using select",
-    "text": "Exploring a subset using select\n\n\n(journals_sub <- journals %>%\n    select(date_mdy, journal_entry, location))\n#> # A tibble: 3,951 × 3\n#>    date_mdy   journal_entry                                             location\n#>    <chr>      <chr>                                                     <chr>   \n#>  1 12/23/1871 Was married at home in evening by William Rand Esqr.      home    \n#>  2 12/24/1871 Went to meeting.                                          NA      \n#>  3 12/25/1871 Shooting match all day in the evening to Christmas tree … hall    \n#>  4 12/26/1871 About home at work fobbing.                               home    \n#>  5 12/27/1871 Work about home reed letter from N. H. Higgins Ins agt.   home    \n#>  6 12/28/1871 Work about home.                                          home    \n#>  7 12/29/1871 To work in shop.                                          shop    \n#>  8 12/30/1871 To work in shop.                                          shop    \n#>  9 12/31/1871 Went to meeting.                                          NA      \n#> 10 1/1/1872   Work in shop.                                             shop    \n#> # ℹ 3,941 more rows"
+    "text": "Exploring a subset using select\n\n\n(journals_sub <- journals %>%\n    select(date_mdy, journal_entry, location))\n#> # A tibble: 3,951 × 3\n#>    date_mdy   journal_entry                                             location\n#>    <chr>      <chr>                                                     <chr>   \n#>  1 12/23/1871 Was married at home in evening by William Rand Esqr.      Winter …\n#>  2 12/24/1871 Went to meeting.                                          NA      \n#>  3 12/25/1871 Shooting match all day in the evening to Christmas tree … Winter …\n#>  4 12/26/1871 About home at work fobbing.                               Winter …\n#>  5 12/27/1871 Work about home reed letter from N. H. Higgins Ins agt.   Winter …\n#>  6 12/28/1871 Work about home.                                          Winter …\n#>  7 12/29/1871 To work in shop.                                          Winter …\n#>  8 12/30/1871 To work in shop.                                          Winter …\n#>  9 12/31/1871 Went to meeting.                                          NA      \n#> 10 1/1/1872   Work in shop.                                             Winter …\n#> # ℹ 3,941 more rows"
   },
   {
     "objectID": "slides/01-fb-tidydata.html#where-did-freeland-visit-each-year",
     "href": "slides/01-fb-tidydata.html#where-did-freeland-visit-each-year",
-    "title": "Mining Historical Texts - Tidy Data",
+    "title": "Wrangling and Visualizing Historical Texts",
     "section": "Where did Freeland visit each year?",
     "text": "Where did Freeland visit each year?"
   },
   {
     "objectID": "slides/01-fb-tidydata.html#mapping",
     "href": "slides/01-fb-tidydata.html#mapping",
-    "title": "Mining Historical Texts - Tidy Data",
+    "title": "Wrangling and Visualizing Historical Texts",
     "section": "Mapping",
-    "text": "Mapping\n\nlocation_coordinates <- read_excel(path = \"data/location_coordinates.xlsx\")\n\nhead(location_coordinates)\n#> # A tibble: 6 × 8\n#>   location n_mentions official_name_check latitude longitude recorder checked_by\n#>   <chr>         <dbl> <lgl>                  <dbl>     <dbl> <chr>    <lgl>     \n#> 1 Winter …       1000 NA                      44.4     -68.1 NH       NA        \n#> 2 West Go…        105 NA                      44.5     -68.1 NH       NA        \n#> 3 home             55 NA                      NA        NA   <NA>     NA        \n#> 4 Ellswor…         51 NA                      44.5     -68.4 NH       NA        \n#> 5 Rockland         45 NA                      44.1     -69.1 NH       NA        \n#> 6 shop             45 NA                      NA        NA   <NA>     NA        \n#> # ℹ 1 more variable: notes <lgl>\n\nloc_df <- journals_sub %>%\n    separate_rows(location, sep = \", \")  %>%\n    count(location) %>%\n    left_join(location_coordinates, by = \"location\") %>%\n    drop_na(latitude)"
+    "text": "Mapping\n\nlocation_coordinates <- read_excel(path = \"data/location_coordinates.xlsx\")\n\nhead(location_coordinates, n = 2)\n#> # A tibble: 2 × 8\n#>   location n_mentions official_name_check latitude longitude recorder checked_by\n#>   <chr>         <dbl> <lgl>                  <dbl>     <dbl> <chr>    <lgl>     \n#> 1 Winter …       1000 NA                      44.4     -68.1 NH       NA        \n#> 2 West Go…        105 NA                      44.5     -68.1 NH       NA        \n#> # ℹ 1 more variable: notes <lgl>\n\nloc_df <- journals_sub %>%\n    separate_rows(location, sep = \", \")  %>%\n    count(location) %>%\n    left_join(location_coordinates, by = \"location\") %>%\n    drop_na(latitude)\n\nHomework: Add 5 more sets of coordinates to the location excel file"
   },
   {
     "objectID": "slides/01-fb-tidydata.html#where-did-freeland-go",
     "href": "slides/01-fb-tidydata.html#where-did-freeland-go",
-    "title": "Mining Historical Texts - Tidy Data",
+    "title": "Wrangling and Visualizing Historical Texts",
     "section": "Where did Freeland go?",
-    "text": "Where did Freeland go?\n\njournals_sub %>%\n    filter(is.na(location) == FALSE, location != \"NA\") %>%\n    separate_rows(location, sep = \", \") %>%\n    count(location) %>%\n    arrange(desc(n))\n#> # A tibble: 343 × 2\n#>    location            n\n#>    <chr>           <int>\n#>  1 Winter Harbor    1000\n#>  2 West Gouldsboro   105\n#>  3 home               55\n#>  4 Ellsworth          51\n#>  5 Rockland           45\n#>  6 shop               45\n#>  7 Bar Harbor         37\n#>  8 Sullivan           34\n#>  9 Calais             32\n#> 10 factory            32\n#> # ℹ 333 more rows"
+    "text": "Where did Freeland go?"
   },
   {
     "objectID": "slides/01-fb-tidydata.html#less-common-places-visited",
     "href": "slides/01-fb-tidydata.html#less-common-places-visited",
-    "title": "Mining Historical Texts - Tidy Data",
+    "title": "Wrangling and Visualizing Historical Texts",
     "section": "Less common places visited?",
-    "text": "Less common places visited?\n\njournals_sub %>%\n    filter(is.na(location) == FALSE, location != \"NA\") %>%\n    separate_rows(location, sep = \", \") %>%\n    count(location) %>%\n    slice_min(n, n = 15, with_ties = FALSE) \n#> # A tibble: 15 × 2\n#>    location                       n\n#>    <chr>                      <int>\n#>  1 \" Handkerchief Light Ship\"     1\n#>  2 \" North East Harbor\"           1\n#>  3 \"Albany Rail Road Whard\"       1\n#>  4 \"Azores/Western Islands\"       1\n#>  5 \"Bakers Island\"                1\n#>  6 \"Barbacoa Harbor\"              1\n#>  7 \"Barge\"                        1\n#>  8 \"Bass Habor\"                   1\n#>  9 \"Bass Harbobr\"                 1\n#> 10 \"Bath\"                         1\n#> 11 \"Block Island Channel\"         1\n#> 12 \"Boothbay\"                     1\n#> 13 \"Boston Flats\"                 1\n#> 14 \"Boston Harbor\"                1\n#> 15 \"Brooklyn dock\"                1"
+    "text": "Less common places visited?\n\njournals_sub %>%\n    filter(is.na(location) == FALSE, location != \"NA\") %>%\n    separate_rows(location, sep = \", \") %>%\n    count(location) %>%\n    slice_min(n, n = 15, with_ties = FALSE) \n#> # A tibble: 15 × 2\n#>    location                       n\n#>    <chr>                      <int>\n#>  1 \" Handkerchief Light Ship\"     1\n#>  2 \" North East Harbor\"           1\n#>  3 \"Azores/Western Islands\"       1\n#>  4 \"Baker's Island\"               1\n#>  5 \"Bakers Island\"                1\n#>  6 \"Barbacoa Harbor\"              1\n#>  7 \"Bass Habor\"                   1\n#>  8 \"Bath\"                         1\n#>  9 \"Block Island Channel\"         1\n#> 10 \"Boothbay\"                     1\n#> 11 \"Brooklyn dock\"                1\n#> 12 \"Bucks Ledge\"                  1\n#> 13 \"Camden\"                       1\n#> 14 \"Canary Islands\"               1\n#> 15 \"Cape Cod\"                     1"
   },
   {
     "objectID": "slides/01-fb-tidydata.html#we-have-a-lot-of-variables-recorded",
     "href": "slides/01-fb-tidydata.html#we-have-a-lot-of-variables-recorded",
-    "title": "Mining Historical Texts - Tidy Data",
+    "title": "Wrangling and Visualizing Historical Texts",
     "section": "We have a lot of variables recorded!",
-    "text": "We have a lot of variables recorded!\n\nglimpse(journals)\n#> Rows: 3,951\n#> Columns: 35\n#> $ date_mdy                <chr> \"12/23/1871\", \"12/24/1871\", \"12/25/1871\", \"12/…\n#> $ month                   <chr> \"December\", \"December\", \"December\", \"December\"…\n#> $ journal_entry           <chr> \"Was married at home in evening by William Ran…\n#> $ location                <chr> \"home\", \"NA\", \"hall\", \"home\", \"home\", \"home\", …\n#> $ location_accuracy       <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ latitude                <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ latitude_origin         <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ longitude               <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ longitude_origin        <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ transcription           <chr> \"confident\", \"confident\", \"confident\", \"confid…\n#> $ quantity                <chr> \"NA\", \"NA\", \"NA\", \"NA\", \"NA\", \"NA\", \"NA\", \"NA\"…\n#> $ unit                    <chr> \"NA\", \"NA\", \"NA\", \"NA\", \"NA\", \"NA\", \"NA\", \"NA\"…\n#> $ item                    <chr> \"NA\", \"NA\", \"NA\", \"NA\", \"NA\", \"NA\", \"NA\", \"NA\"…\n#> $ letter                  <chr> \"no letter\", \"no letter\", \"no letter\", \"no let…\n#> $ letter_from             <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ letter_to               <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ wind_direction_am       <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ wind_direction_pm       <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ wind_direction_night    <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ wind_speed_am           <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ wind_speed_pm           <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ wind_speed_night        <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ weather_condition_am    <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ weather_condition_pm    <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ weather_condition_night <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ temperature_am          <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ temperature_pm          <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ temperature_night       <dbl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ image_path              <chr> \"NA\", \"NA\", \"NA\", \"NA\", \"NA\", \"NA\", \"NA\", \"NA\"…\n#> $ image_description       <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ recorder                <chr> \"NH\", \"NH\", \"NH\", \"NH\", \"NH\", \"NH\", \"NH\", \"NH\"…\n#> $ notes                   <chr> \"Esqr? Esquire\", \"to?\", \"Christmas tree?\", NA,…\n#> $ second_check            <chr> \"WD\", NA, \"WD\", NA, \"WD\", NA, NA, NA, NA, NA, …\n#> $ journal                 <dbl> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…\n#> $ transcription_accuracy  <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…"
+    "text": "We have a lot of variables recorded!\n\nglimpse(journals)\n#> Rows: 3,951\n#> Columns: 38\n#> $ date_mdy                <chr> \"12/23/1871\", \"12/24/1871\", \"12/25/1871\", \"12/…\n#> $ month                   <chr> \"December\", \"December\", \"December\", \"December\"…\n#> $ journal_entry           <chr> \"Was married at home in evening by William Ran…\n#> $ location                <chr> \"Winter Harbor\", \"NA\", \"Winter Harbor\", \"Winte…\n#> $ location_accuracy       <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ local_place             <chr> \"Home\", NA, \"Hall\", \"Home\", \"Home\", \"Home\", \"S…\n#> $ local_place_accuracy    <lgl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ latitude                <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ latitude_origin         <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ longitude               <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ longitude_origin        <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ transcription           <chr> \"confident\", \"confident\", \"confident\", \"confid…\n#> $ quantity                <chr> \"NA\", \"NA\", \"NA\", \"NA\", \"NA\", \"NA\", \"NA\", \"NA\"…\n#> $ unit                    <chr> \"NA\", \"NA\", \"NA\", \"NA\", \"NA\", \"NA\", \"NA\", \"NA\"…\n#> $ item                    <chr> \"NA\", \"NA\", \"NA\", \"NA\", \"NA\", \"NA\", \"NA\", \"NA\"…\n#> $ letter                  <chr> \"no letter\", \"no letter\", \"no letter\", \"no let…\n#> $ letter_from             <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ letter_to               <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ wind_direction_am       <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ wind_direction_pm       <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ wind_direction_night    <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ wind_speed_am           <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ wind_speed_pm           <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ wind_speed_night        <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ weather_condition_am    <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ weather_condition_pm    <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ weather_condition_night <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ temperature_am          <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ temperature_pm          <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ temperature_night       <dbl> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ image_path              <chr> \"NA\", \"NA\", \"NA\", \"NA\", \"NA\", \"NA\", \"NA\", \"NA\"…\n#> $ image_description       <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ recorder                <chr> \"NH\", \"NH\", \"NH\", \"NH\", \"NH\", \"NH\", \"NH\", \"NH\"…\n#> $ notes                   <chr> \"Esqr? Esquire\", \"to?\", \"Christmas tree?\", NA,…\n#> $ second_check            <chr> \"WD\", NA, \"WD\", NA, \"WD\", NA, NA, NA, NA, NA, …\n#> $ journal                 <dbl> 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…\n#> $ transcription_accuracy  <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…\n#> $ ...1                    <chr> NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…"
   },
   {
     "objectID": "slides/01-fb-tidydata.html#how-often-did-freeland-write-in-his-journal",
@@ -1759,7 +1759,7 @@
   {
     "objectID": "slides/01-fb-tidydata.html#journals-1871-1880-transcribed",
     "href": "slides/01-fb-tidydata.html#journals-1871-1880-transcribed",
-    "title": "Mining Historical Texts - Tidy Data",
+    "title": "Wrangling and Visualizing Historical Texts",
     "section": "9 journals (1871-1880) transcribed",
     "text": "9 journals (1871-1880) transcribed\n\n\nlibrary(readxl)\njournal_1871_1872 <- read_excel(\"data/journal_1871_1872.xlsx\")\njournal_1873 <- read_excel(\"data/journal_1873.xlsx\")\njournal_1874 <- read_excel(\"data/journal_1874.xlsx\")\njournal_1875 <- read_excel(\"data/journal_1875.xlsx\")\njournal_1876 <- read_excel(\"data/journal_1876.xlsx\")\njournal_1877 <- read_excel(\"data/journal_1877.xlsx\")\njournal_1878 <- read_excel(\"data/journal_1878.xlsx\")\njournal_1879 <- read_excel(\"data/journal_1879.xlsx\")\njournal_1880 <- read_excel(\"data/journal_1880.xlsx\")"
   },
@@ -1780,7 +1780,7 @@
   {
     "objectID": "slides/01-fb-tidydata.html#how-often-did-freeland-write",
     "href": "slides/01-fb-tidydata.html#how-often-did-freeland-write",
-    "title": "Mining Historical Texts - Tidy Data",
+    "title": "Wrangling and Visualizing Historical Texts",
     "section": "How often did Freeland write?",
     "text": "How often did Freeland write?"
   },
@@ -1801,35 +1801,35 @@
   {
     "objectID": "slides/01-fb-tidydata.html#plotting-frequency-of-visits",
     "href": "slides/01-fb-tidydata.html#plotting-frequency-of-visits",
-    "title": "Mining Historical Texts - Tidy Data",
+    "title": "Wrangling and Visualizing Historical Texts",
     "section": "Plotting frequency of visits",
     "text": "Plotting frequency of visits\n\njournals_sub %>%\n    filter(is.na(location) == FALSE, location != \"NA\") %>%\n    separate_rows(location, sep = \", \") %>%\n    count(location) %>%\n    slice_max(n, n = 15, with_ties = FALSE) %>%\n    ggplot(aes(x = n, y = fct_reorder(location, n))) +\n    geom_col() +\n    labs(x = \"Number of mentions\", y = \"Location\")"
   },
   {
     "objectID": "slides/01-fb-tidydata.html#creating-date-variables-using-lubridate",
     "href": "slides/01-fb-tidydata.html#creating-date-variables-using-lubridate",
-    "title": "Mining Historical Texts - Tidy Data",
+    "title": "Wrangling and Visualizing Historical Texts",
     "section": "Creating date variables using lubridate",
-    "text": "Creating date variables using lubridate\n\nlibrary(lubridate)\n(journals_sub <- journals_sub %>%\n    mutate(date_mdy = mdy(date_mdy),\n           year = year(date_mdy),\n           month = month(date_mdy)))\n#> # A tibble: 3,951 × 5\n#>    date_mdy   journal_entry                                 location  year month\n#>    <date>     <chr>                                         <chr>    <dbl> <dbl>\n#>  1 1871-12-23 Was married at home in evening by William Ra… home      1871    12\n#>  2 1871-12-24 Went to meeting.                              NA        1871    12\n#>  3 1871-12-25 Shooting match all day in the evening to Chr… hall      1871    12\n#>  4 1871-12-26 About home at work fobbing.                   home      1871    12\n#>  5 1871-12-27 Work about home reed letter from N. H. Higgi… home      1871    12\n#>  6 1871-12-28 Work about home.                              home      1871    12\n#>  7 1871-12-29 To work in shop.                              shop      1871    12\n#>  8 1871-12-30 To work in shop.                              shop      1871    12\n#>  9 1871-12-31 Went to meeting.                              NA        1871    12\n#> 10 1872-01-01 Work in shop.                                 shop      1872     1\n#> # ℹ 3,941 more rows"
+    "text": "Creating date variables using lubridate\n\nlibrary(lubridate)\n(journals_sub <- journals_sub %>%\n    mutate(date_mdy = mdy(date_mdy),\n           year = year(date_mdy),\n           month = month(date_mdy)))\n#> # A tibble: 3,951 × 5\n#>    date_mdy   journal_entry                                 location  year month\n#>    <date>     <chr>                                         <chr>    <dbl> <dbl>\n#>  1 1871-12-23 Was married at home in evening by William Ra… Winter …  1871    12\n#>  2 1871-12-24 Went to meeting.                              NA        1871    12\n#>  3 1871-12-25 Shooting match all day in the evening to Chr… Winter …  1871    12\n#>  4 1871-12-26 About home at work fobbing.                   Winter …  1871    12\n#>  5 1871-12-27 Work about home reed letter from N. H. Higgi… Winter …  1871    12\n#>  6 1871-12-28 Work about home.                              Winter …  1871    12\n#>  7 1871-12-29 To work in shop.                              Winter …  1871    12\n#>  8 1871-12-30 To work in shop.                              Winter …  1871    12\n#>  9 1871-12-31 Went to meeting.                              NA        1871    12\n#> 10 1872-01-01 Work in shop.                                 Winter …  1872     1\n#> # ℹ 3,941 more rows"
   },
   {
     "objectID": "slides/01-fb-tidydata.html#where-did-freeland-go-1",
     "href": "slides/01-fb-tidydata.html#where-did-freeland-go-1",
-    "title": "Mining Historical Texts - Tidy Data",
+    "title": "Wrangling and Visualizing Historical Texts",
     "section": "Where did Freeland go?",
-    "text": "Where did Freeland go?"
+    "text": "Where did Freeland go?\n\nlibrary(leaflet)\n\nleaflet(data = loc_df) %>%\n     setView(lng = -66, lat = 43.5, zoom = 9) %>%\n     addProviderTiles(providers$OpenStreetMap) %>%\n     addCircleMarkers(lng = ~longitude, lat = ~latitude, label = ~location, radius = ~n/100)"
   },
   {
     "objectID": "slides/01-fb-tidydata.html#your-turn-fix-bass-harbor-misspellings",
     "href": "slides/01-fb-tidydata.html#your-turn-fix-bass-harbor-misspellings",
-    "title": "Mining Historical Texts - Tidy Data",
+    "title": "Wrangling and Visualizing Historical Texts",
     "section": "Your Turn: Fix Bass Harbor misspellings",
-    "text": "Your Turn: Fix Bass Harbor misspellings\n\njournals_sub %>%\n    separate_rows(location, sep = \", \") %>%\n    filter(str_detect(string = location, pattern = \"Bass|bass\")) %>%\n    distinct(location)\n#> # A tibble: 4 × 1\n#>   location         \n#>   <chr>            \n#> 1 Bass Harbor      \n#> 2 Bass Harbobr     \n#> 3 Bass Habor       \n#> 4 Outer Bass Harbor\n\n\n\njournals_loc <- journals_loc %>%\n    mutate(location = case_when(location %in% c(__________) ~ _______,\n                            TRUE ~ location))"
+    "text": "Your Turn: Fix Bass Harbor misspellings\n\njournals_sub %>%\n    separate_rows(location, sep = \", \") %>%\n    filter(str_detect(string = location, pattern = \"Bass|bass\")) %>%\n    distinct(location)\n#> # A tibble: 3 × 1\n#>   location         \n#>   <chr>            \n#> 1 Bass Harbor      \n#> 2 Bass Habor       \n#> 3 Outer Bass Harbor\n\n\n\njournals_loc <- journals_loc %>%\n    mutate(location = case_when(location %in% c(__________) ~ _______,\n                            TRUE ~ location))"
   },
   {
     "objectID": "slides/01-fb-tidydata.html#where-did-freeland-visit-each-year-code",
     "href": "slides/01-fb-tidydata.html#where-did-freeland-visit-each-year-code",
-    "title": "Mining Historical Texts - Tidy Data",
+    "title": "Wrangling and Visualizing Historical Texts",
     "section": "Where did Freeland visit each year? Code",
     "text": "Where did Freeland visit each year? Code\n\njournals_loc_count <- journals_sub %>%\n    separate_rows(location, sep = \", \") %>%\n    filter(location %in% c(\"West Gouldsboro\", \"Ellsworth\", \"Rockland\", \"Bar Harbor\", \"Sullivan\", \"Calais\", \"Prospect Harbor\", \"East Sullivan\", \"Boston\", \"Bass Harbor\", \"Cranberry Isles\")) %>%\n    group_by(year) %>%\n    count(location)\n\njournals_loc_count %>%\n    ggplot(aes(x = year, y = n, color = location)) +\n    geom_line() +\n    labs(x = \"Year\", y = \"Number of mentions\", color = \"Location\", title = \"Number of times place visited each year by Freeland Bunker\", subtitle = \"Locations don't include home, shop, factor, and Winter Harbor\")"
   },
@@ -2224,5 +2224,152 @@
     "title": "Comparing Historical Texts",
     "section": "Freeland wants to know…",
     "text": "Freeland wants to know…\n\nIs bigram_graph a tidy dataset?\n\nYes ☑️\nNo 🚫"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#learning-objectives",
+    "href": "slides/01-fb-tidydata.html#learning-objectives",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "Learning Objectives:",
+    "text": "Learning Objectives:\nGain familiarity with - How to read in data using read_excel - How to select columns using select - How to create new variables using mutate - How to summarize and arrange data using count and arrange - How to group and calculate multiple things - How to correct entries using mutate and case_when - How to visualize and map the data using ggplot and leaflet"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#where-did-freeland-go-step-by-step",
+    "href": "slides/01-fb-tidydata.html#where-did-freeland-go-step-by-step",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "Where did Freeland go? Step by Step",
+    "text": "Where did Freeland go? Step by Step\nStart with the dataset\n\njournals_sub \n#> # A tibble: 3,951 × 5\n#>    date_mdy   journal_entry                                 location  year month\n#>    <date>     <chr>                                         <chr>    <dbl> <dbl>\n#>  1 1871-12-23 Was married at home in evening by William Ra… Winter …  1871    12\n#>  2 1871-12-24 Went to meeting.                              NA        1871    12\n#>  3 1871-12-25 Shooting match all day in the evening to Chr… Winter …  1871    12\n#>  4 1871-12-26 About home at work fobbing.                   Winter …  1871    12\n#>  5 1871-12-27 Work about home reed letter from N. H. Higgi… Winter …  1871    12\n#>  6 1871-12-28 Work about home.                              Winter …  1871    12\n#>  7 1871-12-29 To work in shop.                              Winter …  1871    12\n#>  8 1871-12-30 To work in shop.                              Winter …  1871    12\n#>  9 1871-12-31 Went to meeting.                              NA        1871    12\n#> 10 1872-01-01 Work in shop.                                 Winter …  1872     1\n#> # ℹ 3,941 more rows"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#where-did-freeland-go-step-by-step-1",
+    "href": "slides/01-fb-tidydata.html#where-did-freeland-go-step-by-step-1",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "Where did Freeland go? Step by Step",
+    "text": "Where did Freeland go? Step by Step\nAnd then filter for only known locations.\n\njournals_sub %>%\n    filter(is.na(location) == FALSE, location != \"NA\")\n#> # A tibble: 1,791 × 5\n#>    date_mdy   journal_entry                                 location  year month\n#>    <date>     <chr>                                         <chr>    <dbl> <dbl>\n#>  1 1871-12-23 Was married at home in evening by William Ra… Winter …  1871    12\n#>  2 1871-12-25 Shooting match all day in the evening to Chr… Winter …  1871    12\n#>  3 1871-12-26 About home at work fobbing.                   Winter …  1871    12\n#>  4 1871-12-27 Work about home reed letter from N. H. Higgi… Winter …  1871    12\n#>  5 1871-12-28 Work about home.                              Winter …  1871    12\n#>  6 1871-12-29 To work in shop.                              Winter …  1871    12\n#>  7 1871-12-30 To work in shop.                              Winter …  1871    12\n#>  8 1872-01-01 Work in shop.                                 Winter …  1872     1\n#>  9 1872-01-02 Work in shop.                                 Winter …  1872     1\n#> 10 1872-01-03 Work in shop.                                 Winter …  1872     1\n#> # ℹ 1,781 more rows"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#where-did-freeland-go-step-by-step-2",
+    "href": "slides/01-fb-tidydata.html#where-did-freeland-go-step-by-step-2",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "Where did Freeland go? Step by Step",
+    "text": "Where did Freeland go? Step by Step\nAnd then separate rows so each location is on its own row.\n\njournals_sub %>%\n    filter(is.na(location) == FALSE, location != \"NA\") %>%\n    separate_rows(location, sep = \", \")\n#> # A tibble: 2,364 × 5\n#>    date_mdy   journal_entry                                 location  year month\n#>    <date>     <chr>                                         <chr>    <dbl> <dbl>\n#>  1 1871-12-23 Was married at home in evening by William Ra… Winter …  1871    12\n#>  2 1871-12-25 Shooting match all day in the evening to Chr… Winter …  1871    12\n#>  3 1871-12-26 About home at work fobbing.                   Winter …  1871    12\n#>  4 1871-12-27 Work about home reed letter from N. H. Higgi… Winter …  1871    12\n#>  5 1871-12-28 Work about home.                              Winter …  1871    12\n#>  6 1871-12-29 To work in shop.                              Winter …  1871    12\n#>  7 1871-12-30 To work in shop.                              Winter …  1871    12\n#>  8 1872-01-01 Work in shop.                                 Winter …  1872     1\n#>  9 1872-01-02 Work in shop.                                 Winter …  1872     1\n#> 10 1872-01-03 Work in shop.                                 Winter …  1872     1\n#> # ℹ 2,354 more rows"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#where-did-freeland-go-step-by-step-3",
+    "href": "slides/01-fb-tidydata.html#where-did-freeland-go-step-by-step-3",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "Where did Freeland go? Step by Step",
+    "text": "Where did Freeland go? Step by Step\nAnd then count the number of times he was at that location\n\njournals_sub %>%\n    filter(is.na(location) == FALSE, location != \"NA\") %>%\n    separate_rows(location, sep = \", \") %>%\n    count(location)\n#> # A tibble: 281 × 2\n#>    location                       n\n#>    <chr>                      <int>\n#>  1 \" Handkerchief Light Ship\"     1\n#>  2 \" North East Harbor\"           1\n#>  3 \"Albany Railroad Wharf\"        9\n#>  4 \"Atlantic wharf\"               2\n#>  5 \"Azores/Western Islands\"       1\n#>  6 \"Baker Island\"                 2\n#>  7 \"Baker's Island\"               1\n#>  8 \"Bakers Island\"                1\n#>  9 \"Bangor\"                       5\n#> 10 \"Bar Habor\"                    3\n#> # ℹ 271 more rows"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#where-did-freeland-go-step-by-step-4",
+    "href": "slides/01-fb-tidydata.html#where-did-freeland-go-step-by-step-4",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "Where did Freeland go? Step by Step",
+    "text": "Where did Freeland go? Step by Step\nAnd then arrange the locations in descending order from most visited to least visited.\n\njournals_sub %>%\n    filter(is.na(location) == FALSE, location != \"NA\") %>%\n    separate_rows(location, sep = \", \") %>%\n    count(location) %>%\n    arrange(desc(n))\n#> # A tibble: 281 × 2\n#>    location            n\n#>    <chr>           <int>\n#>  1 Winter Harbor    1155\n#>  2 West Gouldsboro   107\n#>  3 Ellsworth          53\n#>  4 Rockland           46\n#>  5 Bar Harbor         38\n#>  6 Calais             34\n#>  7 Sullivan           34\n#>  8 Prospect Harbor    28\n#>  9 East Sullivan      27\n#> 10 Bass Harbor        26\n#> # ℹ 271 more rows"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#what-can-you-do-with-r-a-snapshot",
+    "href": "slides/01-fb-tidydata.html#what-can-you-do-with-r-a-snapshot",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "What can you do with R? A snapshot",
+    "text": "What can you do with R? A snapshot"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#influence-of-target-species-on-fishing-effort",
+    "href": "slides/01-fb-tidydata.html#influence-of-target-species-on-fishing-effort",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "Influence of target species on fishing effort",
+    "text": "Influence of target species on fishing effort\n\nWoman on boat holding a fish and a crab"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#who-is-fishing",
+    "href": "slides/01-fb-tidydata.html#who-is-fishing",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "Who is fishing?",
+    "text": "Who is fishing?\n\nPlot showing the vessel length and width as boats on a scatter plot where the size of the boat is proportional to the carrying capacity of the vessel"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#how-are-vessels-fishing",
+    "href": "slides/01-fb-tidydata.html#how-are-vessels-fishing",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "How are vessels fishing?",
+    "text": "How are vessels fishing?\n\nPlot showing the distribution of trip length by vessel"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#what-are-vessels-targeting",
+    "href": "slides/01-fb-tidydata.html#what-are-vessels-targeting",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "What are vessels targeting?",
+    "text": "What are vessels targeting?\n\nPlot showing the distribution of species in the catch by weight by vessel"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#where-are-they-catching-it",
+    "href": "slides/01-fb-tidydata.html#where-are-they-catching-it",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "Where are they catching it?",
+    "text": "Where are they catching it?"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#create-open-source-learning-resources",
+    "href": "slides/01-fb-tidydata.html#create-open-source-learning-resources",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "Create open source learning resources",
+    "text": "Create open source learning resources"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#code-mitten-patterns",
+    "href": "slides/01-fb-tidydata.html#code-mitten-patterns",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "Code Mitten Patterns",
+    "text": "Code Mitten Patterns"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#create-applications-to-help-you-choose-colors-for-mitten-patterns",
+    "href": "slides/01-fb-tidydata.html#create-applications-to-help-you-choose-colors-for-mitten-patterns",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "Create applications to help you choose colors for mitten patterns",
+    "text": "Create applications to help you choose colors for mitten patterns"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#course-websites",
+    "href": "slides/01-fb-tidydata.html#course-websites",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "Course websites!",
+    "text": "Course websites!"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#my-goals-this-week",
+    "href": "slides/01-fb-tidydata.html#my-goals-this-week",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "My goals this week",
+    "text": "My goals this week\n\nTo get you excited about data and data analysis\nExplore some of the ways we can apply it to this course\nGet you coding and exploring text data!\nTeach you some of the tools to bring your data to life and share it with the world."
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#monitor-fish-runs",
+    "href": "slides/01-fb-tidydata.html#monitor-fish-runs",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "Monitor fish runs",
+    "text": "Monitor fish runs"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#section",
+    "href": "slides/01-fb-tidydata.html#section",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "",
+    "text": "Get you excited about data and analysis\nExplore ways you could use it in projects\nGet you coding and exploring text data\nTeach you tools to set data free and release it into the world."
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#where-are-they-fishing",
+    "href": "slides/01-fb-tidydata.html#where-are-they-fishing",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "Where are they fishing?",
+    "text": "Where are they fishing?"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#choose-colors-for-mitten-patterns",
+    "href": "slides/01-fb-tidydata.html#choose-colors-for-mitten-patterns",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "Choose colors for mitten patterns",
+    "text": "Choose colors for mitten patterns"
   }
 ]

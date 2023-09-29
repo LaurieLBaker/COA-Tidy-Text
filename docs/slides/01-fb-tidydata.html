@@ -13,7 +13,7 @@
   <meta name="generator" content="quarto-1.2.335">
 
   <meta name="author" content="By Laurie Baker">
-  <title>Text Mining with Tidy Data Principles - Mining Historical Texts - Tidy Data</title>
+  <title>Text Mining with Tidy Data Principles - Wrangling and Visualizing Historical Texts</title>
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui">
@@ -396,11 +396,11 @@
   <script src="../site_libs/leaflet-binding-2.1.2/leaflet.js"></script>
   <script src="../site_libs/leaflet-providers-1.9.0/leaflet-providers_1.9.0.js"></script>
   <script src="../site_libs/leaflet-providers-plugin-2.1.2/leaflet-providers-plugin.js"></script>
-<meta property="og:title" content="Text Mining with Tidy Data Principles - Mining Historical Texts - Tidy Data">
-<meta property="og:description" content="USING TIDY DATA PRINCIPLES">
+<meta property="og:title" content="Text Mining with Tidy Data Principles - Wrangling and Visualizing Historical Texts">
+<meta property="og:description" content="">
 <meta property="og:site-name" content="Text Mining with Tidy Data Principles">
-<meta name="twitter:title" content="Text Mining with Tidy Data Principles - Mining Historical Texts - Tidy Data">
-<meta name="twitter:description" content="USING TIDY DATA PRINCIPLES">
+<meta name="twitter:title" content="Text Mining with Tidy Data Principles - Wrangling and Visualizing Historical Texts">
+<meta name="twitter:description" content="">
 <meta name="twitter:card" content="summary">
 </head>
 <body class="quarto-light">
@@ -408,8 +408,7 @@
     <div class="slides">
 
 <section id="title-slide" class="quarto-title-block center">
-  <h1 class="title">Mining Historical Texts - Tidy Data</h1>
-  <p class="subtitle">USING TIDY DATA PRINCIPLES</p>
+  <h1 class="title">Wrangling and Visualizing Historical Texts</h1>
 
 <div class="quarto-title-authors">
 <div class="quarto-title-author">
@@ -429,33 +428,86 @@ By Laurie Baker
 <p><a href="https://github.com/juliasilge"><i class="fa-brands fa-github" aria-label="github"></i> @juliasilge</a></p>
 </center>
 </section>
+<section id="what-can-you-do-with-r-a-snapshot" class="slide level2">
+<h2>What can you do with R? A snapshot</h2>
+</section>
+<section id="influence-of-target-species-on-fishing-effort" class="slide level2">
+<h2>Influence of target species on fishing effort</h2>
+
+<img data-src="figs/congrio_centolla.jpg" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">Woman on boat holding a fish and a crab</p></section>
+<section id="who-is-fishing" class="slide level2">
+<h2>Who is fishing?</h2>
+
+<img data-src="figs/fishing_who.png" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">Plot showing the vessel length and width as boats on a scatter plot where the size of the boat is proportional to the carrying capacity of the vessel</p></section>
+<section id="how-are-vessels-fishing" class="slide level2">
+<h2>How are vessels fishing?</h2>
+
+<img data-src="figs/fishing_when.png" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">Plot showing the distribution of trip length by vessel</p></section>
+<section id="what-are-vessels-targeting" class="slide level2">
+<h2>What are vessels targeting?</h2>
+
+<img data-src="figs/fishing_what.png" style="width:80.0%" class="r-stretch quarto-figure-center"><p class="caption">Plot showing the distribution of species in the catch by weight by vessel</p></section>
+<section id="where-are-they-fishing" class="slide level2">
+<h2>Where are they fishing?</h2>
+</section></section>
+<section>
+<section id="what-else-can-r-do" class="title-slide slide level1 center">
+<h1>What else can R do?</h1>
+
+</section>
+<section id="create-open-source-learning-resources" class="slide level2">
+<h2>Create open source learning resources</h2>
+<iframe src="https://andysouth.shinyapps.io/intro-to-spatial-r/" width="1016" height="516" frameborder="0">
+</iframe>
+</section>
+<section id="code-mitten-patterns" class="slide level2">
+<h2>Code Mitten Patterns</h2>
+<iframe src="https://laurielbaker.github.io/coded-mittens/selbu_mitten_generator.html" width="1016" height="516" frameborder="0">
+</iframe>
+</section>
+<section id="choose-colors-for-mitten-patterns" class="slide level2">
+<h2>Choose colors for mitten patterns</h2>
+<iframe src="https://laurie-the-student-baker.shinyapps.io/Coded-Mittens/" width="1016" height="516" frameborder="0">
+</iframe>
+</section>
+<section id="monitor-fish-runs" class="slide level2">
+<h2>Monitor fish runs</h2>
+<iframe src="https://laurie-the-student-baker.shinyapps.io/shad-river-herring/" width="1016" height="516" frameborder="0">
+</iframe>
+</section>
+<section id="course-websites" class="slide level2">
+<h2>Course websites!</h2>
+<iframe src="https://navigating-change.netlify.app" width="1016" height="516" frameborder="0">
+</iframe>
+</section>
+<section id="section" class="slide level2" data-background-image="figs/lizzieskipping.gif" data-background-size="70%" data-background-color="white">
+<h2></h2>
+<ul>
+<li>Get you excited about data and analysis</li>
+<li>Explore ways you could use it in projects</li>
+<li>Get you coding and exploring text data</li>
+<li>Teach you tools to set data free and release it into the world.</li>
+</ul>
+</section>
 <section id="lets-install-some-packages" class="slide level2" data-background-color="white">
 <h2>Let’s install some packages</h2>
-<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-2_ffdd2f1721af53199beee0ac490b2c5f">
+<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-6_6c3e6c5eb14a03a8800bed28871f6538">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">install.packages</span>(<span class="fu">c</span>(<span class="st">"tidyverse"</span>, <span class="co"># data wrangling</span></span>
 <span id="cb1-2"><a href="#cb1-2"></a>                   <span class="st">"lubridate"</span>, <span class="co"># dates</span></span>
 <span id="cb1-3"><a href="#cb1-3"></a>                   <span class="st">"readxl"</span>,</span>
 <span id="cb1-4"><a href="#cb1-4"></a>                   <span class="st">"DT"</span>)) <span class="co"># reading data</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="programming-functions" class="slide level2">
-<h2>Programming Functions</h2>
-<ul>
-<li>We will learn to read in data using <code>read_excel</code></li>
-<li>How to select columns using <code>select</code></li>
-<li>How to create new variables using <code>mutate</code></li>
-<li>How to summarize and arrange data using <code>count</code> and <code>arrange</code></li>
-<li>How to group and calculate multiple things</li>
-<li>How to correct entries using <code>mutate</code> and <code>case_when</code></li>
-<li>How to visualize and map the data using <code>ggplot</code> and <code>leaflet</code></li>
-</ul>
+<section id="learning-objectives" class="slide level2">
+<h2>Learning Objectives:</h2>
+<p>Gain familiarity with - How to read in data using <code>read_excel</code> - How to select columns using <code>select</code> - How to create new variables using <code>mutate</code> - How to summarize and arrange data using <code>count</code> and <code>arrange</code> - How to group and calculate multiple things - How to correct entries using <code>mutate</code> and <code>case_when</code> - How to visualize and map the data using <code>ggplot</code> and <code>leaflet</code></p>
 </section>
 <section id="the-journals-1870-1906" class="slide level2" data-background-image="figs/freeland_bunker_journal.jpg" data-background-size="45%" data-background-color="white">
 <h2>The Journals (1870-1906)</h2>
 </section>
 <section id="journals-1871-1880-transcribed" class="slide level2">
 <h2>9 journals (1871-1880) transcribed</h2>
-<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-3_94c1e415bfa0e64ba602e2cbb4867ec3">
+<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-7_90643b563b2f145742567bdb3a6d7972">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a></span>
 <span id="cb2-2"><a href="#cb2-2"></a><span class="fu">library</span>(readxl)</span>
 <span id="cb2-3"><a href="#cb2-3"></a>journal_1871_1872 <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/journal_1871_1872.xlsx"</span>)</span>
@@ -471,95 +523,100 @@ By Laurie Baker
 </section>
 <section id="keeping-track" class="slide level2">
 <h2>Keeping Track</h2>
-<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-4_2d12c75968452d14a1dbc3d31801c2cf">
+<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-8_a043481430961a4806096914cd2dbc5d">
 
 </div>
-<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-5_e4788321ba7bba921ef832e556caa701">
+<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-9_ef904538f6546cd23955a561b74e5a59">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="co"># We want to keep track of the journals</span></span>
 <span id="cb3-2"><a href="#cb3-2"></a></span>
-<span id="cb3-3"><a href="#cb3-3"></a>journal_1871_1872<span class="sc">$</span>journal <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb3-4"><a href="#cb3-4"></a>journal_1873<span class="sc">$</span>journal <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb3-5"><a href="#cb3-5"></a>journal_1874<span class="sc">$</span>journal <span class="ot">&lt;-</span> <span class="dv">3</span></span>
-<span id="cb3-6"><a href="#cb3-6"></a>journal_1875<span class="sc">$</span>journal <span class="ot">&lt;-</span> <span class="dv">4</span></span>
-<span id="cb3-7"><a href="#cb3-7"></a>journal_1876<span class="sc">$</span>journal <span class="ot">&lt;-</span> <span class="dv">5</span></span>
-<span id="cb3-8"><a href="#cb3-8"></a>journal_1877<span class="sc">$</span>journal <span class="ot">&lt;-</span> <span class="dv">6</span></span>
-<span id="cb3-9"><a href="#cb3-9"></a>journal_1878<span class="sc">$</span>journal <span class="ot">&lt;-</span> <span class="dv">7</span></span>
-<span id="cb3-10"><a href="#cb3-10"></a>journal_1879<span class="sc">$</span>journal <span class="ot">&lt;-</span> <span class="dv">8</span></span>
-<span id="cb3-11"><a href="#cb3-11"></a>journal_1880<span class="sc">$</span>journal <span class="ot">&lt;-</span> <span class="dv">9</span></span>
-<span id="cb3-12"><a href="#cb3-12"></a></span>
-<span id="cb3-13"><a href="#cb3-13"></a>journals <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">bind_rows</span>(journal_1871_1872, journal_1873, journal_1874, </span>
-<span id="cb3-14"><a href="#cb3-14"></a>                             journal_1875, journal_1876, journal_1877, </span>
-<span id="cb3-15"><a href="#cb3-15"></a>                             journal_1878, journal_1879, journal_1880)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb3-3"><a href="#cb3-3"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb3-4"><a href="#cb3-4"></a></span>
+<span id="cb3-5"><a href="#cb3-5"></a>journal_1871_1872<span class="sc">$</span>journal <span class="ot">&lt;-</span> <span class="dv">1</span></span>
+<span id="cb3-6"><a href="#cb3-6"></a>journal_1873<span class="sc">$</span>journal <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb3-7"><a href="#cb3-7"></a>journal_1874<span class="sc">$</span>journal <span class="ot">&lt;-</span> <span class="dv">3</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a>journal_1875<span class="sc">$</span>journal <span class="ot">&lt;-</span> <span class="dv">4</span></span>
+<span id="cb3-9"><a href="#cb3-9"></a>journal_1876<span class="sc">$</span>journal <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a>journal_1877<span class="sc">$</span>journal <span class="ot">&lt;-</span> <span class="dv">6</span></span>
+<span id="cb3-11"><a href="#cb3-11"></a>journal_1878<span class="sc">$</span>journal <span class="ot">&lt;-</span> <span class="dv">7</span></span>
+<span id="cb3-12"><a href="#cb3-12"></a>journal_1879<span class="sc">$</span>journal <span class="ot">&lt;-</span> <span class="dv">8</span></span>
+<span id="cb3-13"><a href="#cb3-13"></a>journal_1880<span class="sc">$</span>journal <span class="ot">&lt;-</span> <span class="dv">9</span></span>
+<span id="cb3-14"><a href="#cb3-14"></a></span>
+<span id="cb3-15"><a href="#cb3-15"></a>journals <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">bind_rows</span>(journal_1871_1872, journal_1873, journal_1874, </span>
+<span id="cb3-16"><a href="#cb3-16"></a>                             journal_1875, journal_1876, journal_1877, </span>
+<span id="cb3-17"><a href="#cb3-17"></a>                             journal_1878, journal_1879, journal_1880)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="we-have-a-lot-of-variables-recorded" class="slide level2">
 <h2>We have a lot of variables recorded!</h2>
-<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-6_9b667b0e34e297348344675f71bee5a6">
+<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-10_d8b679d621924225445292e1b882db94">
 <div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">glimpse</span>(journals)</span>
 <span id="cb4-2"><a href="#cb4-2"></a><span class="co">#&gt; Rows: 3,951</span></span>
-<span id="cb4-3"><a href="#cb4-3"></a><span class="co">#&gt; Columns: 35</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="co">#&gt; Columns: 38</span></span>
 <span id="cb4-4"><a href="#cb4-4"></a><span class="co">#&gt; $ date_mdy                &lt;chr&gt; "12/23/1871", "12/24/1871", "12/25/1871", "12/…</span></span>
 <span id="cb4-5"><a href="#cb4-5"></a><span class="co">#&gt; $ month                   &lt;chr&gt; "December", "December", "December", "December"…</span></span>
 <span id="cb4-6"><a href="#cb4-6"></a><span class="co">#&gt; $ journal_entry           &lt;chr&gt; "Was married at home in evening by William Ran…</span></span>
-<span id="cb4-7"><a href="#cb4-7"></a><span class="co">#&gt; $ location                &lt;chr&gt; "home", "NA", "hall", "home", "home", "home", …</span></span>
+<span id="cb4-7"><a href="#cb4-7"></a><span class="co">#&gt; $ location                &lt;chr&gt; "Winter Harbor", "NA", "Winter Harbor", "Winte…</span></span>
 <span id="cb4-8"><a href="#cb4-8"></a><span class="co">#&gt; $ location_accuracy       &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
-<span id="cb4-9"><a href="#cb4-9"></a><span class="co">#&gt; $ latitude                &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
-<span id="cb4-10"><a href="#cb4-10"></a><span class="co">#&gt; $ latitude_origin         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
-<span id="cb4-11"><a href="#cb4-11"></a><span class="co">#&gt; $ longitude               &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
-<span id="cb4-12"><a href="#cb4-12"></a><span class="co">#&gt; $ longitude_origin        &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
-<span id="cb4-13"><a href="#cb4-13"></a><span class="co">#&gt; $ transcription           &lt;chr&gt; "confident", "confident", "confident", "confid…</span></span>
-<span id="cb4-14"><a href="#cb4-14"></a><span class="co">#&gt; $ quantity                &lt;chr&gt; "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA"…</span></span>
-<span id="cb4-15"><a href="#cb4-15"></a><span class="co">#&gt; $ unit                    &lt;chr&gt; "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA"…</span></span>
-<span id="cb4-16"><a href="#cb4-16"></a><span class="co">#&gt; $ item                    &lt;chr&gt; "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA"…</span></span>
-<span id="cb4-17"><a href="#cb4-17"></a><span class="co">#&gt; $ letter                  &lt;chr&gt; "no letter", "no letter", "no letter", "no let…</span></span>
-<span id="cb4-18"><a href="#cb4-18"></a><span class="co">#&gt; $ letter_from             &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
-<span id="cb4-19"><a href="#cb4-19"></a><span class="co">#&gt; $ letter_to               &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
-<span id="cb4-20"><a href="#cb4-20"></a><span class="co">#&gt; $ wind_direction_am       &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
-<span id="cb4-21"><a href="#cb4-21"></a><span class="co">#&gt; $ wind_direction_pm       &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
-<span id="cb4-22"><a href="#cb4-22"></a><span class="co">#&gt; $ wind_direction_night    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
-<span id="cb4-23"><a href="#cb4-23"></a><span class="co">#&gt; $ wind_speed_am           &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
-<span id="cb4-24"><a href="#cb4-24"></a><span class="co">#&gt; $ wind_speed_pm           &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
-<span id="cb4-25"><a href="#cb4-25"></a><span class="co">#&gt; $ wind_speed_night        &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
-<span id="cb4-26"><a href="#cb4-26"></a><span class="co">#&gt; $ weather_condition_am    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
-<span id="cb4-27"><a href="#cb4-27"></a><span class="co">#&gt; $ weather_condition_pm    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
-<span id="cb4-28"><a href="#cb4-28"></a><span class="co">#&gt; $ weather_condition_night &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
-<span id="cb4-29"><a href="#cb4-29"></a><span class="co">#&gt; $ temperature_am          &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
-<span id="cb4-30"><a href="#cb4-30"></a><span class="co">#&gt; $ temperature_pm          &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
-<span id="cb4-31"><a href="#cb4-31"></a><span class="co">#&gt; $ temperature_night       &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
-<span id="cb4-32"><a href="#cb4-32"></a><span class="co">#&gt; $ image_path              &lt;chr&gt; "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA"…</span></span>
-<span id="cb4-33"><a href="#cb4-33"></a><span class="co">#&gt; $ image_description       &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
-<span id="cb4-34"><a href="#cb4-34"></a><span class="co">#&gt; $ recorder                &lt;chr&gt; "NH", "NH", "NH", "NH", "NH", "NH", "NH", "NH"…</span></span>
-<span id="cb4-35"><a href="#cb4-35"></a><span class="co">#&gt; $ notes                   &lt;chr&gt; "Esqr? Esquire", "to?", "Christmas tree?", NA,…</span></span>
-<span id="cb4-36"><a href="#cb4-36"></a><span class="co">#&gt; $ second_check            &lt;chr&gt; "WD", NA, "WD", NA, "WD", NA, NA, NA, NA, NA, …</span></span>
-<span id="cb4-37"><a href="#cb4-37"></a><span class="co">#&gt; $ journal                 &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…</span></span>
-<span id="cb4-38"><a href="#cb4-38"></a><span class="co">#&gt; $ transcription_accuracy  &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb4-9"><a href="#cb4-9"></a><span class="co">#&gt; $ local_place             &lt;chr&gt; "Home", NA, "Hall", "Home", "Home", "Home", "S…</span></span>
+<span id="cb4-10"><a href="#cb4-10"></a><span class="co">#&gt; $ local_place_accuracy    &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a><span class="co">#&gt; $ latitude                &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a><span class="co">#&gt; $ latitude_origin         &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a><span class="co">#&gt; $ longitude               &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
+<span id="cb4-14"><a href="#cb4-14"></a><span class="co">#&gt; $ longitude_origin        &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
+<span id="cb4-15"><a href="#cb4-15"></a><span class="co">#&gt; $ transcription           &lt;chr&gt; "confident", "confident", "confident", "confid…</span></span>
+<span id="cb4-16"><a href="#cb4-16"></a><span class="co">#&gt; $ quantity                &lt;chr&gt; "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA"…</span></span>
+<span id="cb4-17"><a href="#cb4-17"></a><span class="co">#&gt; $ unit                    &lt;chr&gt; "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA"…</span></span>
+<span id="cb4-18"><a href="#cb4-18"></a><span class="co">#&gt; $ item                    &lt;chr&gt; "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA"…</span></span>
+<span id="cb4-19"><a href="#cb4-19"></a><span class="co">#&gt; $ letter                  &lt;chr&gt; "no letter", "no letter", "no letter", "no let…</span></span>
+<span id="cb4-20"><a href="#cb4-20"></a><span class="co">#&gt; $ letter_from             &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
+<span id="cb4-21"><a href="#cb4-21"></a><span class="co">#&gt; $ letter_to               &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
+<span id="cb4-22"><a href="#cb4-22"></a><span class="co">#&gt; $ wind_direction_am       &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
+<span id="cb4-23"><a href="#cb4-23"></a><span class="co">#&gt; $ wind_direction_pm       &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
+<span id="cb4-24"><a href="#cb4-24"></a><span class="co">#&gt; $ wind_direction_night    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
+<span id="cb4-25"><a href="#cb4-25"></a><span class="co">#&gt; $ wind_speed_am           &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
+<span id="cb4-26"><a href="#cb4-26"></a><span class="co">#&gt; $ wind_speed_pm           &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
+<span id="cb4-27"><a href="#cb4-27"></a><span class="co">#&gt; $ wind_speed_night        &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
+<span id="cb4-28"><a href="#cb4-28"></a><span class="co">#&gt; $ weather_condition_am    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
+<span id="cb4-29"><a href="#cb4-29"></a><span class="co">#&gt; $ weather_condition_pm    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
+<span id="cb4-30"><a href="#cb4-30"></a><span class="co">#&gt; $ weather_condition_night &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
+<span id="cb4-31"><a href="#cb4-31"></a><span class="co">#&gt; $ temperature_am          &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
+<span id="cb4-32"><a href="#cb4-32"></a><span class="co">#&gt; $ temperature_pm          &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
+<span id="cb4-33"><a href="#cb4-33"></a><span class="co">#&gt; $ temperature_night       &lt;dbl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
+<span id="cb4-34"><a href="#cb4-34"></a><span class="co">#&gt; $ image_path              &lt;chr&gt; "NA", "NA", "NA", "NA", "NA", "NA", "NA", "NA"…</span></span>
+<span id="cb4-35"><a href="#cb4-35"></a><span class="co">#&gt; $ image_description       &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
+<span id="cb4-36"><a href="#cb4-36"></a><span class="co">#&gt; $ recorder                &lt;chr&gt; "NH", "NH", "NH", "NH", "NH", "NH", "NH", "NH"…</span></span>
+<span id="cb4-37"><a href="#cb4-37"></a><span class="co">#&gt; $ notes                   &lt;chr&gt; "Esqr? Esquire", "to?", "Christmas tree?", NA,…</span></span>
+<span id="cb4-38"><a href="#cb4-38"></a><span class="co">#&gt; $ second_check            &lt;chr&gt; "WD", NA, "WD", NA, "WD", NA, NA, NA, NA, NA, …</span></span>
+<span id="cb4-39"><a href="#cb4-39"></a><span class="co">#&gt; $ journal                 &lt;dbl&gt; 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1…</span></span>
+<span id="cb4-40"><a href="#cb4-40"></a><span class="co">#&gt; $ transcription_accuracy  &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span>
+<span id="cb4-41"><a href="#cb4-41"></a><span class="co">#&gt; $ ...1                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="exploring-a-subset-using-select" class="slide level2">
 <h2>Exploring a subset using <code>select</code></h2>
-<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-7_e90094aef0a0b448968a1a55a4aae1c5">
+<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-11_675c7d926cc63bbccd372ecbc90c23bb">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a></span>
 <span id="cb5-2"><a href="#cb5-2"></a>(journals_sub <span class="ot">&lt;-</span> journals <span class="sc">%&gt;%</span></span>
 <span id="cb5-3"><a href="#cb5-3"></a>    <span class="fu">select</span>(date_mdy, journal_entry, location))</span>
 <span id="cb5-4"><a href="#cb5-4"></a><span class="co">#&gt; # A tibble: 3,951 × 3</span></span>
 <span id="cb5-5"><a href="#cb5-5"></a><span class="co">#&gt;    date_mdy   journal_entry                                             location</span></span>
 <span id="cb5-6"><a href="#cb5-6"></a><span class="co">#&gt;    &lt;chr&gt;      &lt;chr&gt;                                                     &lt;chr&gt;   </span></span>
-<span id="cb5-7"><a href="#cb5-7"></a><span class="co">#&gt;  1 12/23/1871 Was married at home in evening by William Rand Esqr.      home    </span></span>
+<span id="cb5-7"><a href="#cb5-7"></a><span class="co">#&gt;  1 12/23/1871 Was married at home in evening by William Rand Esqr.      Winter …</span></span>
 <span id="cb5-8"><a href="#cb5-8"></a><span class="co">#&gt;  2 12/24/1871 Went to meeting.                                          NA      </span></span>
-<span id="cb5-9"><a href="#cb5-9"></a><span class="co">#&gt;  3 12/25/1871 Shooting match all day in the evening to Christmas tree … hall    </span></span>
-<span id="cb5-10"><a href="#cb5-10"></a><span class="co">#&gt;  4 12/26/1871 About home at work fobbing.                               home    </span></span>
-<span id="cb5-11"><a href="#cb5-11"></a><span class="co">#&gt;  5 12/27/1871 Work about home reed letter from N. H. Higgins Ins agt.   home    </span></span>
-<span id="cb5-12"><a href="#cb5-12"></a><span class="co">#&gt;  6 12/28/1871 Work about home.                                          home    </span></span>
-<span id="cb5-13"><a href="#cb5-13"></a><span class="co">#&gt;  7 12/29/1871 To work in shop.                                          shop    </span></span>
-<span id="cb5-14"><a href="#cb5-14"></a><span class="co">#&gt;  8 12/30/1871 To work in shop.                                          shop    </span></span>
+<span id="cb5-9"><a href="#cb5-9"></a><span class="co">#&gt;  3 12/25/1871 Shooting match all day in the evening to Christmas tree … Winter …</span></span>
+<span id="cb5-10"><a href="#cb5-10"></a><span class="co">#&gt;  4 12/26/1871 About home at work fobbing.                               Winter …</span></span>
+<span id="cb5-11"><a href="#cb5-11"></a><span class="co">#&gt;  5 12/27/1871 Work about home reed letter from N. H. Higgins Ins agt.   Winter …</span></span>
+<span id="cb5-12"><a href="#cb5-12"></a><span class="co">#&gt;  6 12/28/1871 Work about home.                                          Winter …</span></span>
+<span id="cb5-13"><a href="#cb5-13"></a><span class="co">#&gt;  7 12/29/1871 To work in shop.                                          Winter …</span></span>
+<span id="cb5-14"><a href="#cb5-14"></a><span class="co">#&gt;  8 12/30/1871 To work in shop.                                          Winter …</span></span>
 <span id="cb5-15"><a href="#cb5-15"></a><span class="co">#&gt;  9 12/31/1871 Went to meeting.                                          NA      </span></span>
-<span id="cb5-16"><a href="#cb5-16"></a><span class="co">#&gt; 10 1/1/1872   Work in shop.                                             shop    </span></span>
+<span id="cb5-16"><a href="#cb5-16"></a><span class="co">#&gt; 10 1/1/1872   Work in shop.                                             Winter …</span></span>
 <span id="cb5-17"><a href="#cb5-17"></a><span class="co">#&gt; # ℹ 3,941 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="creating-date-variables-using-lubridate" class="slide level2">
 <h2>Creating date variables using <code>lubridate</code></h2>
-<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-8_1693ebe88732b63adb39c876e0e39035">
+<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-12_be172172b0feab8477a75a5cd7647ccb">
 <div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="fu">library</span>(lubridate)</span>
 <span id="cb6-2"><a href="#cb6-2"></a>(journals_sub <span class="ot">&lt;-</span> journals_sub <span class="sc">%&gt;%</span></span>
 <span id="cb6-3"><a href="#cb6-3"></a>    <span class="fu">mutate</span>(<span class="at">date_mdy =</span> <span class="fu">mdy</span>(date_mdy),</span>
@@ -568,226 +625,301 @@ By Laurie Baker
 <span id="cb6-6"><a href="#cb6-6"></a><span class="co">#&gt; # A tibble: 3,951 × 5</span></span>
 <span id="cb6-7"><a href="#cb6-7"></a><span class="co">#&gt;    date_mdy   journal_entry                                 location  year month</span></span>
 <span id="cb6-8"><a href="#cb6-8"></a><span class="co">#&gt;    &lt;date&gt;     &lt;chr&gt;                                         &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span id="cb6-9"><a href="#cb6-9"></a><span class="co">#&gt;  1 1871-12-23 Was married at home in evening by William Ra… home      1871    12</span></span>
+<span id="cb6-9"><a href="#cb6-9"></a><span class="co">#&gt;  1 1871-12-23 Was married at home in evening by William Ra… Winter …  1871    12</span></span>
 <span id="cb6-10"><a href="#cb6-10"></a><span class="co">#&gt;  2 1871-12-24 Went to meeting.                              NA        1871    12</span></span>
-<span id="cb6-11"><a href="#cb6-11"></a><span class="co">#&gt;  3 1871-12-25 Shooting match all day in the evening to Chr… hall      1871    12</span></span>
-<span id="cb6-12"><a href="#cb6-12"></a><span class="co">#&gt;  4 1871-12-26 About home at work fobbing.                   home      1871    12</span></span>
-<span id="cb6-13"><a href="#cb6-13"></a><span class="co">#&gt;  5 1871-12-27 Work about home reed letter from N. H. Higgi… home      1871    12</span></span>
-<span id="cb6-14"><a href="#cb6-14"></a><span class="co">#&gt;  6 1871-12-28 Work about home.                              home      1871    12</span></span>
-<span id="cb6-15"><a href="#cb6-15"></a><span class="co">#&gt;  7 1871-12-29 To work in shop.                              shop      1871    12</span></span>
-<span id="cb6-16"><a href="#cb6-16"></a><span class="co">#&gt;  8 1871-12-30 To work in shop.                              shop      1871    12</span></span>
+<span id="cb6-11"><a href="#cb6-11"></a><span class="co">#&gt;  3 1871-12-25 Shooting match all day in the evening to Chr… Winter …  1871    12</span></span>
+<span id="cb6-12"><a href="#cb6-12"></a><span class="co">#&gt;  4 1871-12-26 About home at work fobbing.                   Winter …  1871    12</span></span>
+<span id="cb6-13"><a href="#cb6-13"></a><span class="co">#&gt;  5 1871-12-27 Work about home reed letter from N. H. Higgi… Winter …  1871    12</span></span>
+<span id="cb6-14"><a href="#cb6-14"></a><span class="co">#&gt;  6 1871-12-28 Work about home.                              Winter …  1871    12</span></span>
+<span id="cb6-15"><a href="#cb6-15"></a><span class="co">#&gt;  7 1871-12-29 To work in shop.                              Winter …  1871    12</span></span>
+<span id="cb6-16"><a href="#cb6-16"></a><span class="co">#&gt;  8 1871-12-30 To work in shop.                              Winter …  1871    12</span></span>
 <span id="cb6-17"><a href="#cb6-17"></a><span class="co">#&gt;  9 1871-12-31 Went to meeting.                              NA        1871    12</span></span>
-<span id="cb6-18"><a href="#cb6-18"></a><span class="co">#&gt; 10 1872-01-01 Work in shop.                                 shop      1872     1</span></span>
+<span id="cb6-18"><a href="#cb6-18"></a><span class="co">#&gt; 10 1872-01-01 Work in shop.                                 Winter …  1872     1</span></span>
 <span id="cb6-19"><a href="#cb6-19"></a><span class="co">#&gt; # ℹ 3,941 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="how-often-did-freeland-write" class="slide level2">
 <h2>How often did Freeland write?</h2>
 
-<img data-src="01-fb-tidydata_files/figure-revealjs/unnamed-chunk-9-1.png" width="3000" class="r-stretch"></section>
-<section id="how-often-did-freeland-write-code" class="slide level2">
-<h2>How often did Freeland write? Code</h2>
-<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-10_4e1b0b46f539ecd2ebd04db7500f876c">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a></span>
-<span id="cb7-2"><a href="#cb7-2"></a>journals_sub <span class="sc">%&gt;%</span></span>
-<span id="cb7-3"><a href="#cb7-3"></a>    <span class="fu">filter</span>(<span class="fu">is.na</span>(year) <span class="sc">==</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb7-4"><a href="#cb7-4"></a>    <span class="fu">group_by</span>(month, year) <span class="sc">%&gt;%</span></span>
-<span id="cb7-5"><a href="#cb7-5"></a>    <span class="fu">summarize</span>(<span class="at">days_written =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
-<span id="cb7-6"><a href="#cb7-6"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> month, <span class="at">y =</span> days_written)) <span class="sc">+</span></span>
-<span id="cb7-7"><a href="#cb7-7"></a>    <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb7-8"><a href="#cb7-8"></a>    <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb7-9"><a href="#cb7-9"></a>    <span class="fu">facet_wrap</span>(<span class="sc">~</span>year) <span class="sc">+</span></span>
-<span id="cb7-10"><a href="#cb7-10"></a>    <span class="fu">ylim</span>(<span class="dv">0</span>, <span class="dv">36</span>) <span class="sc">+</span></span>
-<span id="cb7-11"><a href="#cb7-11"></a>    <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">6</span>, <span class="dv">9</span>, <span class="dv">12</span>)) <span class="sc">+</span></span>
-<span id="cb7-12"><a href="#cb7-12"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Month"</span>, <span class="at">y =</span> <span class="st">"Number of entries"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<img data-src="01-fb-tidydata_files/figure-revealjs/unnamed-chunk-13-1.png" width="3000" class="r-stretch"></section>
+<section id="where-did-freeland-go-step-by-step" class="slide level2">
+<h2>Where did Freeland go? Step by Step</h2>
+<p>Start with the dataset</p>
+<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-14_c8a2e9607e72c59c018035b54d2a4389">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>journals_sub </span>
+<span id="cb7-2"><a href="#cb7-2"></a><span class="co">#&gt; # A tibble: 3,951 × 5</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="co">#&gt;    date_mdy   journal_entry                                 location  year month</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a><span class="co">#&gt;    &lt;date&gt;     &lt;chr&gt;                                         &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a><span class="co">#&gt;  1 1871-12-23 Was married at home in evening by William Ra… Winter …  1871    12</span></span>
+<span id="cb7-6"><a href="#cb7-6"></a><span class="co">#&gt;  2 1871-12-24 Went to meeting.                              NA        1871    12</span></span>
+<span id="cb7-7"><a href="#cb7-7"></a><span class="co">#&gt;  3 1871-12-25 Shooting match all day in the evening to Chr… Winter …  1871    12</span></span>
+<span id="cb7-8"><a href="#cb7-8"></a><span class="co">#&gt;  4 1871-12-26 About home at work fobbing.                   Winter …  1871    12</span></span>
+<span id="cb7-9"><a href="#cb7-9"></a><span class="co">#&gt;  5 1871-12-27 Work about home reed letter from N. H. Higgi… Winter …  1871    12</span></span>
+<span id="cb7-10"><a href="#cb7-10"></a><span class="co">#&gt;  6 1871-12-28 Work about home.                              Winter …  1871    12</span></span>
+<span id="cb7-11"><a href="#cb7-11"></a><span class="co">#&gt;  7 1871-12-29 To work in shop.                              Winter …  1871    12</span></span>
+<span id="cb7-12"><a href="#cb7-12"></a><span class="co">#&gt;  8 1871-12-30 To work in shop.                              Winter …  1871    12</span></span>
+<span id="cb7-13"><a href="#cb7-13"></a><span class="co">#&gt;  9 1871-12-31 Went to meeting.                              NA        1871    12</span></span>
+<span id="cb7-14"><a href="#cb7-14"></a><span class="co">#&gt; 10 1872-01-01 Work in shop.                                 Winter …  1872     1</span></span>
+<span id="cb7-15"><a href="#cb7-15"></a><span class="co">#&gt; # ℹ 3,941 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
-<section id="where-did-freeland-go" class="slide level2">
-<h2>Where did Freeland go?</h2>
-<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-11_fd1b4d64087e9c3a123197951554e3c4">
+<section id="where-did-freeland-go-step-by-step-1" class="slide level2">
+<h2>Where did Freeland go? Step by Step</h2>
+<p>And then filter for only known locations.</p>
+<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-15_23114443d6bf1e08676ac5e7d4294161">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>journals_sub <span class="sc">%&gt;%</span></span>
-<span id="cb8-2"><a href="#cb8-2"></a>    <span class="fu">filter</span>(<span class="fu">is.na</span>(location) <span class="sc">==</span> <span class="cn">FALSE</span>, location <span class="sc">!=</span> <span class="st">"NA"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb8-3"><a href="#cb8-3"></a>    <span class="fu">separate_rows</span>(location, <span class="at">sep =</span> <span class="st">", "</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb8-4"><a href="#cb8-4"></a>    <span class="fu">count</span>(location) <span class="sc">%&gt;%</span></span>
-<span id="cb8-5"><a href="#cb8-5"></a>    <span class="fu">arrange</span>(<span class="fu">desc</span>(n))</span>
-<span id="cb8-6"><a href="#cb8-6"></a><span class="co">#&gt; # A tibble: 343 × 2</span></span>
-<span id="cb8-7"><a href="#cb8-7"></a><span class="co">#&gt;    location            n</span></span>
-<span id="cb8-8"><a href="#cb8-8"></a><span class="co">#&gt;    &lt;chr&gt;           &lt;int&gt;</span></span>
-<span id="cb8-9"><a href="#cb8-9"></a><span class="co">#&gt;  1 Winter Harbor    1000</span></span>
-<span id="cb8-10"><a href="#cb8-10"></a><span class="co">#&gt;  2 West Gouldsboro   105</span></span>
-<span id="cb8-11"><a href="#cb8-11"></a><span class="co">#&gt;  3 home               55</span></span>
-<span id="cb8-12"><a href="#cb8-12"></a><span class="co">#&gt;  4 Ellsworth          51</span></span>
-<span id="cb8-13"><a href="#cb8-13"></a><span class="co">#&gt;  5 Rockland           45</span></span>
-<span id="cb8-14"><a href="#cb8-14"></a><span class="co">#&gt;  6 shop               45</span></span>
-<span id="cb8-15"><a href="#cb8-15"></a><span class="co">#&gt;  7 Bar Harbor         37</span></span>
-<span id="cb8-16"><a href="#cb8-16"></a><span class="co">#&gt;  8 Sullivan           34</span></span>
-<span id="cb8-17"><a href="#cb8-17"></a><span class="co">#&gt;  9 Calais             32</span></span>
-<span id="cb8-18"><a href="#cb8-18"></a><span class="co">#&gt; 10 factory            32</span></span>
-<span id="cb8-19"><a href="#cb8-19"></a><span class="co">#&gt; # ℹ 333 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-2"><a href="#cb8-2"></a>    <span class="fu">filter</span>(<span class="fu">is.na</span>(location) <span class="sc">==</span> <span class="cn">FALSE</span>, location <span class="sc">!=</span> <span class="st">"NA"</span>)</span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="co">#&gt; # A tibble: 1,791 × 5</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="co">#&gt;    date_mdy   journal_entry                                 location  year month</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="co">#&gt;    &lt;date&gt;     &lt;chr&gt;                                         &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a><span class="co">#&gt;  1 1871-12-23 Was married at home in evening by William Ra… Winter …  1871    12</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a><span class="co">#&gt;  2 1871-12-25 Shooting match all day in the evening to Chr… Winter …  1871    12</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="co">#&gt;  3 1871-12-26 About home at work fobbing.                   Winter …  1871    12</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="co">#&gt;  4 1871-12-27 Work about home reed letter from N. H. Higgi… Winter …  1871    12</span></span>
+<span id="cb8-10"><a href="#cb8-10"></a><span class="co">#&gt;  5 1871-12-28 Work about home.                              Winter …  1871    12</span></span>
+<span id="cb8-11"><a href="#cb8-11"></a><span class="co">#&gt;  6 1871-12-29 To work in shop.                              Winter …  1871    12</span></span>
+<span id="cb8-12"><a href="#cb8-12"></a><span class="co">#&gt;  7 1871-12-30 To work in shop.                              Winter …  1871    12</span></span>
+<span id="cb8-13"><a href="#cb8-13"></a><span class="co">#&gt;  8 1872-01-01 Work in shop.                                 Winter …  1872     1</span></span>
+<span id="cb8-14"><a href="#cb8-14"></a><span class="co">#&gt;  9 1872-01-02 Work in shop.                                 Winter …  1872     1</span></span>
+<span id="cb8-15"><a href="#cb8-15"></a><span class="co">#&gt; 10 1872-01-03 Work in shop.                                 Winter …  1872     1</span></span>
+<span id="cb8-16"><a href="#cb8-16"></a><span class="co">#&gt; # ℹ 1,781 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="where-did-freeland-go-step-by-step-2" class="slide level2">
+<h2>Where did Freeland go? Step by Step</h2>
+<p>And then separate rows so each location is on its own row.</p>
+<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-16_d3ed06a6a526b62c04da26b257007d72">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>journals_sub <span class="sc">%&gt;%</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>    <span class="fu">filter</span>(<span class="fu">is.na</span>(location) <span class="sc">==</span> <span class="cn">FALSE</span>, location <span class="sc">!=</span> <span class="st">"NA"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a>    <span class="fu">separate_rows</span>(location, <span class="at">sep =</span> <span class="st">", "</span>)</span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="co">#&gt; # A tibble: 2,364 × 5</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="co">#&gt;    date_mdy   journal_entry                                 location  year month</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a><span class="co">#&gt;    &lt;date&gt;     &lt;chr&gt;                                         &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a><span class="co">#&gt;  1 1871-12-23 Was married at home in evening by William Ra… Winter …  1871    12</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a><span class="co">#&gt;  2 1871-12-25 Shooting match all day in the evening to Chr… Winter …  1871    12</span></span>
+<span id="cb9-9"><a href="#cb9-9"></a><span class="co">#&gt;  3 1871-12-26 About home at work fobbing.                   Winter …  1871    12</span></span>
+<span id="cb9-10"><a href="#cb9-10"></a><span class="co">#&gt;  4 1871-12-27 Work about home reed letter from N. H. Higgi… Winter …  1871    12</span></span>
+<span id="cb9-11"><a href="#cb9-11"></a><span class="co">#&gt;  5 1871-12-28 Work about home.                              Winter …  1871    12</span></span>
+<span id="cb9-12"><a href="#cb9-12"></a><span class="co">#&gt;  6 1871-12-29 To work in shop.                              Winter …  1871    12</span></span>
+<span id="cb9-13"><a href="#cb9-13"></a><span class="co">#&gt;  7 1871-12-30 To work in shop.                              Winter …  1871    12</span></span>
+<span id="cb9-14"><a href="#cb9-14"></a><span class="co">#&gt;  8 1872-01-01 Work in shop.                                 Winter …  1872     1</span></span>
+<span id="cb9-15"><a href="#cb9-15"></a><span class="co">#&gt;  9 1872-01-02 Work in shop.                                 Winter …  1872     1</span></span>
+<span id="cb9-16"><a href="#cb9-16"></a><span class="co">#&gt; 10 1872-01-03 Work in shop.                                 Winter …  1872     1</span></span>
+<span id="cb9-17"><a href="#cb9-17"></a><span class="co">#&gt; # ℹ 2,354 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="where-did-freeland-go-step-by-step-3" class="slide level2">
+<h2>Where did Freeland go? Step by Step</h2>
+<p>And then count the number of times he was at that location</p>
+<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-17_303ae8fd3cd37e04a72a217c5737cc0f">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>journals_sub <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a>    <span class="fu">filter</span>(<span class="fu">is.na</span>(location) <span class="sc">==</span> <span class="cn">FALSE</span>, location <span class="sc">!=</span> <span class="st">"NA"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a>    <span class="fu">separate_rows</span>(location, <span class="at">sep =</span> <span class="st">", "</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a>    <span class="fu">count</span>(location)</span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="co">#&gt; # A tibble: 281 × 2</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a><span class="co">#&gt;    location                       n</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="co">#&gt;    &lt;chr&gt;                      &lt;int&gt;</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a><span class="co">#&gt;  1 " Handkerchief Light Ship"     1</span></span>
+<span id="cb10-9"><a href="#cb10-9"></a><span class="co">#&gt;  2 " North East Harbor"           1</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a><span class="co">#&gt;  3 "Albany Railroad Wharf"        9</span></span>
+<span id="cb10-11"><a href="#cb10-11"></a><span class="co">#&gt;  4 "Atlantic wharf"               2</span></span>
+<span id="cb10-12"><a href="#cb10-12"></a><span class="co">#&gt;  5 "Azores/Western Islands"       1</span></span>
+<span id="cb10-13"><a href="#cb10-13"></a><span class="co">#&gt;  6 "Baker Island"                 2</span></span>
+<span id="cb10-14"><a href="#cb10-14"></a><span class="co">#&gt;  7 "Baker's Island"               1</span></span>
+<span id="cb10-15"><a href="#cb10-15"></a><span class="co">#&gt;  8 "Bakers Island"                1</span></span>
+<span id="cb10-16"><a href="#cb10-16"></a><span class="co">#&gt;  9 "Bangor"                       5</span></span>
+<span id="cb10-17"><a href="#cb10-17"></a><span class="co">#&gt; 10 "Bar Habor"                    3</span></span>
+<span id="cb10-18"><a href="#cb10-18"></a><span class="co">#&gt; # ℹ 271 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="where-did-freeland-go-step-by-step-4" class="slide level2">
+<h2>Where did Freeland go? Step by Step</h2>
+<p>And then arrange the locations in descending order from most visited to least visited.</p>
+<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-18_0e31b9772b5c33b41bd338e206e96961">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>journals_sub <span class="sc">%&gt;%</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a>    <span class="fu">filter</span>(<span class="fu">is.na</span>(location) <span class="sc">==</span> <span class="cn">FALSE</span>, location <span class="sc">!=</span> <span class="st">"NA"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a>    <span class="fu">separate_rows</span>(location, <span class="at">sep =</span> <span class="st">", "</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a>    <span class="fu">count</span>(location) <span class="sc">%&gt;%</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a>    <span class="fu">arrange</span>(<span class="fu">desc</span>(n))</span>
+<span id="cb11-6"><a href="#cb11-6"></a><span class="co">#&gt; # A tibble: 281 × 2</span></span>
+<span id="cb11-7"><a href="#cb11-7"></a><span class="co">#&gt;    location            n</span></span>
+<span id="cb11-8"><a href="#cb11-8"></a><span class="co">#&gt;    &lt;chr&gt;           &lt;int&gt;</span></span>
+<span id="cb11-9"><a href="#cb11-9"></a><span class="co">#&gt;  1 Winter Harbor    1155</span></span>
+<span id="cb11-10"><a href="#cb11-10"></a><span class="co">#&gt;  2 West Gouldsboro   107</span></span>
+<span id="cb11-11"><a href="#cb11-11"></a><span class="co">#&gt;  3 Ellsworth          53</span></span>
+<span id="cb11-12"><a href="#cb11-12"></a><span class="co">#&gt;  4 Rockland           46</span></span>
+<span id="cb11-13"><a href="#cb11-13"></a><span class="co">#&gt;  5 Bar Harbor         38</span></span>
+<span id="cb11-14"><a href="#cb11-14"></a><span class="co">#&gt;  6 Calais             34</span></span>
+<span id="cb11-15"><a href="#cb11-15"></a><span class="co">#&gt;  7 Sullivan           34</span></span>
+<span id="cb11-16"><a href="#cb11-16"></a><span class="co">#&gt;  8 Prospect Harbor    28</span></span>
+<span id="cb11-17"><a href="#cb11-17"></a><span class="co">#&gt;  9 East Sullivan      27</span></span>
+<span id="cb11-18"><a href="#cb11-18"></a><span class="co">#&gt; 10 Bass Harbor        26</span></span>
+<span id="cb11-19"><a href="#cb11-19"></a><span class="co">#&gt; # ℹ 271 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="less-common-places-visited" class="slide level2">
 <h2>Less common places visited?</h2>
-<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-12_1e142d76c184388617a75f053a00d32f">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>journals_sub <span class="sc">%&gt;%</span></span>
-<span id="cb9-2"><a href="#cb9-2"></a>    <span class="fu">filter</span>(<span class="fu">is.na</span>(location) <span class="sc">==</span> <span class="cn">FALSE</span>, location <span class="sc">!=</span> <span class="st">"NA"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb9-3"><a href="#cb9-3"></a>    <span class="fu">separate_rows</span>(location, <span class="at">sep =</span> <span class="st">", "</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb9-4"><a href="#cb9-4"></a>    <span class="fu">count</span>(location) <span class="sc">%&gt;%</span></span>
-<span id="cb9-5"><a href="#cb9-5"></a>    <span class="fu">slice_min</span>(n, <span class="at">n =</span> <span class="dv">15</span>, <span class="at">with_ties =</span> <span class="cn">FALSE</span>) </span>
-<span id="cb9-6"><a href="#cb9-6"></a><span class="co">#&gt; # A tibble: 15 × 2</span></span>
-<span id="cb9-7"><a href="#cb9-7"></a><span class="co">#&gt;    location                       n</span></span>
-<span id="cb9-8"><a href="#cb9-8"></a><span class="co">#&gt;    &lt;chr&gt;                      &lt;int&gt;</span></span>
-<span id="cb9-9"><a href="#cb9-9"></a><span class="co">#&gt;  1 " Handkerchief Light Ship"     1</span></span>
-<span id="cb9-10"><a href="#cb9-10"></a><span class="co">#&gt;  2 " North East Harbor"           1</span></span>
-<span id="cb9-11"><a href="#cb9-11"></a><span class="co">#&gt;  3 "Albany Rail Road Whard"       1</span></span>
-<span id="cb9-12"><a href="#cb9-12"></a><span class="co">#&gt;  4 "Azores/Western Islands"       1</span></span>
-<span id="cb9-13"><a href="#cb9-13"></a><span class="co">#&gt;  5 "Bakers Island"                1</span></span>
-<span id="cb9-14"><a href="#cb9-14"></a><span class="co">#&gt;  6 "Barbacoa Harbor"              1</span></span>
-<span id="cb9-15"><a href="#cb9-15"></a><span class="co">#&gt;  7 "Barge"                        1</span></span>
-<span id="cb9-16"><a href="#cb9-16"></a><span class="co">#&gt;  8 "Bass Habor"                   1</span></span>
-<span id="cb9-17"><a href="#cb9-17"></a><span class="co">#&gt;  9 "Bass Harbobr"                 1</span></span>
-<span id="cb9-18"><a href="#cb9-18"></a><span class="co">#&gt; 10 "Bath"                         1</span></span>
-<span id="cb9-19"><a href="#cb9-19"></a><span class="co">#&gt; 11 "Block Island Channel"         1</span></span>
-<span id="cb9-20"><a href="#cb9-20"></a><span class="co">#&gt; 12 "Boothbay"                     1</span></span>
-<span id="cb9-21"><a href="#cb9-21"></a><span class="co">#&gt; 13 "Boston Flats"                 1</span></span>
-<span id="cb9-22"><a href="#cb9-22"></a><span class="co">#&gt; 14 "Boston Harbor"                1</span></span>
-<span id="cb9-23"><a href="#cb9-23"></a><span class="co">#&gt; 15 "Brooklyn dock"                1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-19_6904084def76a450efd347a8a5902f5b">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>journals_sub <span class="sc">%&gt;%</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a>    <span class="fu">filter</span>(<span class="fu">is.na</span>(location) <span class="sc">==</span> <span class="cn">FALSE</span>, location <span class="sc">!=</span> <span class="st">"NA"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a>    <span class="fu">separate_rows</span>(location, <span class="at">sep =</span> <span class="st">", "</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a>    <span class="fu">count</span>(location) <span class="sc">%&gt;%</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a>    <span class="fu">slice_min</span>(n, <span class="at">n =</span> <span class="dv">15</span>, <span class="at">with_ties =</span> <span class="cn">FALSE</span>) </span>
+<span id="cb12-6"><a href="#cb12-6"></a><span class="co">#&gt; # A tibble: 15 × 2</span></span>
+<span id="cb12-7"><a href="#cb12-7"></a><span class="co">#&gt;    location                       n</span></span>
+<span id="cb12-8"><a href="#cb12-8"></a><span class="co">#&gt;    &lt;chr&gt;                      &lt;int&gt;</span></span>
+<span id="cb12-9"><a href="#cb12-9"></a><span class="co">#&gt;  1 " Handkerchief Light Ship"     1</span></span>
+<span id="cb12-10"><a href="#cb12-10"></a><span class="co">#&gt;  2 " North East Harbor"           1</span></span>
+<span id="cb12-11"><a href="#cb12-11"></a><span class="co">#&gt;  3 "Azores/Western Islands"       1</span></span>
+<span id="cb12-12"><a href="#cb12-12"></a><span class="co">#&gt;  4 "Baker's Island"               1</span></span>
+<span id="cb12-13"><a href="#cb12-13"></a><span class="co">#&gt;  5 "Bakers Island"                1</span></span>
+<span id="cb12-14"><a href="#cb12-14"></a><span class="co">#&gt;  6 "Barbacoa Harbor"              1</span></span>
+<span id="cb12-15"><a href="#cb12-15"></a><span class="co">#&gt;  7 "Bass Habor"                   1</span></span>
+<span id="cb12-16"><a href="#cb12-16"></a><span class="co">#&gt;  8 "Bath"                         1</span></span>
+<span id="cb12-17"><a href="#cb12-17"></a><span class="co">#&gt;  9 "Block Island Channel"         1</span></span>
+<span id="cb12-18"><a href="#cb12-18"></a><span class="co">#&gt; 10 "Boothbay"                     1</span></span>
+<span id="cb12-19"><a href="#cb12-19"></a><span class="co">#&gt; 11 "Brooklyn dock"                1</span></span>
+<span id="cb12-20"><a href="#cb12-20"></a><span class="co">#&gt; 12 "Bucks Ledge"                  1</span></span>
+<span id="cb12-21"><a href="#cb12-21"></a><span class="co">#&gt; 13 "Camden"                       1</span></span>
+<span id="cb12-22"><a href="#cb12-22"></a><span class="co">#&gt; 14 "Canary Islands"               1</span></span>
+<span id="cb12-23"><a href="#cb12-23"></a><span class="co">#&gt; 15 "Cape Cod"                     1</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="plotting-frequency-of-visits" class="slide level2">
 <h2>Plotting frequency of visits</h2>
-<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-13_ac9a3f99f8fffa400484120a366e8211">
-<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>journals_sub <span class="sc">%&gt;%</span></span>
-<span id="cb10-2"><a href="#cb10-2"></a>    <span class="fu">filter</span>(<span class="fu">is.na</span>(location) <span class="sc">==</span> <span class="cn">FALSE</span>, location <span class="sc">!=</span> <span class="st">"NA"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb10-3"><a href="#cb10-3"></a>    <span class="fu">separate_rows</span>(location, <span class="at">sep =</span> <span class="st">", "</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb10-4"><a href="#cb10-4"></a>    <span class="fu">count</span>(location) <span class="sc">%&gt;%</span></span>
-<span id="cb10-5"><a href="#cb10-5"></a>    <span class="fu">slice_max</span>(n, <span class="at">n =</span> <span class="dv">15</span>, <span class="at">with_ties =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb10-6"><a href="#cb10-6"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> n, <span class="at">y =</span> <span class="fu">fct_reorder</span>(location, n))) <span class="sc">+</span></span>
-<span id="cb10-7"><a href="#cb10-7"></a>    <span class="fu">geom_col</span>() <span class="sc">+</span></span>
-<span id="cb10-8"><a href="#cb10-8"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Number of mentions"</span>, <span class="at">y =</span> <span class="st">"Location"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-20_c5ec6f2efae582c88f6b4f8833c86182">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>journals_sub <span class="sc">%&gt;%</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a>    <span class="fu">filter</span>(<span class="fu">is.na</span>(location) <span class="sc">==</span> <span class="cn">FALSE</span>, location <span class="sc">!=</span> <span class="st">"NA"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb13-3"><a href="#cb13-3"></a>    <span class="fu">separate_rows</span>(location, <span class="at">sep =</span> <span class="st">", "</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb13-4"><a href="#cb13-4"></a>    <span class="fu">count</span>(location) <span class="sc">%&gt;%</span></span>
+<span id="cb13-5"><a href="#cb13-5"></a>    <span class="fu">slice_max</span>(n, <span class="at">n =</span> <span class="dv">15</span>, <span class="at">with_ties =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb13-6"><a href="#cb13-6"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> n, <span class="at">y =</span> <span class="fu">fct_reorder</span>(location, n))) <span class="sc">+</span></span>
+<span id="cb13-7"><a href="#cb13-7"></a>    <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb13-8"><a href="#cb13-8"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Number of mentions"</span>, <span class="at">y =</span> <span class="st">"Location"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 
 </div>
-<img data-src="01-fb-tidydata_files/figure-revealjs/unnamed-chunk-13-1.png" width="3000" class="r-stretch"></section>
+<img data-src="01-fb-tidydata_files/figure-revealjs/unnamed-chunk-20-1.png" width="3000" class="r-stretch"></section>
 <section id="fixing-mispellings" class="slide level2">
 <h2>Fixing Mispellings</h2>
-<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-14_8b99f11e61d6ebeae5add99b6db40f27">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>journals_sub <span class="sc">%&gt;%</span></span>
-<span id="cb11-2"><a href="#cb11-2"></a>    <span class="fu">separate_rows</span>(location, <span class="at">sep =</span> <span class="st">", "</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb11-3"><a href="#cb11-3"></a>    <span class="fu">filter</span>(<span class="fu">str_detect</span>(<span class="at">string =</span> location, <span class="at">pattern =</span> <span class="st">"C</span><span class="sc">\\</span><span class="st">.|C |Cranberry"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb11-4"><a href="#cb11-4"></a>    <span class="fu">distinct</span>(location)</span>
-<span id="cb11-5"><a href="#cb11-5"></a><span class="co">#&gt; # A tibble: 9 × 1</span></span>
-<span id="cb11-6"><a href="#cb11-6"></a><span class="co">#&gt;   location             </span></span>
-<span id="cb11-7"><a href="#cb11-7"></a><span class="co">#&gt;   &lt;chr&gt;                </span></span>
-<span id="cb11-8"><a href="#cb11-8"></a><span class="co">#&gt; 1 C. Isles             </span></span>
-<span id="cb11-9"><a href="#cb11-9"></a><span class="co">#&gt; 2 C Isles              </span></span>
-<span id="cb11-10"><a href="#cb11-10"></a><span class="co">#&gt; 3 C isles              </span></span>
-<span id="cb11-11"><a href="#cb11-11"></a><span class="co">#&gt; 4 Cranberry Isle harbor</span></span>
-<span id="cb11-12"><a href="#cb11-12"></a><span class="co">#&gt; 5 Cranberry Isle       </span></span>
-<span id="cb11-13"><a href="#cb11-13"></a><span class="co">#&gt; 6 Cranberry Isles      </span></span>
-<span id="cb11-14"><a href="#cb11-14"></a><span class="co">#&gt; 7 Cranberry Islands    </span></span>
-<span id="cb11-15"><a href="#cb11-15"></a><span class="co">#&gt; 8 Cranberry Island     </span></span>
-<span id="cb11-16"><a href="#cb11-16"></a><span class="co">#&gt; 9 Cranberry IIsles</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-21_d606f14da45c72607af84f0ad96705bb">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>journals_sub <span class="sc">%&gt;%</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a>    <span class="fu">separate_rows</span>(location, <span class="at">sep =</span> <span class="st">", "</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb14-3"><a href="#cb14-3"></a>    <span class="fu">filter</span>(<span class="fu">str_detect</span>(<span class="at">string =</span> location, <span class="at">pattern =</span> <span class="st">"Cranberry"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb14-4"><a href="#cb14-4"></a>    <span class="fu">distinct</span>(location)</span>
+<span id="cb14-5"><a href="#cb14-5"></a><span class="co">#&gt; # A tibble: 4 × 1</span></span>
+<span id="cb14-6"><a href="#cb14-6"></a><span class="co">#&gt;   location        </span></span>
+<span id="cb14-7"><a href="#cb14-7"></a><span class="co">#&gt;   &lt;chr&gt;           </span></span>
+<span id="cb14-8"><a href="#cb14-8"></a><span class="co">#&gt; 1 Cranberry Isles </span></span>
+<span id="cb14-9"><a href="#cb14-9"></a><span class="co">#&gt; 2 Cranberry Isle  </span></span>
+<span id="cb14-10"><a href="#cb14-10"></a><span class="co">#&gt; 3 Cranberry Island</span></span>
+<span id="cb14-11"><a href="#cb14-11"></a><span class="co">#&gt; 4 Cranberry IIsles</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="tidying-words-using-case_when" class="slide level2">
 <h2>Tidying words using <code>case_when</code></h2>
-<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-15_4db0aebca5c4c062f05b061134be1b3c">
-<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>journals_sub <span class="ot">&lt;-</span> journals_sub <span class="sc">%&gt;%</span></span>
-<span id="cb12-2"><a href="#cb12-2"></a>    <span class="fu">separate_rows</span>(location, <span class="at">sep =</span> <span class="st">", "</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb12-3"><a href="#cb12-3"></a>    <span class="fu">mutate</span>(<span class="at">location =</span> <span class="fu">case_when</span>(location <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"C. Isle"</span>, <span class="st">"C. Isles"</span>, <span class="st">"C Isles"</span>, </span>
-<span id="cb12-4"><a href="#cb12-4"></a>                                                <span class="st">"C isles"</span>, <span class="st">"Cranberry IIsles"</span>, <span class="st">"Cranberry Isle"</span>, <span class="st">"Cranberry Isle harbor"</span>, <span class="st">"Cranberry Isles"</span>, <span class="st">"Cranberry Islands"</span>, <span class="st">"Cranberry Island"</span>) <span class="sc">~</span> <span class="st">"Cranberry Isles"</span>,</span>
-<span id="cb12-5"><a href="#cb12-5"></a>                            <span class="cn">TRUE</span> <span class="sc">~</span> location))</span>
-<span id="cb12-6"><a href="#cb12-6"></a></span>
-<span id="cb12-7"><a href="#cb12-7"></a></span>
-<span id="cb12-8"><a href="#cb12-8"></a>journals_sub <span class="sc">%&gt;%</span></span>
-<span id="cb12-9"><a href="#cb12-9"></a>    <span class="fu">separate_rows</span>(location, <span class="at">sep =</span> <span class="st">", "</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb12-10"><a href="#cb12-10"></a>    <span class="fu">filter</span>(<span class="fu">str_detect</span>(<span class="at">string =</span> location, <span class="at">pattern =</span> <span class="st">"C</span><span class="sc">\\</span><span class="st">.|C |Cranberry"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb12-11"><a href="#cb12-11"></a>    <span class="fu">distinct</span>(location)</span>
-<span id="cb12-12"><a href="#cb12-12"></a><span class="co">#&gt; # A tibble: 1 × 1</span></span>
-<span id="cb12-13"><a href="#cb12-13"></a><span class="co">#&gt;   location       </span></span>
-<span id="cb12-14"><a href="#cb12-14"></a><span class="co">#&gt;   &lt;chr&gt;          </span></span>
-<span id="cb12-15"><a href="#cb12-15"></a><span class="co">#&gt; 1 Cranberry Isles</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-22_8d8a4199f7df18821ef80c533b078813">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>journals_sub <span class="ot">&lt;-</span> journals_sub <span class="sc">%&gt;%</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a>    <span class="fu">separate_rows</span>(location, <span class="at">sep =</span> <span class="st">", "</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb15-3"><a href="#cb15-3"></a>    <span class="fu">mutate</span>(<span class="at">location =</span> <span class="fu">case_when</span>(location <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"Cranberry IIsles"</span>, <span class="st">"Cranberry Isle"</span>, <span class="st">"Cranberry Island"</span>) <span class="sc">~</span> <span class="st">"Cranberry Isles"</span>,</span>
+<span id="cb15-4"><a href="#cb15-4"></a>                            <span class="cn">TRUE</span> <span class="sc">~</span> location))</span>
+<span id="cb15-5"><a href="#cb15-5"></a></span>
+<span id="cb15-6"><a href="#cb15-6"></a></span>
+<span id="cb15-7"><a href="#cb15-7"></a>journals_sub <span class="sc">%&gt;%</span></span>
+<span id="cb15-8"><a href="#cb15-8"></a>    <span class="fu">separate_rows</span>(location, <span class="at">sep =</span> <span class="st">", "</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb15-9"><a href="#cb15-9"></a>    <span class="fu">filter</span>(<span class="fu">str_detect</span>(<span class="at">string =</span> location, <span class="at">pattern =</span> <span class="st">"Cranberry"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb15-10"><a href="#cb15-10"></a>    <span class="fu">distinct</span>(location)</span>
+<span id="cb15-11"><a href="#cb15-11"></a><span class="co">#&gt; # A tibble: 1 × 1</span></span>
+<span id="cb15-12"><a href="#cb15-12"></a><span class="co">#&gt;   location       </span></span>
+<span id="cb15-13"><a href="#cb15-13"></a><span class="co">#&gt;   &lt;chr&gt;          </span></span>
+<span id="cb15-14"><a href="#cb15-14"></a><span class="co">#&gt; 1 Cranberry Isles</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="your-turn-fix-bass-harbor-misspellings" class="slide level2">
 <h2>Your Turn: Fix Bass Harbor misspellings</h2>
-<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-16_19e498cff6df568a0818ac460c999e2a">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>journals_sub <span class="sc">%&gt;%</span></span>
-<span id="cb13-2"><a href="#cb13-2"></a>    <span class="fu">separate_rows</span>(location, <span class="at">sep =</span> <span class="st">", "</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb13-3"><a href="#cb13-3"></a>    <span class="fu">filter</span>(<span class="fu">str_detect</span>(<span class="at">string =</span> location, <span class="at">pattern =</span> <span class="st">"Bass|bass"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb13-4"><a href="#cb13-4"></a>    <span class="fu">distinct</span>(location)</span>
-<span id="cb13-5"><a href="#cb13-5"></a><span class="co">#&gt; # A tibble: 4 × 1</span></span>
-<span id="cb13-6"><a href="#cb13-6"></a><span class="co">#&gt;   location         </span></span>
-<span id="cb13-7"><a href="#cb13-7"></a><span class="co">#&gt;   &lt;chr&gt;            </span></span>
-<span id="cb13-8"><a href="#cb13-8"></a><span class="co">#&gt; 1 Bass Harbor      </span></span>
-<span id="cb13-9"><a href="#cb13-9"></a><span class="co">#&gt; 2 Bass Harbobr     </span></span>
-<span id="cb13-10"><a href="#cb13-10"></a><span class="co">#&gt; 3 Bass Habor       </span></span>
-<span id="cb13-11"><a href="#cb13-11"></a><span class="co">#&gt; 4 Outer Bass Harbor</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-23_2b223a6e85aa198d0914f5c2bcb832ac">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>journals_sub <span class="sc">%&gt;%</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a>    <span class="fu">separate_rows</span>(location, <span class="at">sep =</span> <span class="st">", "</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb16-3"><a href="#cb16-3"></a>    <span class="fu">filter</span>(<span class="fu">str_detect</span>(<span class="at">string =</span> location, <span class="at">pattern =</span> <span class="st">"Bass|bass"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb16-4"><a href="#cb16-4"></a>    <span class="fu">distinct</span>(location)</span>
+<span id="cb16-5"><a href="#cb16-5"></a><span class="co">#&gt; # A tibble: 3 × 1</span></span>
+<span id="cb16-6"><a href="#cb16-6"></a><span class="co">#&gt;   location         </span></span>
+<span id="cb16-7"><a href="#cb16-7"></a><span class="co">#&gt;   &lt;chr&gt;            </span></span>
+<span id="cb16-8"><a href="#cb16-8"></a><span class="co">#&gt; 1 Bass Harbor      </span></span>
+<span id="cb16-9"><a href="#cb16-9"></a><span class="co">#&gt; 2 Bass Habor       </span></span>
+<span id="cb16-10"><a href="#cb16-10"></a><span class="co">#&gt; 3 Outer Bass Harbor</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-17_cad6657e0547e43401760fea9e76a903">
-<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a></span>
-<span id="cb14-2"><a href="#cb14-2"></a>journals_loc <span class="ot">&lt;-</span> journals_loc <span class="sc">%&gt;%</span></span>
-<span id="cb14-3"><a href="#cb14-3"></a>    <span class="fu">mutate</span>(<span class="at">location =</span> <span class="fu">case_when</span>(location <span class="sc">%in%</span> <span class="fu">c</span>(__________) <span class="sc">~</span> _______,</span>
-<span id="cb14-4"><a href="#cb14-4"></a>                            <span class="cn">TRUE</span> <span class="sc">~</span> location))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-24_ac787e7bbe279255f0c988ff299f38cf">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a></span>
+<span id="cb17-2"><a href="#cb17-2"></a>journals_loc <span class="ot">&lt;-</span> journals_loc <span class="sc">%&gt;%</span></span>
+<span id="cb17-3"><a href="#cb17-3"></a>    <span class="fu">mutate</span>(<span class="at">location =</span> <span class="fu">case_when</span>(location <span class="sc">%in%</span> <span class="fu">c</span>(__________) <span class="sc">~</span> _______,</span>
+<span id="cb17-4"><a href="#cb17-4"></a>                            <span class="cn">TRUE</span> <span class="sc">~</span> location))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-18_cf9335cd58c3081b432da08549cb3bfe">
+<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-25_392d6baca088c6878a5dc37fd9da5379">
 
 </div>
 </section>
 <section id="where-did-freeland-visit" class="slide level2">
 <h2>Where did Freeland visit</h2>
 
-<img data-src="01-fb-tidydata_files/figure-revealjs/unnamed-chunk-19-1.png" width="3000" class="r-stretch"></section>
+<img data-src="01-fb-tidydata_files/figure-revealjs/unnamed-chunk-26-1.png" width="3000" class="r-stretch"></section>
 <section id="where-did-freeland-visit-each-year" class="slide level2">
 <h2>Where did Freeland visit each year?</h2>
 
-<img data-src="01-fb-tidydata_files/figure-revealjs/unnamed-chunk-20-1.png" width="3000" class="r-stretch"></section>
+<img data-src="01-fb-tidydata_files/figure-revealjs/unnamed-chunk-27-1.png" width="3000" class="r-stretch"></section>
 <section id="where-did-freeland-visit-each-year-code" class="slide level2">
 <h2>Where did Freeland visit each year? Code</h2>
-<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-21_df9da55f7b1e1ede69ced81928458d46">
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>journals_loc_count <span class="ot">&lt;-</span> journals_sub <span class="sc">%&gt;%</span></span>
-<span id="cb15-2"><a href="#cb15-2"></a>    <span class="fu">separate_rows</span>(location, <span class="at">sep =</span> <span class="st">", "</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb15-3"><a href="#cb15-3"></a>    <span class="fu">filter</span>(location <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"West Gouldsboro"</span>, <span class="st">"Ellsworth"</span>, <span class="st">"Rockland"</span>, <span class="st">"Bar Harbor"</span>, <span class="st">"Sullivan"</span>, <span class="st">"Calais"</span>, <span class="st">"Prospect Harbor"</span>, <span class="st">"East Sullivan"</span>, <span class="st">"Boston"</span>, <span class="st">"Bass Harbor"</span>, <span class="st">"Cranberry Isles"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb15-4"><a href="#cb15-4"></a>    <span class="fu">group_by</span>(year) <span class="sc">%&gt;%</span></span>
-<span id="cb15-5"><a href="#cb15-5"></a>    <span class="fu">count</span>(location)</span>
-<span id="cb15-6"><a href="#cb15-6"></a></span>
-<span id="cb15-7"><a href="#cb15-7"></a>journals_loc_count <span class="sc">%&gt;%</span></span>
-<span id="cb15-8"><a href="#cb15-8"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> n, <span class="at">color =</span> location)) <span class="sc">+</span></span>
-<span id="cb15-9"><a href="#cb15-9"></a>    <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb15-10"><a href="#cb15-10"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Year"</span>, <span class="at">y =</span> <span class="st">"Number of mentions"</span>, <span class="at">color =</span> <span class="st">"Location"</span>, <span class="at">title =</span> <span class="st">"Number of times place visited each year by Freeland Bunker"</span>, <span class="at">subtitle =</span> <span class="st">"Locations don't include home, shop, factor, and Winter Harbor"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-28_708f777b2122b1005594d4595f2e43ed">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>journals_loc_count <span class="ot">&lt;-</span> journals_sub <span class="sc">%&gt;%</span></span>
+<span id="cb18-2"><a href="#cb18-2"></a>    <span class="fu">separate_rows</span>(location, <span class="at">sep =</span> <span class="st">", "</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb18-3"><a href="#cb18-3"></a>    <span class="fu">filter</span>(location <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"West Gouldsboro"</span>, <span class="st">"Ellsworth"</span>, <span class="st">"Rockland"</span>, <span class="st">"Bar Harbor"</span>, <span class="st">"Sullivan"</span>, <span class="st">"Calais"</span>, <span class="st">"Prospect Harbor"</span>, <span class="st">"East Sullivan"</span>, <span class="st">"Boston"</span>, <span class="st">"Bass Harbor"</span>, <span class="st">"Cranberry Isles"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb18-4"><a href="#cb18-4"></a>    <span class="fu">group_by</span>(year) <span class="sc">%&gt;%</span></span>
+<span id="cb18-5"><a href="#cb18-5"></a>    <span class="fu">count</span>(location)</span>
+<span id="cb18-6"><a href="#cb18-6"></a></span>
+<span id="cb18-7"><a href="#cb18-7"></a>journals_loc_count <span class="sc">%&gt;%</span></span>
+<span id="cb18-8"><a href="#cb18-8"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> n, <span class="at">color =</span> location)) <span class="sc">+</span></span>
+<span id="cb18-9"><a href="#cb18-9"></a>    <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb18-10"><a href="#cb18-10"></a>    <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Year"</span>, <span class="at">y =</span> <span class="st">"Number of mentions"</span>, <span class="at">color =</span> <span class="st">"Location"</span>, <span class="at">title =</span> <span class="st">"Number of times place visited each year by Freeland Bunker"</span>, <span class="at">subtitle =</span> <span class="st">"Locations don't include home, shop, factor, and Winter Harbor"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="mapping" class="slide level2">
 <h2>Mapping</h2>
-<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-22_8a081cb84ac9e32afc612d2b750a826a">
-<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>location_coordinates <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="at">path =</span> <span class="st">"data/location_coordinates.xlsx"</span>)</span>
-<span id="cb16-2"><a href="#cb16-2"></a></span>
-<span id="cb16-3"><a href="#cb16-3"></a><span class="fu">head</span>(location_coordinates)</span>
-<span id="cb16-4"><a href="#cb16-4"></a><span class="co">#&gt; # A tibble: 6 × 8</span></span>
-<span id="cb16-5"><a href="#cb16-5"></a><span class="co">#&gt;   location n_mentions official_name_check latitude longitude recorder checked_by</span></span>
-<span id="cb16-6"><a href="#cb16-6"></a><span class="co">#&gt;   &lt;chr&gt;         &lt;dbl&gt; &lt;lgl&gt;                  &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;    &lt;lgl&gt;     </span></span>
-<span id="cb16-7"><a href="#cb16-7"></a><span class="co">#&gt; 1 Winter …       1000 NA                      44.4     -68.1 NH       NA        </span></span>
-<span id="cb16-8"><a href="#cb16-8"></a><span class="co">#&gt; 2 West Go…        105 NA                      44.5     -68.1 NH       NA        </span></span>
-<span id="cb16-9"><a href="#cb16-9"></a><span class="co">#&gt; 3 home             55 NA                      NA        NA   &lt;NA&gt;     NA        </span></span>
-<span id="cb16-10"><a href="#cb16-10"></a><span class="co">#&gt; 4 Ellswor…         51 NA                      44.5     -68.4 NH       NA        </span></span>
-<span id="cb16-11"><a href="#cb16-11"></a><span class="co">#&gt; 5 Rockland         45 NA                      44.1     -69.1 NH       NA        </span></span>
-<span id="cb16-12"><a href="#cb16-12"></a><span class="co">#&gt; 6 shop             45 NA                      NA        NA   &lt;NA&gt;     NA        </span></span>
-<span id="cb16-13"><a href="#cb16-13"></a><span class="co">#&gt; # ℹ 1 more variable: notes &lt;lgl&gt;</span></span>
-<span id="cb16-14"><a href="#cb16-14"></a></span>
-<span id="cb16-15"><a href="#cb16-15"></a>loc_df <span class="ot">&lt;-</span> journals_sub <span class="sc">%&gt;%</span></span>
-<span id="cb16-16"><a href="#cb16-16"></a>    <span class="fu">separate_rows</span>(location, <span class="at">sep =</span> <span class="st">", "</span>)  <span class="sc">%&gt;%</span></span>
-<span id="cb16-17"><a href="#cb16-17"></a>    <span class="fu">count</span>(location) <span class="sc">%&gt;%</span></span>
-<span id="cb16-18"><a href="#cb16-18"></a>    <span class="fu">left_join</span>(location_coordinates, <span class="at">by =</span> <span class="st">"location"</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb16-19"><a href="#cb16-19"></a>    <span class="fu">drop_na</span>(latitude)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-29_2296d253440ea2b5295a10e7a74c1987">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>location_coordinates <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="at">path =</span> <span class="st">"data/location_coordinates.xlsx"</span>)</span>
+<span id="cb19-2"><a href="#cb19-2"></a></span>
+<span id="cb19-3"><a href="#cb19-3"></a><span class="fu">head</span>(location_coordinates, <span class="at">n =</span> <span class="dv">2</span>)</span>
+<span id="cb19-4"><a href="#cb19-4"></a><span class="co">#&gt; # A tibble: 2 × 8</span></span>
+<span id="cb19-5"><a href="#cb19-5"></a><span class="co">#&gt;   location n_mentions official_name_check latitude longitude recorder checked_by</span></span>
+<span id="cb19-6"><a href="#cb19-6"></a><span class="co">#&gt;   &lt;chr&gt;         &lt;dbl&gt; &lt;lgl&gt;                  &lt;dbl&gt;     &lt;dbl&gt; &lt;chr&gt;    &lt;lgl&gt;     </span></span>
+<span id="cb19-7"><a href="#cb19-7"></a><span class="co">#&gt; 1 Winter …       1000 NA                      44.4     -68.1 NH       NA        </span></span>
+<span id="cb19-8"><a href="#cb19-8"></a><span class="co">#&gt; 2 West Go…        105 NA                      44.5     -68.1 NH       NA        </span></span>
+<span id="cb19-9"><a href="#cb19-9"></a><span class="co">#&gt; # ℹ 1 more variable: notes &lt;lgl&gt;</span></span>
+<span id="cb19-10"><a href="#cb19-10"></a></span>
+<span id="cb19-11"><a href="#cb19-11"></a>loc_df <span class="ot">&lt;-</span> journals_sub <span class="sc">%&gt;%</span></span>
+<span id="cb19-12"><a href="#cb19-12"></a>    <span class="fu">separate_rows</span>(location, <span class="at">sep =</span> <span class="st">", "</span>)  <span class="sc">%&gt;%</span></span>
+<span id="cb19-13"><a href="#cb19-13"></a>    <span class="fu">count</span>(location) <span class="sc">%&gt;%</span></span>
+<span id="cb19-14"><a href="#cb19-14"></a>    <span class="fu">left_join</span>(location_coordinates, <span class="at">by =</span> <span class="st">"location"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb19-15"><a href="#cb19-15"></a>    <span class="fu">drop_na</span>(latitude)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>Homework: Add 5 more sets of coordinates to the <a href="https://docs.google.com/spreadsheets/d/1vA5YjlsGHQBSmUOFsBpPSJhObK601zE3/edit?usp=sharing&amp;ouid=104076949272458477636&amp;rtpof=true&amp;sd=true">location excel file</a></p>
+</section>
+<section id="where-did-freeland-go" class="slide level2">
+<h2>Where did Freeland go?</h2>
+<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-30_bedc5cd352fc4eb1c09253088bf581ae">
+<div class="cell-output-display">
+<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-075c09da9d101c7666d1" style="width:3000px;height:1500px;"></div>
+<script type="application/json" data-for="htmlwidget-075c09da9d101c7666d1">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[43.5,-66],9,[]],"calls":[{"method":"addProviderTiles","args":["OpenStreetMap",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addCircleMarkers","args":[[44.23879938,44.2585131,44.21412573,44.54105229,44.52816854,44.41062098,44.1041007,44.46922347,44.39116851],[-68.34644791,-68.27013482,-68.67589735,-68.42420475,-68.2534335,-68.02456023,-69.10869077,-68.09937127,-68.09811741],[0.28,0.26,0.17,0.53,0.08,0.28,0.46,1.07,11.55],null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,null,null,["Bass Harbor","Cranberry Isles","Deer Isle","Ellsworth","Hancock","Prospect Harbor","Rockland","West Gouldsboro","Winter Harbor"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[44.1041007,44.54105229],"lng":[-69.10869077,-68.02456023]}},"evals":[],"jsHooks":[]}</script>
+</div>
 </div>
 </section>
 <section id="where-did-freeland-go-1" class="slide level2">
 <h2>Where did Freeland go?</h2>
-<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-23_9943864c3600fc2603d52699c593d740">
-<div class="cell-output-display">
-<div class="leaflet html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-7e660c839fdef3769343" style="width:3000px;height:1500px;"></div>
-<script type="application/json" data-for="htmlwidget-7e660c839fdef3769343">{"x":{"options":{"crs":{"crsClass":"L.CRS.EPSG3857","code":null,"proj4def":null,"projectedBounds":null,"options":{}}},"setView":[[43.5,-66],9,[]],"calls":[{"method":"addProviderTiles","args":["OpenStreetMap",null,null,{"errorTileUrl":"","noWrap":false,"detectRetina":false}]},{"method":"addCircleMarkers","args":[[44.23879938,44.2585131,44.21412573,44.54105229,44.52816854,44.41062098,44.1041007,44.52761858,44.46922347,44.39116851],[-68.34644791,-68.27013482,-68.67589735,-68.42420475,-68.2534335,-68.02456023,-69.10869077,-68.30612654,-68.09937127,-68.09811741],[0.28,0.24,0.12,0.51,0.07,0.28,0.45,0.04,1.05,10],null,null,{"interactive":true,"className":"","stroke":true,"color":"#03F","weight":5,"opacity":0.5,"fill":true,"fillColor":"#03F","fillOpacity":0.2},null,null,null,null,["Bass Harbor","Cranberry Isles","Deer Isle","Ellsworth","Hancock","Prospect Harbor","Rockland","Skillings river","West Gouldsboro","Winter Harbor"],{"interactive":false,"permanent":false,"direction":"auto","opacity":1,"offset":[0,0],"textsize":"10px","textOnly":false,"className":"","sticky":true},null]}],"limits":{"lat":[44.1041007,44.54105229],"lng":[-69.10869077,-68.02456023]}},"evals":[],"jsHooks":[]}</script>
-</div>
+<div class="cell" data-hash="01-fb-tidydata_cache/revealjs/unnamed-chunk-31_c9f53a62d87c22033597855bd2f6a2d3">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a><span class="fu">library</span>(leaflet)</span>
+<span id="cb20-2"><a href="#cb20-2"></a></span>
+<span id="cb20-3"><a href="#cb20-3"></a><span class="fu">leaflet</span>(<span class="at">data =</span> loc_df) <span class="sc">%&gt;%</span></span>
+<span id="cb20-4"><a href="#cb20-4"></a>     <span class="fu">setView</span>(<span class="at">lng =</span> <span class="sc">-</span><span class="dv">66</span>, <span class="at">lat =</span> <span class="fl">43.5</span>, <span class="at">zoom =</span> <span class="dv">9</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb20-5"><a href="#cb20-5"></a>     <span class="fu">addProviderTiles</span>(providers<span class="sc">$</span>OpenStreetMap) <span class="sc">%&gt;%</span></span>
+<span id="cb20-6"><a href="#cb20-6"></a>     <span class="fu">addCircleMarkers</span>(<span class="at">lng =</span> <span class="sc">~</span>longitude, <span class="at">lat =</span> <span class="sc">~</span>latitude, <span class="at">label =</span> <span class="sc">~</span>location, <span class="at">radius =</span> <span class="sc">~</span>n<span class="sc">/</span><span class="dv">100</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section></section>
 <section id="thanks" class="title-slide slide level1 center" data-background-image="figs/p_and_p_cover.png" data-background-size="cover" data-background-opacity="0.5">

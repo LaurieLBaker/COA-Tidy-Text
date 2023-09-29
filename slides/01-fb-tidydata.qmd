@@ -33,6 +33,78 @@ Slide Structure and Design inspired by Julia Silge
 
 </center>
 
+## What can you do with R? A snapshot
+
+
+## Influence of target species on fishing effort
+
+```{r echo=FALSE, out.width="80%", fig.align="center", fig.cap = "Woman on boat holding a fish and a crab"}
+knitr::include_graphics("figs/congrio_centolla.jpg")
+```
+
+## Who is fishing?
+
+```{r echo=FALSE, out.width="80%", fig.align="center", fig.cap = "Plot showing the vessel length and width as boats on a scatter plot where the size of the boat is proportional to the carrying capacity of the vessel"}
+knitr::include_graphics("figs/fishing_who.png")
+```
+
+
+## How are vessels fishing?
+
+```{r echo=FALSE, out.width="80%", fig.align="center", fig.cap = "Plot showing the distribution of trip length by vessel"}
+knitr::include_graphics("figs/fishing_when.png")
+```
+
+
+
+## What are vessels targeting?
+
+
+```{r echo=FALSE, out.width="80%", fig.align="center", fig.cap = "Plot showing the distribution of species in the catch by weight by vessel"}
+knitr::include_graphics("figs/fishing_what.png")
+```
+
+
+## Where are they fishing?
+
+
+# What else can R do?
+
+## Create open source learning resources
+
+<iframe src="https://andysouth.shinyapps.io/intro-to-spatial-r/" width="1016" height="516" frameBorder="0"></iframe>
+
+
+## Code Mitten Patterns
+
+<iframe src="https://laurielbaker.github.io/coded-mittens/selbu_mitten_generator.html" width="1016" height="516" frameBorder="0"></iframe>
+
+
+## Choose colors for mitten patterns
+
+<iframe src="https://laurie-the-student-baker.shinyapps.io/Coded-Mittens/" width="1016" height="516" frameBorder="0"></iframe>
+
+## Monitor fish runs
+
+<iframe src="https://laurie-the-student-baker.shinyapps.io/shad-river-herring/" width="1016" height="516" frameBorder="0"></iframe>
+
+
+## Course websites!
+
+<iframe src="https://navigating-change.netlify.app" width="1016" height="516" frameBorder="0"></iframe>
+
+##  {background-image="figs/lizzieskipping.gif" background-size="70%" background-color="white"}
+
+
+* Get you excited about data and analysis
+* Explore ways you could use it in projects
+* Get you coding and exploring text data
+* Teach you tools to set data free and release it into the world.
+
+
+
+
+
 ## Let's install some packages {background-color="white"}
 
 ```{r}
@@ -93,6 +165,8 @@ journal_1880$temperature_night <- as.numeric(journal_1880$temperature_night)
 ```{r}
 # We want to keep track of the journals
 
+library(tidyverse)
+
 journal_1871_1872$journal <- 1
 journal_1873$journal <- 2
 journal_1874$journal <- 3
@@ -151,25 +225,54 @@ journals_sub %>%
     labs(x = "Month", y = "Number of entries")
 ```
 
-## How often did Freeland write? Code
 
-```{r, eval=FALSE, warning=FALSE}
+## Where did Freeland go? Step by Step
 
-journals_sub %>%
-    filter(is.na(year) == FALSE) %>%
-    group_by(month, year) %>%
-    summarize(days_written = n()) %>%
-    ggplot(aes(x = month, y = days_written)) +
-    geom_line() +
-    geom_point() +
-    facet_wrap(~year) +
-    ylim(0, 36) +
-    scale_x_continuous(breaks = c(0, 3, 6, 9, 12)) +
-    labs(x = "Month", y = "Number of entries")
+Start with the dataset
+
+```{r}
+journals_sub 
+
 ```
 
 
-## Where did Freeland go?
+## Where did Freeland go? Step by Step
+
+And then filter for only known locations.
+
+```{r}
+journals_sub %>%
+    filter(is.na(location) == FALSE, location != "NA")
+
+```
+
+## Where did Freeland go? Step by Step
+
+And then separate rows so each location is on its own row.
+
+```{r}
+journals_sub %>%
+    filter(is.na(location) == FALSE, location != "NA") %>%
+    separate_rows(location, sep = ", ")
+
+```
+
+## Where did Freeland go? Step by Step
+
+And then count the number of times he was at that location
+
+```{r}
+journals_sub %>%
+    filter(is.na(location) == FALSE, location != "NA") %>%
+    separate_rows(location, sep = ", ") %>%
+    count(location)
+
+```
+
+
+## Where did Freeland go? Step by Step
+
+And then arrange the locations in descending order from most visited to least visited.
 
 ```{r}
 journals_sub %>%
@@ -208,7 +311,7 @@ journals_sub %>%
 ```{r}
 journals_sub %>%
     separate_rows(location, sep = ", ") %>%
-    filter(str_detect(string = location, pattern = "C\\.|C |Cranberry")) %>%
+    filter(str_detect(string = location, pattern = "Cranberry")) %>%
     distinct(location)
 ```
 
@@ -218,14 +321,13 @@ journals_sub %>%
 ```{r}
 journals_sub <- journals_sub %>%
     separate_rows(location, sep = ", ") %>%
-    mutate(location = case_when(location %in% c("C. Isle", "C. Isles", "C Isles", 
-                                                "C isles", "Cranberry IIsles", "Cranberry Isle", "Cranberry Isle harbor", "Cranberry Isles", "Cranberry Islands", "Cranberry Island") ~ "Cranberry Isles",
+    mutate(location = case_when(location %in% c("Cranberry IIsles", "Cranberry Isle", "Cranberry Island") ~ "Cranberry Isles",
                             TRUE ~ location))
 
 
 journals_sub %>%
     separate_rows(location, sep = ", ") %>%
-    filter(str_detect(string = location, pattern = "C\\.|C |Cranberry")) %>%
+    filter(str_detect(string = location, pattern = "Cranberry")) %>%
     distinct(location)
 ```
 
