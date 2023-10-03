@@ -4,7 +4,7 @@ subtitle: ""
 author: "By Laurie Baker"
 format:
   revealjs: 
-    footer: <https:coa-navigating-change.netlify.app>
+    footer: <https://coa-navigating-change.netlify.app>
     theme: [dark, fbcustom.scss]
     width: 1280
     height: 720
@@ -33,25 +33,38 @@ Slide Structure and Design inspired by Julia Silge
 
 </center>
 
-## What can you do with R? A snapshot
+# What can you do with R? A snapshot
+
+```{r packages for fish analysis, echo=FALSE, message=FALSE, warning=FALSE}
+library(leaflet)
+library(tidyverse)
+library(lubridate)
+library(sf)
+```
+
+```{r data for fish analysis, echo=FALSE, message=FALSE, warning=FALSE}
+
+palangre87_97 <- read_csv("data-chile/palangre_87_97.csv")
+
+```
 
 
 ## Influence of target species on fishing effort
 
-```{r echo=FALSE, out.width="80%", fig.align="center", fig.cap = "Woman on boat holding a fish and a crab"}
+```{r echo=FALSE, out.width="80%", fig.align="center", fig.alt = "Woman on boat holding a fish and a crab"}
 knitr::include_graphics("figs/congrio_centolla.jpg")
 ```
 
 ## Who is fishing?
 
-```{r echo=FALSE, out.width="80%", fig.align="center", fig.cap = "Plot showing the vessel length and width as boats on a scatter plot where the size of the boat is proportional to the carrying capacity of the vessel"}
+```{r echo=FALSE, out.width="80%", fig.align="center", fig.alt = "Plot showing the vessel length and width as boats on a scatter plot where the size of the boat is proportional to the carrying capacity of the vessel"}
 knitr::include_graphics("figs/fishing_who.png")
 ```
 
 
 ## How are vessels fishing?
 
-```{r echo=FALSE, out.width="80%", fig.align="center", fig.cap = "Plot showing the distribution of trip length by vessel"}
+```{r echo=FALSE, out.width="80%", fig.align="center", fig.alt = "Plot showing the distribution of trip length by vessel"}
 knitr::include_graphics("figs/fishing_when.png")
 ```
 
@@ -60,12 +73,130 @@ knitr::include_graphics("figs/fishing_when.png")
 ## What are vessels targeting?
 
 
-```{r echo=FALSE, out.width="80%", fig.align="center", fig.cap = "Plot showing the distribution of species in the catch by weight by vessel"}
+```{r echo=FALSE, out.width="80%", fig.align="center", fig.alt = "Plot showing the distribution of species in the catch by weight by vessel"}
 knitr::include_graphics("figs/fishing_what.png")
 ```
 
 
 ## Where are they fishing?
+
+
+```{r location data prep 87 to 97, echo = FALSE}
+
+palangre87_97 <- palangre87_97 %>%
+  mutate(startlatdd = -latcalini/10000,
+         startlondd = -loncalini/10000,
+         group = as.factor(paste(CBU_ORAC, crucero, lance)),
+         P_X6 = X6/Total.de.peso)
+
+```
+
+
+```{r chile-fishing-map, echo = FALSE}
+pal <- colorNumeric(
+  palette = "Oranges",
+  domain = palangre87_97$P_X6)
+
+
+palangre87_97$labels <- sprintf("<strong>Vessel Code: %s</strong><br/>%g proportion of catch", 
+                  palangre87_97$CBU_ORAC, palangre87_97$P_X6) %>% lapply(htmltools::HTML)
+
+(start_position_map <- leaflet(data = palangre87_97) %>%
+   setView(lng = -0.352203, lat = -63.651992, zoom = 4) %>%
+  addProviderTiles(providers$Esri.WorldImagery) %>%
+  addCircleMarkers(data = palangre87_97[palangre87_97$CBU_ORAC == 400062,], 
+                   lng = ~startlondd, 
+                   lat = ~startlatdd, 
+                   clusterOptions = NULL, 
+                   color = ~pal(P_X6), 
+                   label = palangre87_97[palangre87_97$CBU_ORAC == 400062,]$labels,
+                   radius = 2,
+                   group = "Vessel 400062") %>%
+    addCircleMarkers(data = palangre87_97[palangre87_97$CBU_ORAC == 400065,], 
+                   lng = ~startlondd, 
+                   lat = ~startlatdd, 
+                   clusterOptions = NULL, 
+                   color = ~pal(P_X6), 
+                   label = palangre87_97[palangre87_97$CBU_ORAC == 400065,]$labels,
+                   radius = 2,
+                   group = "Vessel 400065") %>%
+    addCircleMarkers(data = palangre87_97[palangre87_97$CBU_ORAC == 400075,],
+                   lng = ~startlondd,
+                   lat = ~startlatdd,
+                   clusterOptions = NULL,
+                   color = ~pal(P_X6),
+                   label = palangre87_97[palangre87_97$CBU_ORAC == 400075,]$labels,
+                   radius = 2,
+                   group = "Vessel 400075") %>%
+    addCircleMarkers(data = palangre87_97[palangre87_97$CBU_ORAC == 400082,],
+                   lng = ~startlondd,
+                   lat = ~startlatdd,
+                   clusterOptions = NULL,
+                   color = ~pal(P_X6),
+                   label = palangre87_97[palangre87_97$CBU_ORAC == 400082,]$labels,
+                   radius = 2,
+                   group = "Vessel 400082") %>%
+    addCircleMarkers(data = palangre87_97[palangre87_97$CBU_ORAC == 400088,],
+                   lng = ~startlondd,
+                   lat = ~startlatdd,
+                   clusterOptions = NULL,
+                   color = ~pal(P_X6),
+                   label = palangre87_97[palangre87_97$CBU_ORAC == 400088,]$labels,
+                   radius = 2,
+                   group = "Vessel 400088") %>%
+    addCircleMarkers(data = palangre87_97[palangre87_97$CBU_ORAC == 400118,],
+                   lng = ~startlondd,
+                   lat = ~startlatdd,
+                   clusterOptions = NULL,
+                   color = ~pal(P_X6),
+                   label = palangre87_97[palangre87_97$CBU_ORAC == 400118,]$labels,
+                   radius = 2,
+                   group = "Vessel 400118") %>%
+    addCircleMarkers(data = palangre87_97[palangre87_97$CBU_ORAC == 400061,],
+                   lng = ~startlondd,
+                   lat = ~startlatdd,
+                   clusterOptions = NULL,
+                   color = ~pal(P_X6),
+                   label = palangre87_97[palangre87_97$CBU_ORAC == 400061,]$labels,
+                   radius = 2,
+                   group = "Vessel 400061") %>%
+    addCircleMarkers(data = palangre87_97[palangre87_97$CBU_ORAC == 400081,],
+                   lng = ~startlondd,
+                   lat = ~startlatdd,
+                   clusterOptions = NULL,
+                   color = ~pal(P_X6),
+                   label = palangre87_97[palangre87_97$CBU_ORAC == 400081,]$labels,
+                   radius = 2,
+                   group = "Vessel 400081") %>%
+    addCircleMarkers(data = palangre87_97[palangre87_97$CBU_ORAC == 400133,],
+                   lng = ~startlondd,
+                   lat = ~startlatdd,
+                   clusterOptions = NULL,
+                   color = ~pal(P_X6),
+                   label = palangre87_97[palangre87_97$CBU_ORAC == 400133,]$labels,
+                   radius = 2,
+                   group = "Vessel 400133") %>%
+    addCircleMarkers(data = palangre87_97[palangre87_97$CBU_ORAC == 400512,],
+                   lng = ~startlondd,
+                   lat = ~startlatdd,
+                   clusterOptions = NULL,
+                   color = ~pal(P_X6),
+                   label = palangre87_97[palangre87_97$CBU_ORAC == 400512,]$labels,
+                   radius = 2,
+                   group = "Vessel 400512") %>%
+    addLegend(position = "bottomright",
+              pal = pal,
+              values = ~P_X6,
+              title = "Proportion of catch that is pink cusk-eel",
+              opacity = 1)) %>%
+    addLayersControl(
+    overlayGroups = c("Vessel 400065", "Vessel 400062", "Vessel 400075",
+                      "Vessel 400082", "Vessel 400088", "Vessel 400118",
+                      "Vessel 400061", "Vessel 400081", "Vessel 400133",
+                      "Vessel 400512"),
+    options = layersControlOptions(collapsed = FALSE)
+    )
+```
 
 
 # What else can R do?
@@ -89,20 +220,92 @@ knitr::include_graphics("figs/fishing_what.png")
 <iframe src="https://laurie-the-student-baker.shinyapps.io/shad-river-herring/" width="1016" height="516" frameBorder="0"></iframe>
 
 
-## Course websites!
+## Build websites!
 
-<iframe src="https://navigating-change.netlify.app" width="1016" height="516" frameBorder="0"></iframe>
+<iframe src="https://coa-navigating-change.netlify.app" width="1016" height="516" frameBorder="0"></iframe>
 
-##  {background-image="figs/lizzieskipping.gif" background-size="70%" background-color="white"}
+##  Goals for this week {background-image="figs/lizzieskipping.gif" background-size="70%" background-color="white" background-position="bottom"}
+
+* Get you coding and exploring text data. 
+* Help you see ways you could use R in your projects.
+
+# Data Science Life Cycle
+
+## Data Science Life Cycle
+
+```{r echo=FALSE, out.width="90%", fig.align="center"}
+knitr::include_graphics("figs/data-science-cycle/data-science-cycle.001.png")
+```
+
+## Data Science Life Cycle 
+
+```{r echo=FALSE, out.width="90%", fig.align="center"}
+knitr::include_graphics("figs/data-science-cycle/data-science-cycle.002.png")
+```
+
+## Data Science Life Cycle
+
+```{r echo=FALSE, out.width="90%", fig.align="center"}
+knitr::include_graphics("figs/data-science-cycle/data-science-cycle.003.png")
+```
+
+## Data Science Life Cycle
+
+```{r echo=FALSE, out.width="90%", fig.align="center"}
+knitr::include_graphics("figs/data-science-cycle/data-science-cycle.004.png")
+```
+
+## Data Science Life Cycle
+
+```{r echo=FALSE, out.width="90%", fig.align="center"}
+knitr::include_graphics("figs/data-science-cycle/data-science-cycle.005.png")
+```
+
+## Data Science Life Cycle
+
+```{r echo=FALSE, out.width="90%", fig.align="center"}
+knitr::include_graphics("figs/data-science-cycle/data-science-cycle.006.png")
+```
+
+## Learning Objectives:
+
+Learn how to
+
+* Read in data using `read_excel`
+* Select columns using `select`
+* Create new variables using `mutate`
+* Summarize and arrange data using `count` and `arrange`
+* Group data to display and calculate multiple things 
+* Correct entries using `mutate` and `case_when`
+* Visualize and map data using `ggplot` and `leaflet`
+
+# Introducing Posit Cloud
+
+##
+
+```{r echo=FALSE, out.width="50%", fig.align="left"}
+knitr::include_graphics("figs/excel.png")
+```
 
 
-* Get you excited about data and analysis
-* Explore ways you could use it in projects
-* Get you coding and exploring text data
-* Teach you tools to set data free and release it into the world.
+##
+
+```{r echo=FALSE, out.width="50%", fig.align="left"}
+knitr::include_graphics("figs/r.png")
+```
 
 
+##
 
+```{r echo=FALSE, out.width="73%", fig.align="left"}
+knitr::include_graphics("figs/rstudio.png")
+```
+
+##
+
+```{r echo=FALSE, out.width="50%", fig.align="left"}
+knitr::include_graphics("figs/tour-r-rstudio.png")
+```
 
 
 ## Let's install some packages {background-color="white"}
@@ -111,20 +314,11 @@ knitr::include_graphics("figs/fishing_what.png")
 #| eval: false
 install.packages(c("tidyverse", # data wrangling
                    "lubridate", # dates
-                   "readxl",
-                   "DT")) # reading data
+                   "readxl", # reading data
+                   "DT")) # displaying data in tables
 ```
 
-## Learning Objectives:
-
-Gain familiarity with 
-- How to read in data using `read_excel`
-- How to select columns using `select`
-- How to create new variables using `mutate`
-- How to summarize and arrange data using `count` and `arrange`
-- How to group and calculate multiple things 
-- How to correct entries using `mutate` and `case_when`
-- How to visualize and map the data using `ggplot` and `leaflet`
+- **What are packages?** You can think of them like toolboxes with different sets of tools (i.e. *`functions`*) we can apply to our data 
 
 ##  The Journals (1870-1906) {background-image="figs/freeland_bunker_journal.jpg" background-size="45%" background-color="white"}
 
@@ -199,7 +393,7 @@ glimpse(journals)
 ```
 
 
-## Creating date variables using `lubridate`
+## Creating new variables using `mutate`
 
 ```{r}
 library(lubridate)
@@ -208,6 +402,9 @@ library(lubridate)
            year = year(date_mdy),
            month = month(date_mdy)))
 ```
+
+* The `lubridate` package contains useful functions for dates. 
+
 ## How often did Freeland write? 
 
 ```{r, echo=FALSE, warning=FALSE}
@@ -231,6 +428,7 @@ journals_sub %>%
 Start with the dataset
 
 ```{r}
+#| code-line-numbers: "|1"
 journals_sub 
 
 ```
@@ -238,19 +436,23 @@ journals_sub
 
 ## Where did Freeland go? Step by Step
 
-And then filter for only known locations.
+And then `filter` for only known locations
 
 ```{r}
+#| code-line-numbers: "|2"
 journals_sub %>%
     filter(is.na(location) == FALSE, location != "NA")
 
 ```
 
+* The function `filter` lets you filter rows based on their values. 
+
 ## Where did Freeland go? Step by Step
 
-And then separate rows so each location is on its own row.
+And then `separate_rows` so each location is on its own row
 
 ```{r}
+#| code-line-numbers: "|3"
 journals_sub %>%
     filter(is.na(location) == FALSE, location != "NA") %>%
     separate_rows(location, sep = ", ")
@@ -259,9 +461,10 @@ journals_sub %>%
 
 ## Where did Freeland go? Step by Step
 
-And then count the number of times he was at that location
+And then `count` the number of times he was at that location
 
 ```{r}
+#| code-line-numbers: "|4"
 journals_sub %>%
     filter(is.na(location) == FALSE, location != "NA") %>%
     separate_rows(location, sep = ", ") %>%
@@ -272,9 +475,10 @@ journals_sub %>%
 
 ## Where did Freeland go? Step by Step
 
-And then arrange the locations in descending order from most visited to least visited.
+And then `arrange` the locations in `desc`ending order from most to least visited.
 
 ```{r}
+#| code-line-numbers: "|5"
 journals_sub %>%
     filter(is.na(location) == FALSE, location != "NA") %>%
     separate_rows(location, sep = ", ") %>%
@@ -283,32 +487,53 @@ journals_sub %>%
 
 ```
 
-## Less common places visited?
+## Where did Freeland go less? Step by Step
+
+And then `arrange` the locations in ascending order from least to most visited.
 
 ```{r}
+#| code-line-numbers: "|5"
 journals_sub %>%
     filter(is.na(location) == FALSE, location != "NA") %>%
     separate_rows(location, sep = ", ") %>%
     count(location) %>%
-    slice_min(n, n = 15, with_ties = FALSE) 
+    arrange(n) 
 ```
+
 ## Plotting frequency of visits 
 
 ```{r}
-journals_sub %>%
+(common_places <- journals_sub %>%
     filter(is.na(location) == FALSE, location != "NA") %>%
     separate_rows(location, sep = ", ") %>%
     count(location) %>%
-    slice_max(n, n = 15, with_ties = FALSE) %>%
+    slice_max(n, n = 15, with_ties = FALSE))
+```
+
+## Plotting frequency of visits
+
+```{r}
+ common_places %>%
+    ggplot(aes(x = n, y = location)) +
+    geom_col() +
+    labs(x = "Number of mentions", y = "Location")
+```
+
+* Learn about `ggplot` in these [slides](https://laurielbaker.github.io/DSCA_data_visualisation_in_r/slides/index.html#1) and with these [interactive tutorials](https://posit.cloud/learn/primers/3)
+
+## Plotting frequency of visits
+
+```{r}
+ common_places %>%
     ggplot(aes(x = n, y = fct_reorder(location, n))) +
     geom_col() +
     labs(x = "Number of mentions", y = "Location")
 ```
 
-
-## Fixing Mispellings
+## Use `distinct` to detect mispellings and look at unique entries
 
 ```{r}
+#| code-line-numbers: "|4"
 journals_sub %>%
     separate_rows(location, sep = ", ") %>%
     filter(str_detect(string = location, pattern = "Cranberry")) %>%
@@ -319,6 +544,8 @@ journals_sub %>%
 ## Tidying words using `case_when`
 
 ```{r}
+#| code-line-numbers: "|3,4"
+
 journals_sub <- journals_sub %>%
     separate_rows(location, sep = ", ") %>%
     mutate(location = case_when(location %in% c("Cranberry IIsles", "Cranberry Isle", "Cranberry Island") ~ "Cranberry Isles",
@@ -370,7 +597,7 @@ journals_sub %>%
     labs(x = "Number of mentions", y = "Location")
 ```
 
-## Where did Freeland visit each year?
+## How often did Freeland visit over time?
 
 ```{r echo = FALSE}
 journals_loc_count <- journals_sub %>%
@@ -384,36 +611,63 @@ journals_loc_count %>%
     geom_line() +
     labs(x = "Year", y = "Number of mentions", color = "Location", title = "Number of times place visited each year by Freeland Bunker", subtitle = "Locations don't include home, shop, factor, and Winter Harbor")
 ```
-## Where did Freeland visit each year? Code
 
-```{r eval = FALSE}
-journals_loc_count <- journals_sub %>%
+## Use `group_by` to count yearly visits
+
+```{r eval = TRUE}
+(journals_loc_count <- journals_sub %>%
     separate_rows(location, sep = ", ") %>%
     filter(location %in% c("West Gouldsboro", "Ellsworth", "Rockland", "Bar Harbor", "Sullivan", "Calais", "Prospect Harbor", "East Sullivan", "Boston", "Bass Harbor", "Cranberry Isles")) %>%
     group_by(year) %>%
-    count(location)
+    count(location))
 
+```
+
+## Plot Code
+
+```{r}
 journals_loc_count %>%
     ggplot(aes(x = year, y = n, color = location)) +
     geom_line() +
-    labs(x = "Year", y = "Number of mentions", color = "Location", title = "Number of times place visited each year by Freeland Bunker", subtitle = "Locations don't include home, shop, factor, and Winter Harbor")
+    labs(x = "Year", 
+         y = "Number of mentions", 
+         color = "Location", 
+         title = "Number of times place visited each year by Freeland Bunker", subtitle = "Locations don't include home, shop, factory, and Winter Harbor")
 ```
 
-## Mapping
+
+
+## Your Turn
+
+Where did Freeland visit during your journal year? Fill in the blanks to find out. 
+
+# Creating maps using `leaflet`
+
+## We have location coordinates
 
 ```{r}
 location_coordinates <- read_excel(path = "data/location_coordinates.xlsx")
 
-head(location_coordinates, n = 2)
+head(location_coordinates)
 
-loc_df <- journals_sub %>%
-    separate_rows(location, sep = ", ")  %>%
-    count(location) %>%
-    left_join(location_coordinates, by = "location") %>%
-    drop_na(latitude)
 ```
 
-Homework: Add 5 more sets of coordinates to the [location excel file](https://docs.google.com/spreadsheets/d/1vA5YjlsGHQBSmUOFsBpPSJhObK601zE3/edit?usp=sharing&ouid=104076949272458477636&rtpof=true&sd=true)
+## We have `count` of how often Freeland visited that location
+
+```{r}
+(loc_count <- journals_sub %>%
+    separate_rows(location, sep = ", ")  %>%
+    count(location) %>%
+    arrange(desc(n)))
+```
+
+## We can combine two data sets using a `join`
+
+```{r}
+(loc_df <- loc_count %>%
+    left_join(location_coordinates, by = "location") %>%
+    drop_na(latitude))
+```
 
 ## Where did Freeland go?
 
@@ -423,7 +677,10 @@ library(leaflet)
 leaflet(data = loc_df) %>%
      setView(lng = -66, lat = 43.5, zoom = 9) %>%
      addProviderTiles(providers$OpenStreetMap) %>%
-     addCircleMarkers(lng = ~longitude, lat = ~latitude, label = ~location, radius = ~n/100)
+     addCircleMarkers(lng = ~longitude, 
+                      lat = ~latitude, 
+                      label = ~location, 
+                      radius = ~n/100)
 ```
 
 ## Where did Freeland go?
@@ -434,8 +691,28 @@ library(leaflet)
 leaflet(data = loc_df) %>%
      setView(lng = -66, lat = 43.5, zoom = 9) %>%
      addProviderTiles(providers$OpenStreetMap) %>%
-     addCircleMarkers(lng = ~longitude, lat = ~latitude, label = ~location, radius = ~n/100)
+     addCircleMarkers(lng = ~longitude, 
+                      lat = ~latitude, 
+                      label = ~location, 
+                      radius = ~n/100)
 ```
+
+* Learn more `leaflet` in these [slides](https://laurielbaker.github.io/DSCA_leaflet_mapping_in_r/slides/leaflet_slides_COA.html#1) and these [tutorials](https://rstudio.github.io/leaflet/)
+
+## Homework
+
+Homework: 
+
+- Add 2 more sets of coordinates to the [location excel file](https://docs.google.com/spreadsheets/d/1vA5YjlsGHQBSmUOFsBpPSJhObK601zE3/edit?usp=sharing&ouid=104076949272458477636&rtpof=true&sd=true)
+- Re-upload the location data
+
+
+```{r echo=FALSE, out.width="30%", fig.align="left"}
+knitr::include_graphics("figs/upload_data.png")
+```
+
+
+- Rerun the leaflet map to see the map expand
 
 # Thanks! {background-image="figs/p_and_p_cover.png" background-size="cover" background-opacity="0.5"}
 

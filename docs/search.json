@@ -1572,7 +1572,7 @@
     "href": "slides/01-fb-tidydata.html#lets-install-some-packages",
     "title": "Wrangling and Visualizing Historical Texts",
     "section": "Let’s install some packages",
-    "text": "Let’s install some packages\n\ninstall.packages(c(\"tidyverse\", # data wrangling\n                   \"lubridate\", # dates\n                   \"readxl\",\n                   \"DT\")) # reading data"
+    "text": "Let’s install some packages\n\ninstall.packages(c(\"tidyverse\", # data wrangling\n                   \"lubridate\", # dates\n                   \"readxl\", # reading data\n                   \"DT\")) # displaying data in tables\n\n\nWhat are packages? You can think of them like toolboxes with different sets of tools (i.e. functions) we can apply to our data"
   },
   {
     "objectID": "slides/01-fb-tidydata.html#the-journals-1870-1906",
@@ -1803,7 +1803,7 @@
     "href": "slides/01-fb-tidydata.html#plotting-frequency-of-visits",
     "title": "Wrangling and Visualizing Historical Texts",
     "section": "Plotting frequency of visits",
-    "text": "Plotting frequency of visits\n\njournals_sub %>%\n    filter(is.na(location) == FALSE, location != \"NA\") %>%\n    separate_rows(location, sep = \", \") %>%\n    count(location) %>%\n    slice_max(n, n = 15, with_ties = FALSE) %>%\n    ggplot(aes(x = n, y = fct_reorder(location, n))) +\n    geom_col() +\n    labs(x = \"Number of mentions\", y = \"Location\")"
+    "text": "Plotting frequency of visits\n\n(common_places <- journals_sub %>%\n    filter(is.na(location) == FALSE, location != \"NA\") %>%\n    separate_rows(location, sep = \", \") %>%\n    count(location) %>%\n    slice_max(n, n = 15, with_ties = FALSE))\n#> # A tibble: 15 × 2\n#>    location             n\n#>    <chr>            <int>\n#>  1 Winter Harbor     1155\n#>  2 West Gouldsboro    107\n#>  3 Ellsworth           53\n#>  4 Rockland            46\n#>  5 Bar Harbor          38\n#>  6 Calais              34\n#>  7 Sullivan            34\n#>  8 Prospect Harbor     28\n#>  9 East Sullivan       27\n#> 10 Bass Harbor         26\n#> 11 Stave Island        24\n#> 12 Boston              23\n#> 13 South Gouldsboro    22\n#> 14 Cranberry Isles     21\n#> 15 Deer Isle           17"
   },
   {
     "objectID": "slides/01-fb-tidydata.html#creating-date-variables-using-lubridate",
@@ -1817,7 +1817,7 @@
     "href": "slides/01-fb-tidydata.html#where-did-freeland-go-1",
     "title": "Wrangling and Visualizing Historical Texts",
     "section": "Where did Freeland go?",
-    "text": "Where did Freeland go?\n\nlibrary(leaflet)\n\nleaflet(data = loc_df) %>%\n     setView(lng = -66, lat = 43.5, zoom = 9) %>%\n     addProviderTiles(providers$OpenStreetMap) %>%\n     addCircleMarkers(lng = ~longitude, lat = ~latitude, label = ~location, radius = ~n/100)"
+    "text": "Where did Freeland go?\n\nlibrary(leaflet)\n\nleaflet(data = loc_df) %>%\n     setView(lng = -66, lat = 43.5, zoom = 9) %>%\n     addProviderTiles(providers$OpenStreetMap) %>%\n     addCircleMarkers(lng = ~longitude, \n                      lat = ~latitude, \n                      label = ~location, \n                      radius = ~n/100)\n\n\nLearn more leaflet in these slides and these tutorials"
   },
   {
     "objectID": "slides/01-fb-tidydata.html#your-turn-fix-bass-harbor-misspellings",
@@ -2230,7 +2230,7 @@
     "href": "slides/01-fb-tidydata.html#learning-objectives",
     "title": "Wrangling and Visualizing Historical Texts",
     "section": "Learning Objectives:",
-    "text": "Learning Objectives:\nGain familiarity with - How to read in data using read_excel - How to select columns using select - How to create new variables using mutate - How to summarize and arrange data using count and arrange - How to group and calculate multiple things - How to correct entries using mutate and case_when - How to visualize and map the data using ggplot and leaflet"
+    "text": "Learning Objectives:\nLearn how to\n\nRead in data using read_excel\nSelect columns using select\nCreate new variables using mutate\nSummarize and arrange data using count and arrange\nGroup data to display and calculate multiple things\nCorrect entries using mutate and case_when\nVisualize and map data using ggplot and leaflet"
   },
   {
     "objectID": "slides/01-fb-tidydata.html#where-did-freeland-go-step-by-step",
@@ -2244,14 +2244,14 @@
     "href": "slides/01-fb-tidydata.html#where-did-freeland-go-step-by-step-1",
     "title": "Wrangling and Visualizing Historical Texts",
     "section": "Where did Freeland go? Step by Step",
-    "text": "Where did Freeland go? Step by Step\nAnd then filter for only known locations.\n\njournals_sub %>%\n    filter(is.na(location) == FALSE, location != \"NA\")\n#> # A tibble: 1,791 × 5\n#>    date_mdy   journal_entry                                 location  year month\n#>    <date>     <chr>                                         <chr>    <dbl> <dbl>\n#>  1 1871-12-23 Was married at home in evening by William Ra… Winter …  1871    12\n#>  2 1871-12-25 Shooting match all day in the evening to Chr… Winter …  1871    12\n#>  3 1871-12-26 About home at work fobbing.                   Winter …  1871    12\n#>  4 1871-12-27 Work about home reed letter from N. H. Higgi… Winter …  1871    12\n#>  5 1871-12-28 Work about home.                              Winter …  1871    12\n#>  6 1871-12-29 To work in shop.                              Winter …  1871    12\n#>  7 1871-12-30 To work in shop.                              Winter …  1871    12\n#>  8 1872-01-01 Work in shop.                                 Winter …  1872     1\n#>  9 1872-01-02 Work in shop.                                 Winter …  1872     1\n#> 10 1872-01-03 Work in shop.                                 Winter …  1872     1\n#> # ℹ 1,781 more rows"
+    "text": "Where did Freeland go? Step by Step\nAnd then filter for only known locations\n\njournals_sub %>%\n    filter(is.na(location) == FALSE, location != \"NA\")\n#> # A tibble: 1,791 × 5\n#>    date_mdy   journal_entry                                 location  year month\n#>    <date>     <chr>                                         <chr>    <dbl> <dbl>\n#>  1 1871-12-23 Was married at home in evening by William Ra… Winter …  1871    12\n#>  2 1871-12-25 Shooting match all day in the evening to Chr… Winter …  1871    12\n#>  3 1871-12-26 About home at work fobbing.                   Winter …  1871    12\n#>  4 1871-12-27 Work about home reed letter from N. H. Higgi… Winter …  1871    12\n#>  5 1871-12-28 Work about home.                              Winter …  1871    12\n#>  6 1871-12-29 To work in shop.                              Winter …  1871    12\n#>  7 1871-12-30 To work in shop.                              Winter …  1871    12\n#>  8 1872-01-01 Work in shop.                                 Winter …  1872     1\n#>  9 1872-01-02 Work in shop.                                 Winter …  1872     1\n#> 10 1872-01-03 Work in shop.                                 Winter …  1872     1\n#> # ℹ 1,781 more rows\n\n\nThe function filter lets you filter rows based on their values."
   },
   {
     "objectID": "slides/01-fb-tidydata.html#where-did-freeland-go-step-by-step-2",
     "href": "slides/01-fb-tidydata.html#where-did-freeland-go-step-by-step-2",
     "title": "Wrangling and Visualizing Historical Texts",
     "section": "Where did Freeland go? Step by Step",
-    "text": "Where did Freeland go? Step by Step\nAnd then separate rows so each location is on its own row.\n\njournals_sub %>%\n    filter(is.na(location) == FALSE, location != \"NA\") %>%\n    separate_rows(location, sep = \", \")\n#> # A tibble: 2,364 × 5\n#>    date_mdy   journal_entry                                 location  year month\n#>    <date>     <chr>                                         <chr>    <dbl> <dbl>\n#>  1 1871-12-23 Was married at home in evening by William Ra… Winter …  1871    12\n#>  2 1871-12-25 Shooting match all day in the evening to Chr… Winter …  1871    12\n#>  3 1871-12-26 About home at work fobbing.                   Winter …  1871    12\n#>  4 1871-12-27 Work about home reed letter from N. H. Higgi… Winter …  1871    12\n#>  5 1871-12-28 Work about home.                              Winter …  1871    12\n#>  6 1871-12-29 To work in shop.                              Winter …  1871    12\n#>  7 1871-12-30 To work in shop.                              Winter …  1871    12\n#>  8 1872-01-01 Work in shop.                                 Winter …  1872     1\n#>  9 1872-01-02 Work in shop.                                 Winter …  1872     1\n#> 10 1872-01-03 Work in shop.                                 Winter …  1872     1\n#> # ℹ 2,354 more rows"
+    "text": "Where did Freeland go? Step by Step\nAnd then separate_rows so each location is on its own row\n\njournals_sub %>%\n    filter(is.na(location) == FALSE, location != \"NA\") %>%\n    separate_rows(location, sep = \", \")\n#> # A tibble: 2,364 × 5\n#>    date_mdy   journal_entry                                 location  year month\n#>    <date>     <chr>                                         <chr>    <dbl> <dbl>\n#>  1 1871-12-23 Was married at home in evening by William Ra… Winter …  1871    12\n#>  2 1871-12-25 Shooting match all day in the evening to Chr… Winter …  1871    12\n#>  3 1871-12-26 About home at work fobbing.                   Winter …  1871    12\n#>  4 1871-12-27 Work about home reed letter from N. H. Higgi… Winter …  1871    12\n#>  5 1871-12-28 Work about home.                              Winter …  1871    12\n#>  6 1871-12-29 To work in shop.                              Winter …  1871    12\n#>  7 1871-12-30 To work in shop.                              Winter …  1871    12\n#>  8 1872-01-01 Work in shop.                                 Winter …  1872     1\n#>  9 1872-01-02 Work in shop.                                 Winter …  1872     1\n#> 10 1872-01-03 Work in shop.                                 Winter …  1872     1\n#> # ℹ 2,354 more rows"
   },
   {
     "objectID": "slides/01-fb-tidydata.html#where-did-freeland-go-step-by-step-3",
@@ -2265,7 +2265,7 @@
     "href": "slides/01-fb-tidydata.html#where-did-freeland-go-step-by-step-4",
     "title": "Wrangling and Visualizing Historical Texts",
     "section": "Where did Freeland go? Step by Step",
-    "text": "Where did Freeland go? Step by Step\nAnd then arrange the locations in descending order from most visited to least visited.\n\njournals_sub %>%\n    filter(is.na(location) == FALSE, location != \"NA\") %>%\n    separate_rows(location, sep = \", \") %>%\n    count(location) %>%\n    arrange(desc(n))\n#> # A tibble: 281 × 2\n#>    location            n\n#>    <chr>           <int>\n#>  1 Winter Harbor    1155\n#>  2 West Gouldsboro   107\n#>  3 Ellsworth          53\n#>  4 Rockland           46\n#>  5 Bar Harbor         38\n#>  6 Calais             34\n#>  7 Sullivan           34\n#>  8 Prospect Harbor    28\n#>  9 East Sullivan      27\n#> 10 Bass Harbor        26\n#> # ℹ 271 more rows"
+    "text": "Where did Freeland go? Step by Step\nAnd then arrange the locations in descending order from most to least visited.\n\njournals_sub %>%\n    filter(is.na(location) == FALSE, location != \"NA\") %>%\n    separate_rows(location, sep = \", \") %>%\n    count(location) %>%\n    arrange(desc(n))\n#> # A tibble: 281 × 2\n#>    location            n\n#>    <chr>           <int>\n#>  1 Winter Harbor    1155\n#>  2 West Gouldsboro   107\n#>  3 Ellsworth          53\n#>  4 Rockland           46\n#>  5 Bar Harbor         38\n#>  6 Calais             34\n#>  7 Sullivan           34\n#>  8 Prospect Harbor    28\n#>  9 East Sullivan      27\n#> 10 Bass Harbor        26\n#> # ℹ 271 more rows"
   },
   {
     "objectID": "slides/01-fb-tidydata.html#what-can-you-do-with-r-a-snapshot",
@@ -2279,28 +2279,28 @@
     "href": "slides/01-fb-tidydata.html#influence-of-target-species-on-fishing-effort",
     "title": "Wrangling and Visualizing Historical Texts",
     "section": "Influence of target species on fishing effort",
-    "text": "Influence of target species on fishing effort\n\nWoman on boat holding a fish and a crab"
+    "text": "Influence of target species on fishing effort"
   },
   {
     "objectID": "slides/01-fb-tidydata.html#who-is-fishing",
     "href": "slides/01-fb-tidydata.html#who-is-fishing",
     "title": "Wrangling and Visualizing Historical Texts",
     "section": "Who is fishing?",
-    "text": "Who is fishing?\n\nPlot showing the vessel length and width as boats on a scatter plot where the size of the boat is proportional to the carrying capacity of the vessel"
+    "text": "Who is fishing?"
   },
   {
     "objectID": "slides/01-fb-tidydata.html#how-are-vessels-fishing",
     "href": "slides/01-fb-tidydata.html#how-are-vessels-fishing",
     "title": "Wrangling and Visualizing Historical Texts",
     "section": "How are vessels fishing?",
-    "text": "How are vessels fishing?\n\nPlot showing the distribution of trip length by vessel"
+    "text": "How are vessels fishing?"
   },
   {
     "objectID": "slides/01-fb-tidydata.html#what-are-vessels-targeting",
     "href": "slides/01-fb-tidydata.html#what-are-vessels-targeting",
     "title": "Wrangling and Visualizing Historical Texts",
     "section": "What are vessels targeting?",
-    "text": "What are vessels targeting?\n\nPlot showing the distribution of species in the catch by weight by vessel"
+    "text": "What are vessels targeting?"
   },
   {
     "objectID": "slides/01-fb-tidydata.html#where-are-they-catching-it",
@@ -2371,5 +2371,180 @@
     "title": "Wrangling and Visualizing Historical Texts",
     "section": "Choose colors for mitten patterns",
     "text": "Choose colors for mitten patterns"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#goals-for-this-week",
+    "href": "slides/01-fb-tidydata.html#goals-for-this-week",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "Goals for this week",
+    "text": "Goals for this week\n\nGet you coding and exploring text data.\nHelp you see ways you could use R in your projects."
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#build-websites",
+    "href": "slides/01-fb-tidydata.html#build-websites",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "Build websites!",
+    "text": "Build websites!"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#data-science-life-cycle-1",
+    "href": "slides/01-fb-tidydata.html#data-science-life-cycle-1",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "Data Science Life Cycle",
+    "text": "Data Science Life Cycle"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#data-science-life-cycle-2",
+    "href": "slides/01-fb-tidydata.html#data-science-life-cycle-2",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "Data Science Life Cycle",
+    "text": "Data Science Life Cycle"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#data-science-life-cycle-3",
+    "href": "slides/01-fb-tidydata.html#data-science-life-cycle-3",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "Data Science Life Cycle",
+    "text": "Data Science Life Cycle"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#data-science-life-cycle-4",
+    "href": "slides/01-fb-tidydata.html#data-science-life-cycle-4",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "Data Science Life Cycle",
+    "text": "Data Science Life Cycle"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#data-science-life-cycle-5",
+    "href": "slides/01-fb-tidydata.html#data-science-life-cycle-5",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "Data Science Life Cycle",
+    "text": "Data Science Life Cycle"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#data-science-life-cycle-6",
+    "href": "slides/01-fb-tidydata.html#data-science-life-cycle-6",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "Data Science Life Cycle",
+    "text": "Data Science Life Cycle"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#introducing-posit-cloud",
+    "href": "slides/01-fb-tidydata.html#introducing-posit-cloud",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "Introducing Posit Cloud",
+    "text": "Introducing Posit Cloud"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#creating-new-variables-using-mutate",
+    "href": "slides/01-fb-tidydata.html#creating-new-variables-using-mutate",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "Creating new variables using mutate",
+    "text": "Creating new variables using mutate\n\nlibrary(lubridate)\n(journals_sub <- journals_sub %>%\n    mutate(date_mdy = mdy(date_mdy),\n           year = year(date_mdy),\n           month = month(date_mdy)))\n#> # A tibble: 3,951 × 5\n#>    date_mdy   journal_entry                                 location  year month\n#>    <date>     <chr>                                         <chr>    <dbl> <dbl>\n#>  1 1871-12-23 Was married at home in evening by William Ra… Winter …  1871    12\n#>  2 1871-12-24 Went to meeting.                              NA        1871    12\n#>  3 1871-12-25 Shooting match all day in the evening to Chr… Winter …  1871    12\n#>  4 1871-12-26 About home at work fobbing.                   Winter …  1871    12\n#>  5 1871-12-27 Work about home reed letter from N. H. Higgi… Winter …  1871    12\n#>  6 1871-12-28 Work about home.                              Winter …  1871    12\n#>  7 1871-12-29 To work in shop.                              Winter …  1871    12\n#>  8 1871-12-30 To work in shop.                              Winter …  1871    12\n#>  9 1871-12-31 Went to meeting.                              NA        1871    12\n#> 10 1872-01-01 Work in shop.                                 Winter …  1872     1\n#> # ℹ 3,941 more rows\n\n\nThe lubridate package contains useful functions for dates."
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#your-turn",
+    "href": "slides/01-fb-tidydata.html#your-turn",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "Your Turn",
+    "text": "Your Turn\nWhere did Freeland visit during your journal year? Fill in the blanks to find out."
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#where-did-freeland-go-less-often-step-by-step",
+    "href": "slides/01-fb-tidydata.html#where-did-freeland-go-less-often-step-by-step",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "Where did Freeland go less often? Step by Step",
+    "text": "Where did Freeland go less often? Step by Step\nAnd then arrange the locations in ascending order from least to most visited.\n\njournals_sub %>%\n    filter(is.na(location) == FALSE, location != \"NA\") %>%\n    separate_rows(location, sep = \", \") %>%\n    count(location) %>%\n    arrange(n) \n#> # A tibble: 281 × 2\n#>    location                       n\n#>    <chr>                      <int>\n#>  1 \" Handkerchief Light Ship\"     1\n#>  2 \" North East Harbor\"           1\n#>  3 \"Azores/Western Islands\"       1\n#>  4 \"Baker's Island\"               1\n#>  5 \"Bakers Island\"                1\n#>  6 \"Barbacoa Harbor\"              1\n#>  7 \"Bass Habor\"                   1\n#>  8 \"Bath\"                         1\n#>  9 \"Block Island Channel\"         1\n#> 10 \"Boothbay\"                     1\n#> # ℹ 271 more rows"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#plotting-frequency-of-visits-1",
+    "href": "slides/01-fb-tidydata.html#plotting-frequency-of-visits-1",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "Plotting frequency of visits",
+    "text": "Plotting frequency of visits\n\n common_places %>%\n    ggplot(aes(x = n, y = location)) +\n    geom_col() +\n    labs(x = \"Number of mentions\", y = \"Location\")\n\n\n\nLearn about ggplot in these slides and with these interactive tutorials"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#plotting-frequency-of-visits-2",
+    "href": "slides/01-fb-tidydata.html#plotting-frequency-of-visits-2",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "Plotting frequency of visits",
+    "text": "Plotting frequency of visits\n\n common_places %>%\n    ggplot(aes(x = n, y = fct_reorder(location, n))) +\n    geom_col() +\n    labs(x = \"Number of mentions\", y = \"Location\")"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#use-distinct-to-detect-mispellings-and-look-at-unique-entries",
+    "href": "slides/01-fb-tidydata.html#use-distinct-to-detect-mispellings-and-look-at-unique-entries",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "Use distinct to detect mispellings and look at unique entries",
+    "text": "Use distinct to detect mispellings and look at unique entries\n\njournals_sub %>%\n    separate_rows(location, sep = \", \") %>%\n    filter(str_detect(string = location, pattern = \"Cranberry\")) %>%\n    distinct(location)\n#> # A tibble: 4 × 1\n#>   location        \n#>   <chr>           \n#> 1 Cranberry Isles \n#> 2 Cranberry Isle  \n#> 3 Cranberry Island\n#> 4 Cranberry IIsles"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#how-often-did-freeland-visit-over-time",
+    "href": "slides/01-fb-tidydata.html#how-often-did-freeland-visit-over-time",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "How often did Freeland visit over time?",
+    "text": "How often did Freeland visit over time?"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#use-group_by-to-group-and-count-occurrences",
+    "href": "slides/01-fb-tidydata.html#use-group_by-to-group-and-count-occurrences",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "Use group_by to group and count occurrences",
+    "text": "Use group_by to group and count occurrences\n\n(journals_loc_count <- journals_sub %>%\n    separate_rows(location, sep = \", \") %>%\n    filter(location %in% c(\"West Gouldsboro\", \"Ellsworth\", \"Rockland\", \"Bar Harbor\", \"Sullivan\", \"Calais\", \"Prospect Harbor\", \"East Sullivan\", \"Boston\", \"Bass Harbor\", \"Cranberry Isles\")) %>%\n    group_by(year) %>%\n    count(location))"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#plot-code",
+    "href": "slides/01-fb-tidydata.html#plot-code",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "Plot Code",
+    "text": "Plot Code\n\njournals_loc_count %>%\n    ggplot(aes(x = year, y = n, color = location)) +\n    geom_line() +\n    labs(x = \"Year\", \n         y = \"Number of mentions\", \n         color = \"Location\", \n         title = \"Number of times place visited each year by Freeland Bunker\", subtitle = \"Locations don't include home, shop, factory, and Winter Harbor\")"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#we-have-location-coordinates",
+    "href": "slides/01-fb-tidydata.html#we-have-location-coordinates",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "We have location coordinates",
+    "text": "We have location coordinates\n\nlocation_coordinates <- read_excel(path = \"data/location_coordinates.xlsx\")\n\nhead(location_coordinates)\n#> # A tibble: 6 × 13\n#>   location_dropdown           location official_name_check.…¹ latitude longitude\n#>   <chr>                       <chr>    <chr>                     <dbl>     <dbl>\n#> 1 <NA>                        Albany … <NA>                       NA        NA  \n#> 2 local_place_dropdown        Atlanti… <NA>                       NA        NA  \n#> 3 <NA>                        Baker I… yes                        44.2     -68.2\n#> 4 Resources:                  Bangor   yes                        44.8     -68.8\n#> 5 multiple selection excel    Bar Har… yes                        44.4     -68.2\n#> 6 multiple selection sheet w… Baracoa  yes                        20.3     -74.5\n#> # ℹ abbreviated name: ¹​official_name_check...3\n#> # ℹ 8 more variables: location_notes <chr>, initials...7 <chr>,\n#> #   local_place_list <chr>, official_name_check...9 <lgl>,\n#> #   local_place_latitude <lgl>, local_place_longitude <lgl>,\n#> #   local_place_notes <chr>, initials...13 <lgl>"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#we-can-count-how-often-freeland-visited-that-location",
+    "href": "slides/01-fb-tidydata.html#we-can-count-how-often-freeland-visited-that-location",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "We can count how often Freeland visited that location",
+    "text": "We can count how often Freeland visited that location\n\n(loc_count <- journals_sub %>%\n    separate_rows(location, sep = \", \")  %>%\n    count(location))\n#> # A tibble: 278 × 2\n#>    location                       n\n#>    <chr>                      <int>\n#>  1 \" Handkerchief Light Ship\"     1\n#>  2 \" North East Harbor\"           1\n#>  3 \"Albany Railroad Wharf\"        9\n#>  4 \"Atlantic wharf\"               2\n#>  5 \"Azores/Western Islands\"       1\n#>  6 \"Baker Island\"                 2\n#>  7 \"Baker's Island\"               1\n#>  8 \"Bakers Island\"                1\n#>  9 \"Bangor\"                       5\n#> 10 \"Bar Habor\"                    3\n#> # ℹ 268 more rows"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#we-can-combine-two-data-sets-using-a-join",
+    "href": "slides/01-fb-tidydata.html#we-can-combine-two-data-sets-using-a-join",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "We can combine two data sets using a join",
+    "text": "We can combine two data sets using a join\n\n(loc_df <- loc_count %>%\n    left_join(location_coordinates, by = \"location\") %>%\n    drop_na(latitude))\n#> # A tibble: 47 × 14\n#>    location        n location_dropdown official_name_check.…¹ latitude longitude\n#>    <chr>       <int> <chr>             <chr>                     <dbl>     <dbl>\n#>  1 Winter Har…  1155 <NA>              yes                        44.4     -68.1\n#>  2 West Gould…   107 <NA>              yes                        44.5     -68.1\n#>  3 Ellsworth      53 <NA>              yes                        44.5     -68.4\n#>  4 Rockland       46 <NA>              yes                        44.1     -69.1\n#>  5 Bar Harbor     38 multiple selecti… yes                        44.4     -68.2\n#>  6 Calais         34 <NA>              yes                        45.2     -67.3\n#>  7 Bass Harbor    28 <NA>              yes                        44.2     -68.3\n#>  8 Prospect H…    28 <NA>              yes                        44.4     -68.0\n#>  9 Cranberry …    26 <NA>              yes                        44.3     -68.3\n#> 10 Boston         23 <NA>              yes                        42.4     -71.1\n#> # ℹ 37 more rows\n#> # ℹ abbreviated name: ¹​official_name_check...3\n#> # ℹ 8 more variables: location_notes <chr>, initials...7 <chr>,\n#> #   local_place_list <chr>, official_name_check...9 <lgl>,\n#> #   local_place_latitude <lgl>, local_place_longitude <lgl>,\n#> #   local_place_notes <chr>, initials...13 <lgl>"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#homework",
+    "href": "slides/01-fb-tidydata.html#homework",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "Homework",
+    "text": "Homework\nHomework:\n\nAdd 2 more sets of coordinates to the location excel file\nRe-upload the location data\n\n\n\nRerun the leaflet map to see the map expand"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#use-group_by-to-count-yearly-visits",
+    "href": "slides/01-fb-tidydata.html#use-group_by-to-count-yearly-visits",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "Use group_by to count yearly visits",
+    "text": "Use group_by to count yearly visits\n\n(journals_loc_count <- journals_sub %>%\n    separate_rows(location, sep = \", \") %>%\n    filter(location %in% c(\"West Gouldsboro\", \"Ellsworth\", \"Rockland\", \"Bar Harbor\", \"Sullivan\", \"Calais\", \"Prospect Harbor\", \"East Sullivan\", \"Boston\", \"Bass Harbor\", \"Cranberry Isles\")) %>%\n    group_by(year) %>%\n    count(location))\n#> # A tibble: 63 × 3\n#> # Groups:   year [9]\n#>     year location            n\n#>    <dbl> <chr>           <int>\n#>  1  1872 Bass Harbor         2\n#>  2  1872 Cranberry Isles     6\n#>  3  1872 Ellsworth           7\n#>  4  1872 Prospect Harbor     2\n#>  5  1872 Rockland            6\n#>  6  1872 Sullivan            3\n#>  7  1872 West Gouldsboro     3\n#>  8  1873 Bar Harbor          9\n#>  9  1873 Bass Harbor         9\n#> 10  1873 Boston              2\n#> # ℹ 53 more rows"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#we-have-count-of-how-often-freeland-visited-that-location",
+    "href": "slides/01-fb-tidydata.html#we-have-count-of-how-often-freeland-visited-that-location",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "We have count of how often Freeland visited that location",
+    "text": "We have count of how often Freeland visited that location\n\n(loc_count <- journals_sub %>%\n    separate_rows(location, sep = \", \")  %>%\n    count(location) %>%\n    arrange(desc(n)))\n#> # A tibble: 278 × 2\n#>    location            n\n#>    <chr>           <int>\n#>  1 NA               1512\n#>  2 Winter Harbor    1155\n#>  3 <NA>              648\n#>  4 West Gouldsboro   107\n#>  5 Ellsworth          53\n#>  6 Rockland           46\n#>  7 Bar Harbor         38\n#>  8 Calais             34\n#>  9 Sullivan           34\n#> 10 Bass Harbor        28\n#> # ℹ 268 more rows"
+  },
+  {
+    "objectID": "slides/01-fb-tidydata.html#where-did-freeland-go-less-step-by-step",
+    "href": "slides/01-fb-tidydata.html#where-did-freeland-go-less-step-by-step",
+    "title": "Wrangling and Visualizing Historical Texts",
+    "section": "Where did Freeland go less? Step by Step",
+    "text": "Where did Freeland go less? Step by Step\nAnd then arrange the locations in ascending order from least to most visited.\n\njournals_sub %>%\n    filter(is.na(location) == FALSE, location != \"NA\") %>%\n    separate_rows(location, sep = \", \") %>%\n    count(location) %>%\n    arrange(n) \n#> # A tibble: 281 × 2\n#>    location                       n\n#>    <chr>                      <int>\n#>  1 \" Handkerchief Light Ship\"     1\n#>  2 \" North East Harbor\"           1\n#>  3 \"Azores/Western Islands\"       1\n#>  4 \"Baker's Island\"               1\n#>  5 \"Bakers Island\"                1\n#>  6 \"Barbacoa Harbor\"              1\n#>  7 \"Bass Habor\"                   1\n#>  8 \"Bath\"                         1\n#>  9 \"Block Island Channel\"         1\n#> 10 \"Boothbay\"                     1\n#> # ℹ 271 more rows"
   }
 ]
