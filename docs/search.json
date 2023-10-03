@@ -2230,7 +2230,7 @@
     "href": "slides/01-fb-tidydata.html#learning-objectives",
     "title": "Wrangling and Visualizing Historical Texts",
     "section": "Learning Objectives:",
-    "text": "Learning Objectives:\nLearn how to\n\nRead in data using read_excel\nSelect columns using select\nCreate new variables using mutate\nSummarize and arrange data using count and arrange\nGroup data to display and calculate multiple things\nCorrect entries using mutate and case_when\nVisualize and map data using ggplot and leaflet"
+    "text": "Learning Objectives:\nLearn how to\n\nRead in data using read_excel\nSelect columns using select\nCreate new variables using mutate\nSummarize and arrange data using count and arrange\nGroup data to display and calculate multiple things\nCorrect entries using mutate and case_when\nVisualize and map changes in space and time using ggplot and leaflet"
   },
   {
     "objectID": "slides/01-fb-tidydata.html#where-did-freeland-go-step-by-step",
@@ -2524,7 +2524,7 @@
     "href": "slides/01-fb-tidydata.html#homework",
     "title": "Wrangling and Visualizing Historical Texts",
     "section": "Homework",
-    "text": "Homework\nHomework:\n\nAdd 2 more sets of coordinates to the location excel file\nRe-upload the location data\n\n\n\nRerun the leaflet map to see the map expand"
+    "text": "Homework\n\nLook up two locations and add 2 more sets of coordinates to the location excel file. Add your initials to the excel spreadsheet.\nRe-upload the location data\n\n\n\nRerun the leaflet map to see the map expand"
   },
   {
     "objectID": "slides/01-fb-tidydata.html#use-group_by-to-count-yearly-visits",

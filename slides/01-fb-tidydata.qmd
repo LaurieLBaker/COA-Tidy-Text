@@ -277,7 +277,7 @@ Learn how to
 * Summarize and arrange data using `count` and `arrange`
 * Group data to display and calculate multiple things 
 * Correct entries using `mutate` and `case_when`
-* Visualize and map data using `ggplot` and `leaflet`
+* Visualize and map changes in space and time using `ggplot` and `leaflet`
 
 # Introducing Posit Cloud
 
@@ -701,9 +701,7 @@ leaflet(data = loc_df) %>%
 
 ## Homework
 
-Homework: 
-
-- Add 2 more sets of coordinates to the [location excel file](https://docs.google.com/spreadsheets/d/1vA5YjlsGHQBSmUOFsBpPSJhObK601zE3/edit?usp=sharing&ouid=104076949272458477636&rtpof=true&sd=true)
+- Look up two locations and add 2 more sets of coordinates to the [location excel file](https://docs.google.com/spreadsheets/d/1vA5YjlsGHQBSmUOFsBpPSJhObK601zE3/edit?usp=sharing&ouid=104076949272458477636&rtpof=true&sd=true). Add your initials to the excel spreadsheet.
 - Re-upload the location data
 
 
