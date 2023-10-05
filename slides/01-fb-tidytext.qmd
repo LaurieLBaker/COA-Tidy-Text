@@ -106,55 +106,13 @@ rows than the original, non-tidy text dataset.
 ## 9 journals (1871-1880) transcribed
 
 
-```{r}
+```{r warning = FALSE, message = FALSE}
 
-library(readxl)
-journal_1871_1872 <- read_excel("data/journal_1871_1872.xlsx")
-journal_1873 <- read_excel("data/journal_1873.xlsx")
-journal_1874 <- read_excel("data/journal_1874.xlsx")
-journal_1875 <- read_excel("data/journal_1875.xlsx")
-journal_1876 <- read_excel("data/journal_1876.xlsx")
-journal_1877 <- read_excel("data/journal_1877.xlsx")
-journal_1878 <- read_excel("data/journal_1878.xlsx")
-journal_1879 <- read_excel("data/journal_1879.xlsx")
-journal_1880 <- read_excel("data/journal_1880.xlsx")
+journals <- read_csv(file = "data/journals.csv")
 
-```
+journals %>%
+    distinct(journal)
 
-*N.B. excel is just one format
-
-## Keeping Track
-
-```{r echo = FALSE, message = FALSE, warning = FALSE}
-# We need to make sure the journals are the same type
-
-journal_1871_1872$temperature_night <- as.numeric(journal_1871_1872$temperature_night)
-journal_1873$temperature_night <- as.numeric(journal_1873$temperature_night)
-journal_1874$temperature_night <- as.numeric(journal_1874$temperature_night)
-journal_1875$temperature_night <- as.numeric(journal_1875$temperature_night)
-journal_1876$temperature_night <- as.numeric(journal_1876$temperature_night)
-journal_1877$temperature_night <- as.numeric(journal_1877$temperature_night)
-journal_1878$temperature_night <- as.numeric(journal_1878$temperature_night)
-journal_1879$temperature_night <- as.numeric(journal_1879$temperature_night)
-journal_1880$temperature_night <- as.numeric(journal_1880$temperature_night)
-```
-
-```{r}
-# We want to keep track of the journals
-
-journal_1871_1872$journal <- 1
-journal_1873$journal <- 2
-journal_1874$journal <- 3
-journal_1875$journal <- 4
-journal_1876$journal <- 5
-journal_1877$journal <- 6
-journal_1878$journal <- 7
-journal_1879$journal <- 8
-journal_1880$journal <- 9
-
-journals <- dplyr::bind_rows(journal_1871_1872, journal_1873, journal_1874, 
-                             journal_1875, journal_1876, journal_1877, 
-                             journal_1878, journal_1879, journal_1880)
 ```
 
 ## Journal Date, Text, and Location
@@ -202,11 +160,19 @@ library(lubridate)
 ## How much did Freeland write?
 
 ```{r}
-#| eval: false
-tidy_journal %>%
+(monthly_word_count <- tidy_journal %>%
   group_by(month, year) %>%
   filter(is.na(year) == FALSE) %>%
-  summarize(nwords = n()) %>%
+  summarize(nwords = n()))
+```
+
+## Plotting monthly word count through time
+
+What plot do you expect to see?
+
+```{r}
+#| eval: false
+monthly_word_count %>%
   ggplot(aes(x = month, y = nwords, group = year)) +
   geom_line() +
   geom_point() +
@@ -220,10 +186,7 @@ tidy_journal %>%
 
 ```{r}
 #| echo: false
-tidy_journal %>%
-  group_by(month, year) %>%
-  filter(is.na(year) == FALSE) %>%
-  summarize(nwords = n()) %>%
+monthly_word_count %>%
   ggplot(aes(x = month, y = nwords, group = year)) +
   geom_line() +
   geom_point() +
@@ -387,41 +350,130 @@ tidy_journal %>%
     scale_fill_viridis_d(direction = -1) +
     facet_wrap(~journal)
 ```
+
 ## Your Turn: What were the most common words in Journal 5 and 6? 
 
-## Looking at word trends through space
-
 ```{r}
-#| echo: false
+#| eval: false
 tidy_journal %>%
     anti_join(get_stopwords(source = "smart")) %>%
-    filter(str_detect(location, "home")) %>%
-    mutate(word = case_when(word %in% c("lobsters", "lobster") ~ "lobster",
-                            TRUE ~ word)) %>%
+    filter(journal %in% c(____, ____)) %>%
     count(word, sort = TRUE) %>%
-    filter(word != "home") %>%
-    slice_max(n, n = 10, with_ties = FALSE) %>%
+    slice_max(n, n = 25) %>%
     ggplot(aes(n, fct_reorder(word, n))) +  
-    geom_col() +
-    labs(fill = "Word Type", y = "word", title = "Home") +
+    geom_col(aes(fill = color)) +
+    labs(fill = "Word Type", y = "word") +
     scale_fill_viridis_d(direction = -1)
 ```
+
+
+## Your Turn: What were the most common words in your journal period?
+
+```{r}
+#| eval: false
+tidy_journal %>%
+    anti_join(get_stopwords(source = "smart")) %>%
+    filter(year _______,
+           month %in% c(_________)) %>%
+    count(word, sort = TRUE) %>%
+    slice_max(n, n = 25) %>%
+    ggplot(aes(n, fct_reorder(word, n))) +  
+    geom_col(aes(fill = color)) +
+    labs(fill = "Word Type", y = "word") +
+    scale_fill_viridis_d(direction = -1)
+```
+
+## Looking at word trends through space
+
+```{r}
+#| eval: false
+tidy_journal %>%
+    anti_join(get_stopwords(source = "smart")) %>%
+    filter(str_detect(location, pattern = "Matinicus")) %>%
+    count(word, sort = TRUE) %>%
+    filter(word != "home") %>%
+    slice_max(n, n = 10, with_ties = FALSE) %>%
+    ggplot(aes(n, fct_reorder(word, n))) +  
+    geom_col() +
+    labs(fill = "Word Type", y = "word", title = "Matinicus") +
+    scale_fill_viridis_d(direction = -1)
+```
+
 ## Looking at word trends through space
 
 ```{r}
 #| echo: false
 tidy_journal %>%
     anti_join(get_stopwords(source = "smart")) %>%
-    filter(str_detect(location, "home")) %>%
-    mutate(word = case_when(word %in% c("lobsters", "lobster") ~ "lobster",
-                            TRUE ~ word)) %>%
+    filter(str_detect(location, pattern = "Matinicus")) %>%
     count(word, sort = TRUE) %>%
     filter(word != "home") %>%
     slice_max(n, n = 10, with_ties = FALSE) %>%
     ggplot(aes(n, fct_reorder(word, n))) +  
     geom_col() +
-    labs(fill = "Word Type", y = "word", title = "Home") +
+    labs(fill = "Word Type", y = "word", title = "Matinicus") +
     scale_fill_viridis_d(direction = -1)
+```
+## Your Turn: Looking at word trends through space
+
+```{r}
+#| eval: false
+tidy_journal %>%
+    anti_join(get_stopwords(source = "smart")) %>%
+    filter(str_detect(location, "__________")) %>%
+    count(word, sort = TRUE) %>%
+    slice_max(n, n = 10, with_ties = FALSE) %>%
+    ggplot(aes(n, fct_reorder(word, n))) +  
+    geom_col() +
+    labs(fill = "Word Type", y = "word", title = "_______") +
+    scale_fill_viridis_d(direction = -1)
+```
+
+# We can also look for specific things
+
+## Extracting thermometer readings
+
+```{r extract journal entries with the word thermometer ignore below plot}
+#| echo: false
+journals %>%
+  filter(str_detect(string = journal_entry, pattern = "Thermometer | thermometer")) %>% # filter rows for mentions of word thermometer
+  mutate(temp = as.numeric(str_extract(journal_entry, pattern = '(?<=thermometer |Thermometer )\\d+'))) %>% # extract digits following the word thermometer in a sentence.
+  ggplot(aes(x = date_mdy, y = as.numeric(temp))) +
+  geom_point() +
+  labs(x = "Date", y = "Recorded Temperature")
+  
+```
+
+
+## Extracting thermometer readings
+
+```{r extract journal entries with the word thermometer ignore below}
+#| eval: false
+journals %>%
+  filter(str_detect(string = journal_entry, pattern = "Thermometer | thermometer")) %>% # filter rows for mentions of word thermometer
+  mutate(temp = as.numeric(str_extract(journal_entry, pattern = '(?<=thermometer |Thermometer )\\d+'))) %>% # extract digits following the word thermometer in a sentence.
+  ggplot(aes(x = date_mdy, y = as.numeric(temp))) +
+  geom_point() +
+  labs(x = "Date", y = "Recorded Temperature")
+  
+```
+
+## Looking for Schooners
+
+```{r}
+journals %>%
+    filter(str_detect(journal_entry, pattern = "Schr|schr|schooner")) %>%
+    select(date_mdy, journal_entry) %>%
+    DT::datatable()
+```
+
+## Extracting names of schooners
+
+```{r}
+journals %>%
+    filter(str_detect(journal_entry, pattern = "Schr|schr|schooner")) %>%
+    mutate(schooners = str_extract(journal_entry, pattern = "\\b(Schr|Schr.|schr|schr.)(\\b\\s*([A-Z]\\w+|[A-Z]\\.\\w+\\.\\w+|[A-Z]\\. \\w+\\. \\w+)){0,4}")) %>%
+    distinct(schooners)
 ```
 
 ## Recap
@@ -429,7 +481,39 @@ tidy_journal %>%
 -   We can put each word on its own row using `unnest_tokens`
 -   We can use `anti_join` to get rid of stop words
 -   We can use `filter` and `summarize` to see how word use has changed over time and space
+-   We can use `str_detect` to find patterns in our text
+-   We can use `regular expressions` to extract more complicated patterns
 
+## Your Turn
+
+What is something you are curious about in Freeland's journals that you'd like to investigate? Be creative with the time period, place, and what you're looking for.
+
+
+```{r eval = FALSE}
+journals %>%
+    filter(str_detect(journal_entry, pattern = "What are you looking for?")) %>%
+    select(date_mdy, journal_entry)
+```
+
+
+
+# Thanks! {background-image="figs/water2.jpg" background-size="cover" background-opacity="0.5"}
+
+<center>
+
+<img src="figs/freeland_headshot.jpg" width="150px"/>
+
+[{{< fa brands github >}} \@LaurieLBaker](https://github.com/laurielbaker)
+
+[{{< fa link >}} lauriebaker@rbind.io](https://lauriebaker.rbind.io)
+
+</center>
+
+::: footer
+Slides created with [Quarto](https://quarto.org/)
+:::
+
+# Additional Slides
 
 # What was the weather like? {background-image="figs/water2.jpg" background-size="cover" background-opacity="1"}
 
@@ -454,101 +538,3 @@ tidy_journal %>%
     coord_polar()
 ```
 
-## Gathering context
-
-```{r}
-journals %>%
-    filter(str_detect(journal_entry, pattern = "Schr|schr|schooner")) %>%
-    select(date_mdy, journal_entry)
-```
-
-## Extracting Names of Schooners
-
-```{r}
-journals %>%
-    filter(str_detect(journal_entry, pattern = "Schr|schr|schooner")) %>%
-    mutate(schooners = str_extract(journal_entry, pattern = "\\b(Schr|Schr.|schr|schr.)(\\b\\s*([A-Z]\\w+|[A-Z]\\.\\w+\\.\\w+|[A-Z]\\. \\w+\\. \\w+)){0,4}")) %>%
-    distinct(schooners)
-```
-
-## Extracting Schooner name
-
-## Extracting the thermometer data
-
-```{r extract journal entries with the word thermometer ignore below code}
-#| eval: false
-journals %>%
-  filter(str_detect(string = journal_entry, pattern = "Thermometer | thermometer")) %>% # filter rows for mentions of word thermometer
-  mutate(temp = as.numeric(str_extract(journal_entry, pattern = '(?<=thermometer |Thermometer )\\d+'))) %>% # extract digits following the word thermometer in a sentence.
-  ggplot(aes(x = date_mdy, y = as.numeric(temp))) +
-  geom_point() +
-  labs(x = "Date", y = "Recorded Temperature")
-  
-```
-
-## Extracting the thermometer data
-
-```{r extract journal entries with the word thermometer ignore below}
-#| echo: false
-journals %>%
-  filter(str_detect(string = journal_entry, pattern = "Thermometer | thermometer")) %>% # filter rows for mentions of word thermometer
-  mutate(temp = as.numeric(str_extract(journal_entry, pattern = '(?<=thermometer |Thermometer )\\d+'))) %>% # extract digits following the word thermometer in a sentence.
-  ggplot(aes(x = date_mdy, y = as.numeric(temp))) +
-  geom_point() +
-  labs(x = "Date", y = "Recorded Temperature")
-  
-```
-
-
-## Extracting the thermometer data
-
-```{r extract journal entries with the word thermometer code}
-#| eval: false
-journals %>%
-  filter(str_detect(string = journal_entry, pattern = "Thermometer | thermometer")) %>% # filter rows for mentions of word thermometer
-  mutate(temp = as.numeric(str_extract(journal_entry, pattern = '(?<=thermometer |Thermometer )\\d+'))) %>% # extract digits following the word thermometer in a sentence.
-  mutate(temp_below = ifelse(str_detect(string = journal_entry, pattern = "below zero"), "yes", "no")) %>% # if the word below zero is included mark yes or no.
-  filter(is.na(temp) == FALSE) %>% # remove missing values
-  mutate(temp = case_when(temp_below == "yes" ~ temp*(-1), 
-                          TRUE ~ temp)) %>% # Make below zero values negative
-  ggplot(aes(x = date_mdy, y = as.numeric(temp))) +
-  geom_point() +
-  labs(x = "Date", y = "Recorded Temperature")
-  
-```
-
-## Extracting the thermometer data
-
-```{r extract journal entries with the word thermometer}
-#| echo: false
-journals %>%
-  filter(str_detect(string = journal_entry, pattern = "Thermometer | thermometer")) %>% # filter rows for mentions of word thermometer
-  mutate(temp = as.numeric(str_extract(journal_entry, pattern = '(?<=thermometer |Thermometer )\\d+'))) %>% # extract digits following the word thermometer in a sentence.
-  mutate(temp_below = ifelse(str_detect(string = journal_entry, pattern = "below zero"), "yes", "no")) %>% # if the word below zero is included mark yes or no.
-  filter(is.na(temp) == FALSE) %>% # remove missing values
-  mutate(temp = case_when(temp_below == "yes" ~ temp*(-1), 
-                          TRUE ~ temp)) %>% # Make below zero values negative
-  ggplot(aes(x = date_mdy, y = as.numeric(temp))) +
-  geom_point() +
-  labs(x = "Date", y = "Recorded Temperature")
-  
-```
-
-
-
-
-# Thanks! {background-image="figs/water2.jpg" background-size="cover" background-opacity="0.5"}
-
-<center>
-
-<img src="figs/freeland_headshot.jpg" width="150px"/>
-
-[{{< fa brands github >}} \@LaurieLBaker](https://github.com/laurielbaker)
-
-[{{< fa link >}} lauriebaker@rbind.io](https://lauriebaker.rbind.io)
-
-</center>
-
-::: footer
-Slides created with [Quarto](https://quarto.org/)
-:::

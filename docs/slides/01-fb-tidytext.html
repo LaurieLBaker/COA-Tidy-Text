@@ -385,6 +385,16 @@
       margin-right: 0; 
     }
   </style>
+  
+  <script src="../site_libs/htmlwidgets-1.6.2/htmlwidgets.js"></script>
+  <link href="../site_libs/datatables-css-0.0.0/datatables-crosstalk.css" rel="stylesheet">
+  <script src="../site_libs/datatables-binding-0.28/datatables.js"></script>
+  <script src="../site_libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
+  <link href="../site_libs/dt-core-1.13.4/css/jquery.dataTables.min.css" rel="stylesheet">
+  <link href="../site_libs/dt-core-1.13.4/css/jquery.dataTables.extra.css" rel="stylesheet">
+  <script src="../site_libs/dt-core-1.13.4/js/jquery.dataTables.min.js"></script>
+  <link href="../site_libs/crosstalk-1.2.0/css/crosstalk.min.css" rel="stylesheet">
+  <script src="../site_libs/crosstalk-1.2.0/js/crosstalk.min.js"></script>
 <meta property="og:title" content="Text Mining with Tidy Data Principles - Mining Historical Texts">
 <meta property="og:description" content="USING TIDY DATA PRINCIPLES">
 <meta property="og:site-name" content="Text Mining with Tidy Data Principles">
@@ -515,152 +525,156 @@ By Laurie Baker
 </section>
 <section id="journals-1871-1880-transcribed" class="slide level2">
 <h2>9 journals (1871-1880) transcribed</h2>
-<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-6_ef2683afc1ee412947994740f88d97b5">
+<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-6_845d34140e9e87210a09f60a8c65e38b">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a></span>
-<span id="cb5-2"><a href="#cb5-2"></a><span class="fu">library</span>(readxl)</span>
-<span id="cb5-3"><a href="#cb5-3"></a>journal_1871_1872 <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/journal_1871_1872.xlsx"</span>)</span>
-<span id="cb5-4"><a href="#cb5-4"></a>journal_1873 <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/journal_1873.xlsx"</span>)</span>
-<span id="cb5-5"><a href="#cb5-5"></a>journal_1874 <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/journal_1874.xlsx"</span>)</span>
-<span id="cb5-6"><a href="#cb5-6"></a>journal_1875 <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/journal_1875.xlsx"</span>)</span>
-<span id="cb5-7"><a href="#cb5-7"></a>journal_1876 <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/journal_1876.xlsx"</span>)</span>
-<span id="cb5-8"><a href="#cb5-8"></a>journal_1877 <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/journal_1877.xlsx"</span>)</span>
-<span id="cb5-9"><a href="#cb5-9"></a>journal_1878 <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/journal_1878.xlsx"</span>)</span>
-<span id="cb5-10"><a href="#cb5-10"></a>journal_1879 <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/journal_1879.xlsx"</span>)</span>
-<span id="cb5-11"><a href="#cb5-11"></a>journal_1880 <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">"data/journal_1880.xlsx"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-<p>*N.B. excel is just one format</p>
-</section>
-<section id="keeping-track" class="slide level2">
-<h2>Keeping Track</h2>
-<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-7_8012cead2070d322b0b813bf516175c2">
-
-</div>
-<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-8_92ec8d0904817d669e6ab7d5c903f914">
-<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a><span class="co"># We want to keep track of the journals</span></span>
-<span id="cb6-2"><a href="#cb6-2"></a></span>
-<span id="cb6-3"><a href="#cb6-3"></a>journal_1871_1872<span class="sc">$</span>journal <span class="ot">&lt;-</span> <span class="dv">1</span></span>
-<span id="cb6-4"><a href="#cb6-4"></a>journal_1873<span class="sc">$</span>journal <span class="ot">&lt;-</span> <span class="dv">2</span></span>
-<span id="cb6-5"><a href="#cb6-5"></a>journal_1874<span class="sc">$</span>journal <span class="ot">&lt;-</span> <span class="dv">3</span></span>
-<span id="cb6-6"><a href="#cb6-6"></a>journal_1875<span class="sc">$</span>journal <span class="ot">&lt;-</span> <span class="dv">4</span></span>
-<span id="cb6-7"><a href="#cb6-7"></a>journal_1876<span class="sc">$</span>journal <span class="ot">&lt;-</span> <span class="dv">5</span></span>
-<span id="cb6-8"><a href="#cb6-8"></a>journal_1877<span class="sc">$</span>journal <span class="ot">&lt;-</span> <span class="dv">6</span></span>
-<span id="cb6-9"><a href="#cb6-9"></a>journal_1878<span class="sc">$</span>journal <span class="ot">&lt;-</span> <span class="dv">7</span></span>
-<span id="cb6-10"><a href="#cb6-10"></a>journal_1879<span class="sc">$</span>journal <span class="ot">&lt;-</span> <span class="dv">8</span></span>
-<span id="cb6-11"><a href="#cb6-11"></a>journal_1880<span class="sc">$</span>journal <span class="ot">&lt;-</span> <span class="dv">9</span></span>
-<span id="cb6-12"><a href="#cb6-12"></a></span>
-<span id="cb6-13"><a href="#cb6-13"></a>journals <span class="ot">&lt;-</span> dplyr<span class="sc">::</span><span class="fu">bind_rows</span>(journal_1871_1872, journal_1873, journal_1874, </span>
-<span id="cb6-14"><a href="#cb6-14"></a>                             journal_1875, journal_1876, journal_1877, </span>
-<span id="cb6-15"><a href="#cb6-15"></a>                             journal_1878, journal_1879, journal_1880)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-2"><a href="#cb5-2"></a>journals <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="at">file =</span> <span class="st">"data/journals.csv"</span>)</span>
+<span id="cb5-3"><a href="#cb5-3"></a></span>
+<span id="cb5-4"><a href="#cb5-4"></a>journals <span class="sc">%&gt;%</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a>    <span class="fu">distinct</span>(journal)</span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="co">#&gt; # A tibble: 9 × 1</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a><span class="co">#&gt;   journal</span></span>
+<span id="cb5-8"><a href="#cb5-8"></a><span class="co">#&gt;     &lt;dbl&gt;</span></span>
+<span id="cb5-9"><a href="#cb5-9"></a><span class="co">#&gt; 1       1</span></span>
+<span id="cb5-10"><a href="#cb5-10"></a><span class="co">#&gt; 2       2</span></span>
+<span id="cb5-11"><a href="#cb5-11"></a><span class="co">#&gt; 3       3</span></span>
+<span id="cb5-12"><a href="#cb5-12"></a><span class="co">#&gt; 4       4</span></span>
+<span id="cb5-13"><a href="#cb5-13"></a><span class="co">#&gt; 5       5</span></span>
+<span id="cb5-14"><a href="#cb5-14"></a><span class="co">#&gt; 6       6</span></span>
+<span id="cb5-15"><a href="#cb5-15"></a><span class="co">#&gt; 7       7</span></span>
+<span id="cb5-16"><a href="#cb5-16"></a><span class="co">#&gt; 8       8</span></span>
+<span id="cb5-17"><a href="#cb5-17"></a><span class="co">#&gt; 9       9</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="journal-date-text-and-location" class="slide level2">
 <h2>Journal Date, Text, and Location</h2>
-<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-9_19fc3e7e038f65b0999a31cf8e550d7d">
-<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>journals <span class="sc">%&gt;%</span></span>
-<span id="cb7-2"><a href="#cb7-2"></a>    <span class="fu">select</span>(date_mdy, journal_entry, location)</span>
-<span id="cb7-3"><a href="#cb7-3"></a><span class="co">#&gt; # A tibble: 3,951 × 3</span></span>
-<span id="cb7-4"><a href="#cb7-4"></a><span class="co">#&gt;    date_mdy   journal_entry                                             location</span></span>
-<span id="cb7-5"><a href="#cb7-5"></a><span class="co">#&gt;    &lt;chr&gt;      &lt;chr&gt;                                                     &lt;chr&gt;   </span></span>
-<span id="cb7-6"><a href="#cb7-6"></a><span class="co">#&gt;  1 12/23/1871 Was married at home in evening by William Rand Esqr.      home    </span></span>
-<span id="cb7-7"><a href="#cb7-7"></a><span class="co">#&gt;  2 12/24/1871 Went to meeting.                                          NA      </span></span>
-<span id="cb7-8"><a href="#cb7-8"></a><span class="co">#&gt;  3 12/25/1871 Shooting match all day in the evening to Christmas tree … hall    </span></span>
-<span id="cb7-9"><a href="#cb7-9"></a><span class="co">#&gt;  4 12/26/1871 About home at work fobbing.                               home    </span></span>
-<span id="cb7-10"><a href="#cb7-10"></a><span class="co">#&gt;  5 12/27/1871 Work about home reed letter from N. H. Higgins Ins agt.   home    </span></span>
-<span id="cb7-11"><a href="#cb7-11"></a><span class="co">#&gt;  6 12/28/1871 Work about home.                                          home    </span></span>
-<span id="cb7-12"><a href="#cb7-12"></a><span class="co">#&gt;  7 12/29/1871 To work in shop.                                          shop    </span></span>
-<span id="cb7-13"><a href="#cb7-13"></a><span class="co">#&gt;  8 12/30/1871 To work in shop.                                          shop    </span></span>
-<span id="cb7-14"><a href="#cb7-14"></a><span class="co">#&gt;  9 12/31/1871 Went to meeting.                                          NA      </span></span>
-<span id="cb7-15"><a href="#cb7-15"></a><span class="co">#&gt; 10 1/1/1872   Work in shop.                                             shop    </span></span>
-<span id="cb7-16"><a href="#cb7-16"></a><span class="co">#&gt; # ℹ 3,941 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-7_a5f4823cd6029e4d737262be5e2ea2c7">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>journals <span class="sc">%&gt;%</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>    <span class="fu">select</span>(date_mdy, journal_entry, location)</span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="co">#&gt; # A tibble: 3,951 × 3</span></span>
+<span id="cb6-4"><a href="#cb6-4"></a><span class="co">#&gt;    date_mdy   journal_entry                                             location</span></span>
+<span id="cb6-5"><a href="#cb6-5"></a><span class="co">#&gt;    &lt;chr&gt;      &lt;chr&gt;                                                     &lt;chr&gt;   </span></span>
+<span id="cb6-6"><a href="#cb6-6"></a><span class="co">#&gt;  1 12/23/1871 Was married at home in evening by William Rand Esqr.      Winter …</span></span>
+<span id="cb6-7"><a href="#cb6-7"></a><span class="co">#&gt;  2 12/24/1871 Went to meeting.                                          &lt;NA&gt;    </span></span>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="co">#&gt;  3 12/25/1871 Shooting match all day in the evening to Christmas tree … Winter …</span></span>
+<span id="cb6-9"><a href="#cb6-9"></a><span class="co">#&gt;  4 12/26/1871 About home at work fobbing.                               Winter …</span></span>
+<span id="cb6-10"><a href="#cb6-10"></a><span class="co">#&gt;  5 12/27/1871 Work about home reed letter from N. H. Higgins Ins agt.   Winter …</span></span>
+<span id="cb6-11"><a href="#cb6-11"></a><span class="co">#&gt;  6 12/28/1871 Work about home.                                          Winter …</span></span>
+<span id="cb6-12"><a href="#cb6-12"></a><span class="co">#&gt;  7 12/29/1871 To work in shop.                                          Winter …</span></span>
+<span id="cb6-13"><a href="#cb6-13"></a><span class="co">#&gt;  8 12/30/1871 To work in shop.                                          Winter …</span></span>
+<span id="cb6-14"><a href="#cb6-14"></a><span class="co">#&gt;  9 12/31/1871 Went to meeting.                                          &lt;NA&gt;    </span></span>
+<span id="cb6-15"><a href="#cb6-15"></a><span class="co">#&gt; 10 1/1/1872   Work in shop.                                             Winter …</span></span>
+<span id="cb6-16"><a href="#cb6-16"></a><span class="co">#&gt; # ℹ 3,941 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="creating-date-variables-using-lubridate" class="slide level2">
 <h2>Creating date variables using <code>lubridate</code></h2>
 <p>Recall: What functions can we use to extract the year and month?</p>
-<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-10_e6e3a19545bae3f9d75c3d11779e1318">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">library</span>(lubridate)</span>
-<span id="cb8-2"><a href="#cb8-2"></a>journals <span class="ot">&lt;-</span> journals <span class="sc">%&gt;%</span></span>
-<span id="cb8-3"><a href="#cb8-3"></a>    <span class="fu">select</span>(date_mdy, journal_entry, journal, location) <span class="sc">%&gt;%</span></span>
-<span id="cb8-4"><a href="#cb8-4"></a>    <span class="fu">mutate</span>(<span class="at">date_mdy =</span> <span class="fu">mdy</span>(date_mdy),</span>
-<span id="cb8-5"><a href="#cb8-5"></a>           <span class="at">year =</span> <span class="fu">_____</span>(date_mdy),</span>
-<span id="cb8-6"><a href="#cb8-6"></a>           <span class="at">month =</span> <span class="fu">_____</span>(date_mdy))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-8_f21b131855b78cb18003321446c36827">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb7-2"><a href="#cb7-2"></a>journals <span class="ot">&lt;-</span> journals <span class="sc">%&gt;%</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a>    <span class="fu">select</span>(date_mdy, journal_entry, journal, location) <span class="sc">%&gt;%</span></span>
+<span id="cb7-4"><a href="#cb7-4"></a>    <span class="fu">mutate</span>(<span class="at">date_mdy =</span> <span class="fu">mdy</span>(date_mdy),</span>
+<span id="cb7-5"><a href="#cb7-5"></a>           <span class="at">year =</span> <span class="fu">_____</span>(date_mdy),</span>
+<span id="cb7-6"><a href="#cb7-6"></a>           <span class="at">month =</span> <span class="fu">_____</span>(date_mdy))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <p>Hint: Check the <a href="https://evoldyn.gitlab.io/evomics-2018/ref-sheets/R_lubridate.pdf">lubridate cheatsheet</a></p>
 </section>
 <section id="creating-date-variables-using-lubridate-1" class="slide level2">
 <h2>Creating date variables using <code>lubridate</code></h2>
-<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-11_dca7840aebbd5956092b820cd1b1a27a">
-<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a><span class="fu">library</span>(lubridate)</span>
-<span id="cb9-2"><a href="#cb9-2"></a>(journals <span class="ot">&lt;-</span> journals <span class="sc">%&gt;%</span></span>
-<span id="cb9-3"><a href="#cb9-3"></a>    <span class="fu">select</span>(date_mdy, journal_entry, journal, location) <span class="sc">%&gt;%</span></span>
-<span id="cb9-4"><a href="#cb9-4"></a>    <span class="fu">mutate</span>(<span class="at">date_mdy =</span> <span class="fu">mdy</span>(date_mdy),</span>
-<span id="cb9-5"><a href="#cb9-5"></a>           <span class="at">year =</span> <span class="fu">year</span>(date_mdy),</span>
-<span id="cb9-6"><a href="#cb9-6"></a>           <span class="at">month =</span> <span class="fu">month</span>(date_mdy)))</span>
-<span id="cb9-7"><a href="#cb9-7"></a><span class="co">#&gt; # A tibble: 3,951 × 6</span></span>
-<span id="cb9-8"><a href="#cb9-8"></a><span class="co">#&gt;    date_mdy   journal_entry                         journal location  year month</span></span>
-<span id="cb9-9"><a href="#cb9-9"></a><span class="co">#&gt;    &lt;date&gt;     &lt;chr&gt;                                   &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span id="cb9-10"><a href="#cb9-10"></a><span class="co">#&gt;  1 1871-12-23 Was married at home in evening by Wi…       1 home      1871    12</span></span>
-<span id="cb9-11"><a href="#cb9-11"></a><span class="co">#&gt;  2 1871-12-24 Went to meeting.                            1 NA        1871    12</span></span>
-<span id="cb9-12"><a href="#cb9-12"></a><span class="co">#&gt;  3 1871-12-25 Shooting match all day in the evenin…       1 hall      1871    12</span></span>
-<span id="cb9-13"><a href="#cb9-13"></a><span class="co">#&gt;  4 1871-12-26 About home at work fobbing.                 1 home      1871    12</span></span>
-<span id="cb9-14"><a href="#cb9-14"></a><span class="co">#&gt;  5 1871-12-27 Work about home reed letter from N. …       1 home      1871    12</span></span>
-<span id="cb9-15"><a href="#cb9-15"></a><span class="co">#&gt;  6 1871-12-28 Work about home.                            1 home      1871    12</span></span>
-<span id="cb9-16"><a href="#cb9-16"></a><span class="co">#&gt;  7 1871-12-29 To work in shop.                            1 shop      1871    12</span></span>
-<span id="cb9-17"><a href="#cb9-17"></a><span class="co">#&gt;  8 1871-12-30 To work in shop.                            1 shop      1871    12</span></span>
-<span id="cb9-18"><a href="#cb9-18"></a><span class="co">#&gt;  9 1871-12-31 Went to meeting.                            1 NA        1871    12</span></span>
-<span id="cb9-19"><a href="#cb9-19"></a><span class="co">#&gt; 10 1872-01-01 Work in shop.                               1 shop      1872     1</span></span>
-<span id="cb9-20"><a href="#cb9-20"></a><span class="co">#&gt; # ℹ 3,941 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-9_c78a679dd8cefdaf94a3942e22e0c50d">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb8-2"><a href="#cb8-2"></a>(journals <span class="ot">&lt;-</span> journals <span class="sc">%&gt;%</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a>    <span class="fu">select</span>(date_mdy, journal_entry, journal, location) <span class="sc">%&gt;%</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a>    <span class="fu">mutate</span>(<span class="at">date_mdy =</span> <span class="fu">mdy</span>(date_mdy),</span>
+<span id="cb8-5"><a href="#cb8-5"></a>           <span class="at">year =</span> <span class="fu">year</span>(date_mdy),</span>
+<span id="cb8-6"><a href="#cb8-6"></a>           <span class="at">month =</span> <span class="fu">month</span>(date_mdy)))</span>
+<span id="cb8-7"><a href="#cb8-7"></a><span class="co">#&gt; # A tibble: 3,951 × 6</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="co">#&gt;    date_mdy   journal_entry                         journal location  year month</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="co">#&gt;    &lt;date&gt;     &lt;chr&gt;                                   &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span id="cb8-10"><a href="#cb8-10"></a><span class="co">#&gt;  1 1871-12-23 Was married at home in evening by Wi…       1 Winter …  1871    12</span></span>
+<span id="cb8-11"><a href="#cb8-11"></a><span class="co">#&gt;  2 1871-12-24 Went to meeting.                            1 &lt;NA&gt;      1871    12</span></span>
+<span id="cb8-12"><a href="#cb8-12"></a><span class="co">#&gt;  3 1871-12-25 Shooting match all day in the evenin…       1 Winter …  1871    12</span></span>
+<span id="cb8-13"><a href="#cb8-13"></a><span class="co">#&gt;  4 1871-12-26 About home at work fobbing.                 1 Winter …  1871    12</span></span>
+<span id="cb8-14"><a href="#cb8-14"></a><span class="co">#&gt;  5 1871-12-27 Work about home reed letter from N. …       1 Winter …  1871    12</span></span>
+<span id="cb8-15"><a href="#cb8-15"></a><span class="co">#&gt;  6 1871-12-28 Work about home.                            1 Winter …  1871    12</span></span>
+<span id="cb8-16"><a href="#cb8-16"></a><span class="co">#&gt;  7 1871-12-29 To work in shop.                            1 Winter …  1871    12</span></span>
+<span id="cb8-17"><a href="#cb8-17"></a><span class="co">#&gt;  8 1871-12-30 To work in shop.                            1 Winter …  1871    12</span></span>
+<span id="cb8-18"><a href="#cb8-18"></a><span class="co">#&gt;  9 1871-12-31 Went to meeting.                            1 &lt;NA&gt;      1871    12</span></span>
+<span id="cb8-19"><a href="#cb8-19"></a><span class="co">#&gt; 10 1872-01-01 Work in shop.                               1 Winter …  1872     1</span></span>
+<span id="cb8-20"><a href="#cb8-20"></a><span class="co">#&gt; # ℹ 3,941 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="making-our-text-data-tidy" class="slide level2">
 <h2>Making our text data tidy</h2>
-<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-12_85faed3ac6c7f1fdb001d1ded4b3629e">
-<div class="sourceCode cell-code" id="cb10" data-code-line-numbers="|2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>(tidy_journal <span class="ot">&lt;-</span> journals <span class="sc">%&gt;%</span></span>
-<span id="cb10-2"><a href="#cb10-2"></a>    <span class="fu">unnest_tokens</span>(word, journal_entry))</span>
-<span id="cb10-3"><a href="#cb10-3"></a><span class="co">#&gt; # A tibble: 65,118 × 6</span></span>
-<span id="cb10-4"><a href="#cb10-4"></a><span class="co">#&gt;    date_mdy   journal location  year month word   </span></span>
-<span id="cb10-5"><a href="#cb10-5"></a><span class="co">#&gt;    &lt;date&gt;       &lt;dbl&gt; &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;  </span></span>
-<span id="cb10-6"><a href="#cb10-6"></a><span class="co">#&gt;  1 1871-12-23       1 home      1871    12 was    </span></span>
-<span id="cb10-7"><a href="#cb10-7"></a><span class="co">#&gt;  2 1871-12-23       1 home      1871    12 married</span></span>
-<span id="cb10-8"><a href="#cb10-8"></a><span class="co">#&gt;  3 1871-12-23       1 home      1871    12 at     </span></span>
-<span id="cb10-9"><a href="#cb10-9"></a><span class="co">#&gt;  4 1871-12-23       1 home      1871    12 home   </span></span>
-<span id="cb10-10"><a href="#cb10-10"></a><span class="co">#&gt;  5 1871-12-23       1 home      1871    12 in     </span></span>
-<span id="cb10-11"><a href="#cb10-11"></a><span class="co">#&gt;  6 1871-12-23       1 home      1871    12 evening</span></span>
-<span id="cb10-12"><a href="#cb10-12"></a><span class="co">#&gt;  7 1871-12-23       1 home      1871    12 by     </span></span>
-<span id="cb10-13"><a href="#cb10-13"></a><span class="co">#&gt;  8 1871-12-23       1 home      1871    12 william</span></span>
-<span id="cb10-14"><a href="#cb10-14"></a><span class="co">#&gt;  9 1871-12-23       1 home      1871    12 rand   </span></span>
-<span id="cb10-15"><a href="#cb10-15"></a><span class="co">#&gt; 10 1871-12-23       1 home      1871    12 esqr   </span></span>
-<span id="cb10-16"><a href="#cb10-16"></a><span class="co">#&gt; # ℹ 65,108 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-10_313ea216812a0a82f1e1642951ff5a5a">
+<div class="sourceCode cell-code" id="cb9" data-code-line-numbers="|2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>(tidy_journal <span class="ot">&lt;-</span> journals <span class="sc">%&gt;%</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>    <span class="fu">unnest_tokens</span>(word, journal_entry))</span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="co">#&gt; # A tibble: 65,118 × 6</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="co">#&gt;    date_mdy   journal location       year month word   </span></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="co">#&gt;    &lt;date&gt;       &lt;dbl&gt; &lt;chr&gt;         &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;  </span></span>
+<span id="cb9-6"><a href="#cb9-6"></a><span class="co">#&gt;  1 1871-12-23       1 Winter Harbor  1871    12 was    </span></span>
+<span id="cb9-7"><a href="#cb9-7"></a><span class="co">#&gt;  2 1871-12-23       1 Winter Harbor  1871    12 married</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a><span class="co">#&gt;  3 1871-12-23       1 Winter Harbor  1871    12 at     </span></span>
+<span id="cb9-9"><a href="#cb9-9"></a><span class="co">#&gt;  4 1871-12-23       1 Winter Harbor  1871    12 home   </span></span>
+<span id="cb9-10"><a href="#cb9-10"></a><span class="co">#&gt;  5 1871-12-23       1 Winter Harbor  1871    12 in     </span></span>
+<span id="cb9-11"><a href="#cb9-11"></a><span class="co">#&gt;  6 1871-12-23       1 Winter Harbor  1871    12 evening</span></span>
+<span id="cb9-12"><a href="#cb9-12"></a><span class="co">#&gt;  7 1871-12-23       1 Winter Harbor  1871    12 by     </span></span>
+<span id="cb9-13"><a href="#cb9-13"></a><span class="co">#&gt;  8 1871-12-23       1 Winter Harbor  1871    12 william</span></span>
+<span id="cb9-14"><a href="#cb9-14"></a><span class="co">#&gt;  9 1871-12-23       1 Winter Harbor  1871    12 rand   </span></span>
+<span id="cb9-15"><a href="#cb9-15"></a><span class="co">#&gt; 10 1871-12-23       1 Winter Harbor  1871    12 esqr   </span></span>
+<span id="cb9-16"><a href="#cb9-16"></a><span class="co">#&gt; # ℹ 65,108 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="how-much-did-freeland-write" class="slide level2">
 <h2>How much did Freeland write?</h2>
-<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-13_7859497c3c1206dbda7b85dc0a35b76c">
-<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>tidy_journal <span class="sc">%&gt;%</span></span>
-<span id="cb11-2"><a href="#cb11-2"></a>  <span class="fu">group_by</span>(month, year) <span class="sc">%&gt;%</span></span>
-<span id="cb11-3"><a href="#cb11-3"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(year) <span class="sc">==</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
-<span id="cb11-4"><a href="#cb11-4"></a>  <span class="fu">summarize</span>(<span class="at">nwords =</span> <span class="fu">n</span>()) <span class="sc">%&gt;%</span></span>
-<span id="cb11-5"><a href="#cb11-5"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> month, <span class="at">y =</span> nwords, <span class="at">group =</span> year)) <span class="sc">+</span></span>
-<span id="cb11-6"><a href="#cb11-6"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
-<span id="cb11-7"><a href="#cb11-7"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb11-8"><a href="#cb11-8"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>year) <span class="sc">+</span></span>
-<span id="cb11-9"><a href="#cb11-9"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"How much did Freeland write a month?"</span>,</span>
-<span id="cb11-10"><a href="#cb11-10"></a>       <span class="at">y =</span> <span class="st">"Number of words"</span>,</span>
-<span id="cb11-11"><a href="#cb11-11"></a>       <span class="at">x =</span> <span class="st">"Month"</span>) <span class="sc">+</span></span>
-<span id="cb11-12"><a href="#cb11-12"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">6</span>, <span class="dv">9</span>, <span class="dv">12</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-11_d70627d7d42e415029d6390d24698b79">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>(monthly_word_count <span class="ot">&lt;-</span> tidy_journal <span class="sc">%&gt;%</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a>  <span class="fu">group_by</span>(month, year) <span class="sc">%&gt;%</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(year) <span class="sc">==</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a>  <span class="fu">summarize</span>(<span class="at">nwords =</span> <span class="fu">n</span>()))</span>
+<span id="cb10-5"><a href="#cb10-5"></a><span class="co">#&gt; # A tibble: 97 × 3</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a><span class="co">#&gt; # Groups:   month [12]</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a><span class="co">#&gt;    month  year nwords</span></span>
+<span id="cb10-8"><a href="#cb10-8"></a><span class="co">#&gt;    &lt;dbl&gt; &lt;dbl&gt;  &lt;int&gt;</span></span>
+<span id="cb10-9"><a href="#cb10-9"></a><span class="co">#&gt;  1     1  1872    193</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a><span class="co">#&gt;  2     1  1873    569</span></span>
+<span id="cb10-11"><a href="#cb10-11"></a><span class="co">#&gt;  3     1  1874    371</span></span>
+<span id="cb10-12"><a href="#cb10-12"></a><span class="co">#&gt;  4     1  1875    565</span></span>
+<span id="cb10-13"><a href="#cb10-13"></a><span class="co">#&gt;  5     1  1876    610</span></span>
+<span id="cb10-14"><a href="#cb10-14"></a><span class="co">#&gt;  6     1  1877    441</span></span>
+<span id="cb10-15"><a href="#cb10-15"></a><span class="co">#&gt;  7     1  1879    950</span></span>
+<span id="cb10-16"><a href="#cb10-16"></a><span class="co">#&gt;  8     1  1880    748</span></span>
+<span id="cb10-17"><a href="#cb10-17"></a><span class="co">#&gt;  9     2  1872    224</span></span>
+<span id="cb10-18"><a href="#cb10-18"></a><span class="co">#&gt; 10     2  1873    564</span></span>
+<span id="cb10-19"><a href="#cb10-19"></a><span class="co">#&gt; # ℹ 87 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="plotting-monthly-word-count-through-time" class="slide level2">
+<h2>Plotting monthly word count through time</h2>
+<p>What plot do you expect to see?</p>
+<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-12_bb2e3e01f6beef09d9a203fc4e2737f5">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>monthly_word_count <span class="sc">%&gt;%</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> month, <span class="at">y =</span> nwords, <span class="at">group =</span> year)) <span class="sc">+</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>year) <span class="sc">+</span></span>
+<span id="cb11-6"><a href="#cb11-6"></a>  <span class="fu">labs</span>(<span class="at">title =</span> <span class="st">"How much did Freeland write a month?"</span>,</span>
+<span id="cb11-7"><a href="#cb11-7"></a>       <span class="at">y =</span> <span class="st">"Number of words"</span>,</span>
+<span id="cb11-8"><a href="#cb11-8"></a>       <span class="at">x =</span> <span class="st">"Month"</span>) <span class="sc">+</span></span>
+<span id="cb11-9"><a href="#cb11-9"></a>  <span class="fu">scale_x_continuous</span>(<span class="at">breaks =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">3</span>, <span class="dv">6</span>, <span class="dv">9</span>, <span class="dv">12</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="how-much-did-freeland-write-1" class="slide level2">
 <h2>How much did Freeland write?</h2>
 
-<img data-src="01-fb-tidytext_files/figure-revealjs/unnamed-chunk-14-1.png" width="3000" class="r-stretch"><div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-15_275d790c54fbc413e34df2fd3e99cd63">
+<img data-src="01-fb-tidytext_files/figure-revealjs/unnamed-chunk-13-1.png" width="3000" class="r-stretch"><div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-14_8b79faf6e4fc300365c124201ad24cd0">
 
 </div>
 </section>
 <section id="what-are-the-most-common-words" class="slide level2" data-background-color="white">
 <h2>What are the most common words?</h2>
 <p>What do you predict will happen if we run the following code? 🤔</p>
-<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-16_1afe444cc56886d594a7590178be8122">
+<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-15_03c929784cfb252c1173729da22d6f46">
 <div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>tidy_journal <span class="sc">%&gt;%</span></span>
 <span id="cb12-2"><a href="#cb12-2"></a>    <span class="fu">count</span>(word, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -668,10 +682,10 @@ By Laurie Baker
 <section id="what-are-the-most-common-words-1" class="slide level2" data-background-color="white">
 <h2>What are the most common words?</h2>
 <p>What do you predict will happen if we run the following code? 🤔</p>
-<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-17_1021e72844d0521a6bc92ab62888154f">
+<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-16_c15049d77decaecb556b6a6f70a0527a">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>tidy_journal <span class="sc">%&gt;%</span></span>
 <span id="cb13-2"><a href="#cb13-2"></a>    <span class="fu">count</span>(word, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb13-3"><a href="#cb13-3"></a><span class="co">#&gt; # A tibble: 4,108 × 2</span></span>
+<span id="cb13-3"><a href="#cb13-3"></a><span class="co">#&gt; # A tibble: 4,105 × 2</span></span>
 <span id="cb13-4"><a href="#cb13-4"></a><span class="co">#&gt;    word            n</span></span>
 <span id="cb13-5"><a href="#cb13-5"></a><span class="co">#&gt;    &lt;chr&gt;       &lt;int&gt;</span></span>
 <span id="cb13-6"><a href="#cb13-6"></a><span class="co">#&gt;  1 the          5116</span></span>
@@ -684,12 +698,12 @@ By Laurie Baker
 <span id="cb13-13"><a href="#cb13-13"></a><span class="co">#&gt;  8 of            948</span></span>
 <span id="cb13-14"><a href="#cb13-14"></a><span class="co">#&gt;  9 west          933</span></span>
 <span id="cb13-15"><a href="#cb13-15"></a><span class="co">#&gt; 10 went          909</span></span>
-<span id="cb13-16"><a href="#cb13-16"></a><span class="co">#&gt; # ℹ 4,098 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb13-16"><a href="#cb13-16"></a><span class="co">#&gt; # ℹ 4,095 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="stop-words" class="slide level2" data-background-color="white">
 <h2>Stop words</h2>
-<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-18_ae791efdc8470700d7dd1cd218a91a64">
+<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-17_312d34f4ce4d902f9ed42c6e89d03069">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a><span class="fu">get_stopwords</span>()</span>
 <span id="cb14-2"><a href="#cb14-2"></a><span class="co">#&gt; # A tibble: 175 × 2</span></span>
 <span id="cb14-3"><a href="#cb14-3"></a><span class="co">#&gt;    word      lexicon </span></span>
@@ -709,7 +723,7 @@ By Laurie Baker
 </section>
 <section id="stop-words-1" class="slide level2" data-background-color="white">
 <h2>Stop words</h2>
-<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-19_0d68c5746695e9c8bfce1aa018c0647a">
+<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-18_d4f3d9e0ca9859836406221529831ac1">
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">get_stopwords</span>(<span class="at">language =</span> <span class="st">"es"</span>)</span>
 <span id="cb15-2"><a href="#cb15-2"></a><span class="co">#&gt; # A tibble: 308 × 2</span></span>
 <span id="cb15-3"><a href="#cb15-3"></a><span class="co">#&gt;    word  lexicon </span></span>
@@ -729,7 +743,7 @@ By Laurie Baker
 </section>
 <section id="stop-words-2" class="slide level2" data-background-color="white">
 <h2>Stop words</h2>
-<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-20_1b6fce19d5ccb0c312ff5f52cb917b48">
+<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-19_62d682ff41116906632fc8d09ce799f3">
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">get_stopwords</span>(<span class="at">language =</span> <span class="st">"de"</span>)</span>
 <span id="cb16-2"><a href="#cb16-2"></a><span class="co">#&gt; # A tibble: 231 × 2</span></span>
 <span id="cb16-3"><a href="#cb16-3"></a><span class="co">#&gt;    word  lexicon </span></span>
@@ -749,7 +763,7 @@ By Laurie Baker
 </section>
 <section id="stop-words-3" class="slide level2" data-background-color="white">
 <h2>Stop words</h2>
-<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-21_fe967aee56259df2ef768ad72afe68d1">
+<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-20_f9e9ce644260cb723a6da52f047cbb42">
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a><span class="fu">get_stopwords</span>(<span class="at">source =</span> <span class="st">"smart"</span>)</span>
 <span id="cb17-2"><a href="#cb17-2"></a><span class="co">#&gt; # A tibble: 571 × 2</span></span>
 <span id="cb17-3"><a href="#cb17-3"></a><span class="co">#&gt;    word        lexicon</span></span>
@@ -779,7 +793,7 @@ By Laurie Baker
 </section>
 <section id="what-are-the-most-common-words-3" class="slide level2" data-background-color="white">
 <h2>What are the most common words?</h2>
-<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-22_80ab1a416c7b0914cc0d78832030d0db">
+<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-21_6f44a81e80d054e9920cee6009eac8ac">
 <div class="sourceCode cell-code" id="cb18" data-code-line-numbers="|2|5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>tidy_journal <span class="sc">%&gt;%</span></span>
 <span id="cb18-2"><a href="#cb18-2"></a>    <span class="fu">anti_join</span>(<span class="fu">get_stopwords</span>(<span class="at">source =</span> <span class="st">"smart"</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb18-3"><a href="#cb18-3"></a>    <span class="fu">count</span>(word, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
@@ -791,131 +805,158 @@ By Laurie Baker
 <section id="section" class="slide level2" data-background-color="white">
 <h2></h2>
 
-<img data-src="01-fb-tidytext_files/figure-revealjs/unnamed-chunk-23-1.png" width="2100" class="r-stretch quarto-figure-center"></section>
+<img data-src="01-fb-tidytext_files/figure-revealjs/unnamed-chunk-22-1.png" width="2100" class="r-stretch quarto-figure-center"></section>
 <section id="journal-1-boats-meals-goods" class="slide level2" data-background-color="white">
 <h2>Journal 1: Boats, Meals, Goods 🍳 ⛵🦞 🪵</h2>
 
-<img data-src="01-fb-tidytext_files/figure-revealjs/unnamed-chunk-24-1.png" width="3000" class="r-stretch"></section>
+<img data-src="01-fb-tidytext_files/figure-revealjs/unnamed-chunk-23-1.png" width="3000" class="r-stretch"></section>
 <section id="journal-2-wind-and-weather-nesw" class="slide level2" data-background-color="white">
 <h2>Journal 2: Wind and Weather︎ NESW</h2>
 
-<img data-src="01-fb-tidytext_files/figure-revealjs/unnamed-chunk-25-1.png" width="3000" class="r-stretch"></section>
+<img data-src="01-fb-tidytext_files/figure-revealjs/unnamed-chunk-24-1.png" width="3000" class="r-stretch"></section>
 <section id="comparing-multiple-journals" class="slide level2">
 <h2>Comparing multiple journals</h2>
 
-<img data-src="01-fb-tidytext_files/figure-revealjs/unnamed-chunk-26-1.png" width="3000" class="r-stretch"></section>
+<img data-src="01-fb-tidytext_files/figure-revealjs/unnamed-chunk-25-1.png" width="3000" class="r-stretch"></section>
 <section id="your-turn-what-were-the-most-common-words-in-journal-5-and-6" class="slide level2">
 <h2>Your Turn: What were the most common words in Journal 5 and 6?</h2>
+<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-26_e3f3c13d112d9e87007ed4b83a2cf295">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>tidy_journal <span class="sc">%&gt;%</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a>    <span class="fu">anti_join</span>(<span class="fu">get_stopwords</span>(<span class="at">source =</span> <span class="st">"smart"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb19-3"><a href="#cb19-3"></a>    <span class="fu">filter</span>(journal <span class="sc">%in%</span> <span class="fu">c</span>(____, ____)) <span class="sc">%&gt;%</span></span>
+<span id="cb19-4"><a href="#cb19-4"></a>    <span class="fu">count</span>(word, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb19-5"><a href="#cb19-5"></a>    <span class="fu">slice_max</span>(n, <span class="at">n =</span> <span class="dv">25</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb19-6"><a href="#cb19-6"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(n, <span class="fu">fct_reorder</span>(word, n))) <span class="sc">+</span>  </span>
+<span id="cb19-7"><a href="#cb19-7"></a>    <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">fill =</span> color)) <span class="sc">+</span></span>
+<span id="cb19-8"><a href="#cb19-8"></a>    <span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">"Word Type"</span>, <span class="at">y =</span> <span class="st">"word"</span>) <span class="sc">+</span></span>
+<span id="cb19-9"><a href="#cb19-9"></a>    <span class="fu">scale_fill_viridis_d</span>(<span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="your-turn-what-were-the-most-common-words-in-your-journal-period" class="slide level2">
+<h2>Your Turn: What were the most common words in your journal period?</h2>
+<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-27_549360155187b805171589306af29aca">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>tidy_journal <span class="sc">%&gt;%</span></span>
+<span id="cb20-2"><a href="#cb20-2"></a>    <span class="fu">anti_join</span>(<span class="fu">get_stopwords</span>(<span class="at">source =</span> <span class="st">"smart"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb20-3"><a href="#cb20-3"></a>    <span class="fu">filter</span>(year _______,</span>
+<span id="cb20-4"><a href="#cb20-4"></a>           month <span class="sc">%in%</span> <span class="fu">c</span>(_________)) <span class="sc">%&gt;%</span></span>
+<span id="cb20-5"><a href="#cb20-5"></a>    <span class="fu">count</span>(word, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb20-6"><a href="#cb20-6"></a>    <span class="fu">slice_max</span>(n, <span class="at">n =</span> <span class="dv">25</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb20-7"><a href="#cb20-7"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(n, <span class="fu">fct_reorder</span>(word, n))) <span class="sc">+</span>  </span>
+<span id="cb20-8"><a href="#cb20-8"></a>    <span class="fu">geom_col</span>(<span class="fu">aes</span>(<span class="at">fill =</span> color)) <span class="sc">+</span></span>
+<span id="cb20-9"><a href="#cb20-9"></a>    <span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">"Word Type"</span>, <span class="at">y =</span> <span class="st">"word"</span>) <span class="sc">+</span></span>
+<span id="cb20-10"><a href="#cb20-10"></a>    <span class="fu">scale_fill_viridis_d</span>(<span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section>
 <section id="looking-at-word-trends-through-space" class="slide level2">
 <h2>Looking at word trends through space</h2>
-
-<img data-src="01-fb-tidytext_files/figure-revealjs/unnamed-chunk-27-1.png" width="3000" class="r-stretch"></section>
+<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-28_9fa8da3bbcca2b33133b71b51afb5dde">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>tidy_journal <span class="sc">%&gt;%</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a>    <span class="fu">anti_join</span>(<span class="fu">get_stopwords</span>(<span class="at">source =</span> <span class="st">"smart"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb21-3"><a href="#cb21-3"></a>    <span class="fu">filter</span>(<span class="fu">str_detect</span>(location, <span class="at">pattern =</span> <span class="st">"Matinicus"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb21-4"><a href="#cb21-4"></a>    <span class="fu">count</span>(word, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb21-5"><a href="#cb21-5"></a>    <span class="fu">filter</span>(word <span class="sc">!=</span> <span class="st">"home"</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb21-6"><a href="#cb21-6"></a>    <span class="fu">slice_max</span>(n, <span class="at">n =</span> <span class="dv">10</span>, <span class="at">with_ties =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb21-7"><a href="#cb21-7"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(n, <span class="fu">fct_reorder</span>(word, n))) <span class="sc">+</span>  </span>
+<span id="cb21-8"><a href="#cb21-8"></a>    <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb21-9"><a href="#cb21-9"></a>    <span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">"Word Type"</span>, <span class="at">y =</span> <span class="st">"word"</span>, <span class="at">title =</span> <span class="st">"Matinicus"</span>) <span class="sc">+</span></span>
+<span id="cb21-10"><a href="#cb21-10"></a>    <span class="fu">scale_fill_viridis_d</span>(<span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
 <section id="looking-at-word-trends-through-space-1" class="slide level2">
 <h2>Looking at word trends through space</h2>
 
-<img data-src="01-fb-tidytext_files/figure-revealjs/unnamed-chunk-28-1.png" width="3000" class="r-stretch"></section>
+<img data-src="01-fb-tidytext_files/figure-revealjs/unnamed-chunk-29-1.png" width="3000" class="r-stretch"></section>
+<section id="your-turn-looking-at-word-trends-through-space" class="slide level2">
+<h2>Your Turn: Looking at word trends through space</h2>
+<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-30_fc2bc587a78b8a85bf34bd501964512d">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>tidy_journal <span class="sc">%&gt;%</span></span>
+<span id="cb22-2"><a href="#cb22-2"></a>    <span class="fu">anti_join</span>(<span class="fu">get_stopwords</span>(<span class="at">source =</span> <span class="st">"smart"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb22-3"><a href="#cb22-3"></a>    <span class="fu">filter</span>(<span class="fu">str_detect</span>(location, <span class="st">"__________"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb22-4"><a href="#cb22-4"></a>    <span class="fu">count</span>(word, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb22-5"><a href="#cb22-5"></a>    <span class="fu">slice_max</span>(n, <span class="at">n =</span> <span class="dv">10</span>, <span class="at">with_ties =</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span></span>
+<span id="cb22-6"><a href="#cb22-6"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(n, <span class="fu">fct_reorder</span>(word, n))) <span class="sc">+</span>  </span>
+<span id="cb22-7"><a href="#cb22-7"></a>    <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb22-8"><a href="#cb22-8"></a>    <span class="fu">labs</span>(<span class="at">fill =</span> <span class="st">"Word Type"</span>, <span class="at">y =</span> <span class="st">"word"</span>, <span class="at">title =</span> <span class="st">"_______"</span>) <span class="sc">+</span></span>
+<span id="cb22-9"><a href="#cb22-9"></a>    <span class="fu">scale_fill_viridis_d</span>(<span class="at">direction =</span> <span class="sc">-</span><span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section></section>
+<section>
+<section id="we-can-also-look-for-specific-things" class="title-slide slide level1 center">
+<h1>We can also look for specific things</h1>
+
+</section>
+<section id="extracting-thermometer-readings" class="slide level2">
+<h2>Extracting thermometer readings</h2>
+
+<img data-src="01-fb-tidytext_files/figure-revealjs/extract journal entries with the word thermometer ignore below plot-1.png" width="3000" class="r-stretch"></section>
+<section id="extracting-thermometer-readings-1" class="slide level2">
+<h2>Extracting thermometer readings</h2>
+<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/extract journal entries with the word thermometer ignore below_5aa7a68cb29960eb313f1d022bc6a05a">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>journals <span class="sc">%&gt;%</span></span>
+<span id="cb23-2"><a href="#cb23-2"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(<span class="at">string =</span> journal_entry, <span class="at">pattern =</span> <span class="st">"Thermometer | thermometer"</span>)) <span class="sc">%&gt;%</span> <span class="co"># filter rows for mentions of word thermometer</span></span>
+<span id="cb23-3"><a href="#cb23-3"></a>  <span class="fu">mutate</span>(<span class="at">temp =</span> <span class="fu">as.numeric</span>(<span class="fu">str_extract</span>(journal_entry, <span class="at">pattern =</span> <span class="st">'(?&lt;=thermometer |Thermometer )</span><span class="sc">\\</span><span class="st">d+'</span>))) <span class="sc">%&gt;%</span> <span class="co"># extract digits following the word thermometer in a sentence.</span></span>
+<span id="cb23-4"><a href="#cb23-4"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> date_mdy, <span class="at">y =</span> <span class="fu">as.numeric</span>(temp))) <span class="sc">+</span></span>
+<span id="cb23-5"><a href="#cb23-5"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb23-6"><a href="#cb23-6"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Date"</span>, <span class="at">y =</span> <span class="st">"Recorded Temperature"</span>)</span>
+<span id="cb23-7"><a href="#cb23-7"></a>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+<section id="looking-for-schooners" class="slide level2">
+<h2>Looking for Schooners</h2>
+<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-31_ba23511e458700d5f00c945a7821837c">
+<div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>journals <span class="sc">%&gt;%</span></span>
+<span id="cb24-2"><a href="#cb24-2"></a>    <span class="fu">filter</span>(<span class="fu">str_detect</span>(journal_entry, <span class="at">pattern =</span> <span class="st">"Schr|schr|schooner"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb24-3"><a href="#cb24-3"></a>    <span class="fu">select</span>(date_mdy, journal_entry) <span class="sc">%&gt;%</span></span>
+<span id="cb24-4"><a href="#cb24-4"></a>    DT<span class="sc">::</span><span class="fu">datatable</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+
+<div class="datatables html-widget html-fill-item-overflow-hidden html-fill-item" id="htmlwidget-c9cdd59104ac8fadcd4a" style="width:100%;height:auto;"></div>
+<script type="application/json" data-for="htmlwidget-c9cdd59104ac8fadcd4a">{"x":{"filter":"none","vertical":false,"data":[["1","2","3","4","5","6","7","8","9","10","11","12","13","14","15","16","17","18","19","20","21","22","23","24","25","26","27","28","29","30","31","32","33","34","35","36","37","38","39","40","41","42","43","44","45","46","47","48","49","50","51","52","53","54","55","56","57","58","59","60","61","62","63","64","65","66","67","68","69","70","71","72","73","74"],["1873-01-06","1873-01-07","1873-01-11","1873-02-14","1873-02-19","1873-02-25","1873-03-07","1873-04-11","1873-06-30","1873-07-14","1873-07-17","1873-07-24","1873-05-26","1874-07-14","1875-01-06","1875-01-08","1875-01-09","1875-03-10","1875-03-22","1875-03-26","1875-03-29","1875-04-01","1875-04-02","1875-04-03","1875-04-06","1875-04-26","1875-07-10","1875-08-28","1875-09-08","1876-05-13","1876-07-13","1876-10-16","1876-11-16","1876-11-19","1876-11-27","1877-03-06","1877-03-10","1877-04-09","1877-05-01","1877-08-02","1877-08-09","1877-08-15","1877-08-16","1877-09-16","1877-09-18","1877-09-19","1877-10-03","1877-12-14",null,null,null,"1879-04-01","1879-04-02","1879-04-03","1879-04-18","1879-05-29","1879-06-02","1879-06-05","1879-10-13","1879-10-27","1879-10-28","1879-12-11",null,"1880-03-02","1880-07-07","1880-09-06","1880-09-16","1880-09-20","1880-11-03","1880-11-10","1880-11-17","1880-12-16","1880-12-25","1880-12-31"],["Fair weather the wind West wrote a letter to C. C. Burrill. Geo. N. Loomis. Went on board Schr A. G. Brooks to see about putting a house on. Wrote letters to Geo. N. Loomis. C. C. Burrill","Went to Cranberry Isle in the schr Fremont Capt Elisher Bickford dinner on board tea at Joseph Bunker's Lodging at Enoch Stanley's The wind N.N.W and pleasant","The wind North West pleasant breakfast and dinner at Thomas Bunker. Bought the Schr Sea Flower of Thomas Bunker gave notes holden against Joseph Bunker $600 came home in dora Supper &amp; Lodging at home. Recd letter from Geo. N. Loomis","The wind N.W very cold in morning more moderate in afternoon turned two posts for rail for Mary Lee Newton capston bar for schr Roamer","The wind S.E snow by spells work in shop repairing boat for the schr Virgin begun to timber her out wrote letter to C. Stevens","The wind W. quite cold finished the schr Virgins boat. Went to Hall Meeting in evening and was chosen treasurer for the ensuing year","The wind South West went to Augustus Newman's after boat stem and knees worked 1/4 day on Schr Roamer recd pay","The wind south west breakfast at Enoch Spurlings started for home at 11 A.M. in the Schr Neptune rowed home from schooner head in dora went without dinner got home at 3.PM supper at home","The wind southerly started in the Schr Banner for Calais got to Mark Island thick fog dinner on board went back home wrote letter Benj Kittridge East Eden","The wind southerly and very hot went to Bar Harbor to look at the Schr Signal","The wind N.W. went to N.W. cove Eden after the Schr. Signal with E. Kingsley got aboard at night","The wind N.W all day went to Bar Harbor after ship stores for the Schr Signal hauled in the last load of hay, recd letters from G. N. Loomis G. L. Hodgkins","The wind Southerly went to Bar Harbor to settle with Benj. Kittridge for the Schr Signal and took the Schr. Amulet and came home in her","The wind S. West thick of fog laid at anchor in Winter Harbor. Commenced hanging rudder for the Schr Woodcock.","The wind Northerly in morning very moderate. got under way at day light and went to Crandberry Isles put the Sea Flower at Thomas Bunker's wharf in the pool. and settled with him for the Sea Flower's summers' work paid him $23.12 ballance do him. Got in dora and started for home at 11 A.M. rowed as far as Otter Creek. got on boards of Schr Halcyon and got home at 3 oclock P.M. with the wind morwesterly","The wind N.N.W. settled with Capt Abner Tracy. For the Schr Signal","The wind N. East in morning snowing S.S.E. in afternoon settled account with Capt Thomas Hammond Schr Amulet. wrote letters to Sec of Continental Life Ins Co. Hartford David Tyler Deer Isle. and J. A. Pilsbury of Bucksport W. H. Pilsbury","The wind South East with snow. in morning turned pump box for Schr Lebanon","The wind Northerly in forenoon and varyable in afternoon sold the Schr Sea Flower to Capt Thomas Bunker. Started in the after noon for home in dora got home at 5 P.M. moderate all day","The wind Westerly work on board the Schr Harp a part of the forenoon. finished cellar stairs and scuttle door in the afternoon and the wind hauled out Southerly in the afternoon roads blocked up","The wind Westerly commenced work for J. M. Sargent. on Schr Henrietta to build cabin. The wind Southerly. in the afternoon.","The wind Southerly work for J. M. Sargent on Schr Henrietta wrote letter to Benj. Kittidge.","The wind Southerly. and foggy in fore noon sun out in afternoon snow melt very fast. made upper pump box for Schr Lebanon work for J. M. Sargent in afternoon and finished work for him on vessel recd letter from Benj. Kittridge","The wind Southerly snow melts fast wrote lettters to Benj. Kittridge. Benj. Sowle and to the Penobscot fire Ins. Co. put dunnage on board of Schr Harp to go away rain in afternoon. Left Lodge of Good Templars","The wind North good breeze my wages commenced on board Schr Harp With Capt Nathan Bickford loosed sails. to dry etc. Recd letters from Benj. Kittridge and PenobscotMutual Fire Ins Co","The wind North West at one AM. took in flying jib and stowed it. at 3 AM more moderate set flying jib at 7 bells. the wind hauled more Westerly set fore and main gaft topsails and outer jib kept of for Cape Cod. at noon Lat by dead reckoning 42.53 by observation 42.48 at sun set saw Cape Cod and spoke the Schr Sarah A. Reed of Calais. at 12 oclock midnight abreast of Naucet lights with a fine breeze North West.","The wind S.S.W abrest of Matinicus Rock Light at one A.m. passed duck Island at 8 Am foggy. run in Frenchman's Bay and have to 2 hours the fog scaled keped of and run in and anchored in Winter Harbor at 2 P.M. Settled with Capt Bickfordand left the Schr Harp took my dunnage out.","The wind S.W. Started for Ellsworth in the SchrEcho with J.R. Hammond after lumber for his house. anchored in Outer Bass Harbor at sun set.","The wind W.S.W. Started for Franklin in the Schr. Echo after lumber with F. R. Hammond got there in the afternoon and rafted the lumber at night and took it along side.","The wind Easterly and rainy all day Shiped on board the Schr Old Chad as mate.","The wind W by N. good breeze at noon Latitude 34 51 Longitude 73 38 saw a three masted schooner bound to the southward. at 10 PM heavy squall took in all but foresail midnight made all sail","The wind northerly. ground covered with snow. Trial of Millard &amp; Lowell in Case of Larceny. The good stolen from the schr. zicave Fiske &amp; Curtis owners and plaintiffs. L.A. Emery for plaintiff Geo.Peters for defendent. Verdict Gully Sentance 18 month Prison","The wind North North East. cold in morning Worked all day making flying jibboom for Schr. Black Warrior Reed letter from Wiswell&amp;Wiswell","The wind Easterly went on board the Schr Henrietta and went to Rockland to buy coal and provisions for winter. arrived at five oclock P.M. and went into Atlantic wharf.","The wind North West hauled the Schr Henrietta into the wharf and took out coal and hauled it home.","The wind Westerly work on the Schr Sea Pigean Yawl boat","The wind North West work repairing the Schr Sea Pigeon boat finished work on her.","The wind Noly East. work at the door splitting wood. The Schr Sea Flower arrived from Cranberry Isles frunuhich I tatre change Dr N. Pendleton died","The wind Easterly rainy and overcast all day went to Deputy Collector office in Sullivan for a new set of papers for the Schr Sea Flower","The wind Southerly. work Haying apart of the day for J.F. Kingsley. Bargained the Schr Sea Flower to Capt J.R. Hammond.","The wind North East and overcast. work on vessel Sold the Schr Sea Flower to Capt J.R. Hammond for $4.25","The wind N.E. thich with fog. work all day. for J. M Sargent on Schr Henrietta. rainy in afternoon","The wind Northerly work one half day on Schr Henrietta. rainy in afternoon","The wind Southerly and foggy. Abner Tracy burried in afternoon. Went to Schoodic to look after a Wreck supposed to be the Schr Harp. by the lumber drifting about. and a barrel with the name Schr Harp Stores.","The wind Southerly foggy and rainy in forenoon Went to Ellsworth to work Mr. L. Cranes. team to get the Hotel Insured In the afternoon cleared of Caine home in Evening Schr Harp found at sea water loged crew safe","The wind North West. Work for Wm Guptill day. Schr Harp arrived in morning full of water and rudder gone. Reed check from Capt J. R. Hammond. payment for Schr Sea Flower","The wind North East Overcast: Took the Schr Sea Flower with Capt J.R. Hammond and started for Ellsworth. to get furniture for Hotel Anchored at broard cove Oppostie Oak point at 7 oclock in evening.","The wind North West very fresh breeze. Send postal cards to Andrea Laffin Hancock &amp; Choes Burril work a part of the day putting fore foot on Schr A.G. Brooks","The wind Southerly Thermometer 84° at 5 p.m. Wrote letter to G.W. Bagley went to Prospect in afternoon. worked apart of the day making flying boom for the Schr Black Warrior","The wind South West and foggy in forenoon Thermometer 60 degrees Went as one of the surveyors on the Schr Elizabeth at Tracys Dock at Winter Harbor and condemed her. dug my potatoes Recd Postal Card from Wm Viall","The wind Northerly. Thermometer down to 28° Joseph Nickels from Cherryfield with a telegraph of the news of the wreck of the Schr Wyoming and the loss of Capt Tracy, at 1 oclock in the morning. worked 3/4 of the day for Wm Guptill.","The wind N.N. East. Thermometer 36 above raining hard. all forenoon. afternoon the wind N.W. cleared up worked apart of the day on the Schr Mary &amp; Eliza acknowledged deed for Wm Rand quarterly return for post Master made oath to Wm Guptill P. Keeper","The wind North West Thermometer 35 degrees very fresh breeze all day work for Capt A J Gerrish on Schr Mary &amp; Eliza putting in windluss bitss. &amp;e Reed Sample set Castors from Stoan &amp;Co Sold one set after supper","The wind West North West. Thermometer 35 degrees very fresh blow work all day for Capt A.J. Gerrish on Schr Mary &amp; Eliza Making a windlass and putting on purchase. reed Postal from Reg of deeds.","The wind North East. Thermometer 34 degrees worked 3/4 day for A.M Torry. on Schr Mars Hill at 3.PM commenced to rain stoped work. Reed letter from Sloan &amp;CO.","Calm in morning. Thermometer 54 degrees finished planting in the forenoon. And in the afternoon worked for Rufus Bickford on the Schr Nauseag","The wind North East Thermometer 55 above work all day for Capt R.H. Bickford on Schr Nauseag doing various kinds of work","The wind Southerly Thermometer 56: work apart of the forenoon for R.H.Bickford on Schr Nauseag. and apart of the day on E A Bakers boat.","The wind North West. Thermometer 60 degrees. Work on flying jibboom for Schr A.G.Brooks Reed letters from Boston Trawler wrote letter to Helen Stevens","The wind South West Thermometer 60° Went to West Gouldsboro with the Mail Repaired the Schr AGBrooks wheel. Reed letter from Boston Traveler Office.","The wind Southerly Thermometer 50° Commenced Shighing the roof of Capt N.A.Bickfords house In the afternoon it rained at 2 oclock Wrote bill of sale of 1/2 of the Schr Nauseag from Celestia Bickford to Henry C Tully sinatd","The wind Southerly Thermometer 48° wrote bill of sale of the Schr Nauseag from Julia A Bickford to N. A. Fitz jerald. wrote letter to Mrs Mary Stanley","The wind Northerly Thermometer from 30° down to 20° above. Went to Bar Harbor in the Schr Washington and came back at dark.","The wind North West Thermometer from 16 above up to 33 and down to 14 above at night. Wrote a bill of sale of the Schr Nauseag from Celestia A Bickford to n. A Fitzjerald afternoon cutting Ice fo J. F. K.","The wind Southerly and Thermometer. 72 degrees Worked 3/4 of a day for Alexander Bickford on the Schr Henry Clay fishing foremast","Wind Southerly and Thermometer 70 degrees Wrote letter to Wm Handy Owner of Schr Old Chad Ges. M. Warren and to the Post Office Department last named letter for David weare. Went out fishing afternoon","The wind Southerly. Thermometer at 6 AM 54° Commenced making a wheel Schr Ella.","Wind Southerly Thermometer 50 degrees very fresh breeze and overcast. Work all day on wheel for Capt Sherman Spurling for the Schr Ella heavy shower at night","Wind Northerly in morning Southerly in afternoon Thermometer 52 degrees at noon Wrote two deed for Sewall Hancock put a cask of oil on board the Schr A. G. Brooks. Subscribed for the N.Y.Sun weekly for three months.","The wind North West and a very fresh breeze in afternoon wind moderate went out fishing on Schr head ground. back in the evening Thermometer 50","Calm in forenoon with Thermometer 47 degrees. Worked in afternoon on Schr Agnes Balch repairing on making cleats.","The wind North West Thermometer 34 degrees high got underway at broad cove and went homed to Eastport Took out all the staves on board and took in ballast from the Schr Reght Bowes Wrote letter home.","The wind North East Christmas day Thermometer 33 degrees plenty of herring but to warm to take them. Sent a letter home. COmmenced making a fife rail Schr A. G. Brooks","The wind W.N.W Thermometer at zero. Am on board the the Schr A.G. Brooks with Capt Thomas Smallidge lying St. Andrews with frozen herring for Boston. took in to day 37,500 Wrote letters home"]],"container":"<table class=\"display\">\n  <thead>\n    <tr>\n      <th> <\/th>\n      <th>date_mdy<\/th>\n      <th>journal_entry<\/th>\n    <\/tr>\n  <\/thead>\n<\/table>","options":{"columnDefs":[{"orderable":false,"targets":0}],"order":[],"autoWidth":false,"orderClasses":false}},"evals":[],"jsHooks":[]}</script>
+</div>
+</div>
+</section>
+<section id="extracting-names-of-schooners" class="slide level2">
+<h2>Extracting names of schooners</h2>
+<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-32_c804db55e0746a2943e9e419add91a2b">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>journals <span class="sc">%&gt;%</span></span>
+<span id="cb25-2"><a href="#cb25-2"></a>    <span class="fu">filter</span>(<span class="fu">str_detect</span>(journal_entry, <span class="at">pattern =</span> <span class="st">"Schr|schr|schooner"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb25-3"><a href="#cb25-3"></a>    <span class="fu">mutate</span>(<span class="at">schooners =</span> <span class="fu">str_extract</span>(journal_entry, <span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">b(Schr|Schr.|schr|schr.)(</span><span class="sc">\\</span><span class="st">b</span><span class="sc">\\</span><span class="st">s*([A-Z]</span><span class="sc">\\</span><span class="st">w+|[A-Z]</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">w+</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">w+|[A-Z]</span><span class="sc">\\</span><span class="st">. </span><span class="sc">\\</span><span class="st">w+</span><span class="sc">\\</span><span class="st">. </span><span class="sc">\\</span><span class="st">w+)){0,4}"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb25-4"><a href="#cb25-4"></a>    <span class="fu">distinct</span>(schooners)</span>
+<span id="cb25-5"><a href="#cb25-5"></a><span class="co">#&gt; # A tibble: 38 × 1</span></span>
+<span id="cb25-6"><a href="#cb25-6"></a><span class="co">#&gt;    schooners                         </span></span>
+<span id="cb25-7"><a href="#cb25-7"></a><span class="co">#&gt;    &lt;chr&gt;                             </span></span>
+<span id="cb25-8"><a href="#cb25-8"></a><span class="co">#&gt;  1 Schr A. G. Brooks                 </span></span>
+<span id="cb25-9"><a href="#cb25-9"></a><span class="co">#&gt;  2 schr Fremont Capt Elisher Bickford</span></span>
+<span id="cb25-10"><a href="#cb25-10"></a><span class="co">#&gt;  3 Schr Sea Flower                   </span></span>
+<span id="cb25-11"><a href="#cb25-11"></a><span class="co">#&gt;  4 schr Roamer                       </span></span>
+<span id="cb25-12"><a href="#cb25-12"></a><span class="co">#&gt;  5 schr Virgin                       </span></span>
+<span id="cb25-13"><a href="#cb25-13"></a><span class="co">#&gt;  6 schr Virgins                      </span></span>
+<span id="cb25-14"><a href="#cb25-14"></a><span class="co">#&gt;  7 Schr Roamer                       </span></span>
+<span id="cb25-15"><a href="#cb25-15"></a><span class="co">#&gt;  8 Schr Neptune                      </span></span>
+<span id="cb25-16"><a href="#cb25-16"></a><span class="co">#&gt;  9 Schr Banner                       </span></span>
+<span id="cb25-17"><a href="#cb25-17"></a><span class="co">#&gt; 10 Schr Signal                       </span></span>
+<span id="cb25-18"><a href="#cb25-18"></a><span class="co">#&gt; # ℹ 28 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
 <section id="recap" class="slide level2">
 <h2>Recap</h2>
 <ul>
 <li>We can put each word on its own row using <code>unnest_tokens</code></li>
 <li>We can use <code>anti_join</code> to get rid of stop words</li>
 <li>We can use <code>filter</code> and <code>summarize</code> to see how word use has changed over time and space</li>
+<li>We can use <code>str_detect</code> to find patterns in our text</li>
+<li>We can use <code>regular expressions</code> to extract more complicated patterns</li>
 </ul>
+</section>
+<section id="your-turn" class="slide level2">
+<h2>Your Turn</h2>
+<p>What is something you are curious about in Freeland’s journals that you’d like to investigate? Be creative with the time period, place, and what you’re looking for.</p>
+<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-33_028052a75b22ac7ef6dfcb057f569d10">
+<div class="sourceCode cell-code" id="cb26"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>journals <span class="sc">%&gt;%</span></span>
+<span id="cb26-2"><a href="#cb26-2"></a>    <span class="fu">filter</span>(<span class="fu">str_detect</span>(journal_entry, <span class="at">pattern =</span> <span class="st">"What are you looking for?"</span>)) <span class="sc">%&gt;%</span></span>
+<span id="cb26-3"><a href="#cb26-3"></a>    <span class="fu">select</span>(date_mdy, journal_entry)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
 </section></section>
-<section>
-<section id="what-was-the-weather-like" class="title-slide slide level1 center" data-background-image="figs/water2.jpg" data-background-size="cover" data-background-opacity="1">
-<h1>What was the weather like?</h1>
-
-</section>
-<section id="section-1" class="slide level2" data-background-color="white">
-<h2></h2>
-
-<img data-src="01-fb-tidytext_files/figure-revealjs/unnamed-chunk-29-1.png" width="3000" class="r-stretch quarto-figure-center"></section>
-<section id="gathering-context" class="slide level2">
-<h2>Gathering context</h2>
-<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-30_5f36d43904d36609bdc35193ecc87b26">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>journals <span class="sc">%&gt;%</span></span>
-<span id="cb19-2"><a href="#cb19-2"></a>    <span class="fu">filter</span>(<span class="fu">str_detect</span>(journal_entry, <span class="at">pattern =</span> <span class="st">"Schr|schr|schooner"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb19-3"><a href="#cb19-3"></a>    <span class="fu">select</span>(date_mdy, journal_entry)</span>
-<span id="cb19-4"><a href="#cb19-4"></a><span class="co">#&gt; # A tibble: 74 × 2</span></span>
-<span id="cb19-5"><a href="#cb19-5"></a><span class="co">#&gt;    date_mdy   journal_entry                                                     </span></span>
-<span id="cb19-6"><a href="#cb19-6"></a><span class="co">#&gt;    &lt;date&gt;     &lt;chr&gt;                                                             </span></span>
-<span id="cb19-7"><a href="#cb19-7"></a><span class="co">#&gt;  1 1873-01-06 Fair weather the wind West wrote a letter to C. C. Burrill. Geo. …</span></span>
-<span id="cb19-8"><a href="#cb19-8"></a><span class="co">#&gt;  2 1873-01-07 Went to Cranberry Isle in the schr Fremont Capt Elisher Bickford …</span></span>
-<span id="cb19-9"><a href="#cb19-9"></a><span class="co">#&gt;  3 1873-01-11 The wind North West pleasant breakfast and dinner at Thomas Bunke…</span></span>
-<span id="cb19-10"><a href="#cb19-10"></a><span class="co">#&gt;  4 1873-02-14 The wind N.W very cold in morning more moderate in afternoon turn…</span></span>
-<span id="cb19-11"><a href="#cb19-11"></a><span class="co">#&gt;  5 1873-02-19 The wind S.E snow by spells work in shop repairing boat for the s…</span></span>
-<span id="cb19-12"><a href="#cb19-12"></a><span class="co">#&gt;  6 1873-02-25 The wind W. quite cold finished the schr Virgins boat. Went to Ha…</span></span>
-<span id="cb19-13"><a href="#cb19-13"></a><span class="co">#&gt;  7 1873-03-07 The wind South West went to Augustus Newman's after boat stem and…</span></span>
-<span id="cb19-14"><a href="#cb19-14"></a><span class="co">#&gt;  8 1873-04-11 The wind south west breakfast at Enoch Spurlings started for home…</span></span>
-<span id="cb19-15"><a href="#cb19-15"></a><span class="co">#&gt;  9 1873-06-30 The wind southerly started in the Schr Banner for Calais got to M…</span></span>
-<span id="cb19-16"><a href="#cb19-16"></a><span class="co">#&gt; 10 1873-07-14 The wind southerly and very hot went to Bar Harbor to look at the…</span></span>
-<span id="cb19-17"><a href="#cb19-17"></a><span class="co">#&gt; # ℹ 64 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="extracting-names-of-schooners" class="slide level2">
-<h2>Extracting Names of Schooners</h2>
-<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/unnamed-chunk-31_ca9f109ac2d6b9a6b7746e2f6479bc13">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>journals <span class="sc">%&gt;%</span></span>
-<span id="cb20-2"><a href="#cb20-2"></a>    <span class="fu">filter</span>(<span class="fu">str_detect</span>(journal_entry, <span class="at">pattern =</span> <span class="st">"Schr|schr|schooner"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb20-3"><a href="#cb20-3"></a>    <span class="fu">mutate</span>(<span class="at">schooners =</span> <span class="fu">str_extract</span>(journal_entry, <span class="at">pattern =</span> <span class="st">"</span><span class="sc">\\</span><span class="st">b(Schr|Schr.|schr|schr.)(</span><span class="sc">\\</span><span class="st">b</span><span class="sc">\\</span><span class="st">s*([A-Z]</span><span class="sc">\\</span><span class="st">w+|[A-Z]</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">w+</span><span class="sc">\\</span><span class="st">.</span><span class="sc">\\</span><span class="st">w+|[A-Z]</span><span class="sc">\\</span><span class="st">. </span><span class="sc">\\</span><span class="st">w+</span><span class="sc">\\</span><span class="st">. </span><span class="sc">\\</span><span class="st">w+)){0,4}"</span>)) <span class="sc">%&gt;%</span></span>
-<span id="cb20-4"><a href="#cb20-4"></a>    <span class="fu">distinct</span>(schooners)</span>
-<span id="cb20-5"><a href="#cb20-5"></a><span class="co">#&gt; # A tibble: 38 × 1</span></span>
-<span id="cb20-6"><a href="#cb20-6"></a><span class="co">#&gt;    schooners                         </span></span>
-<span id="cb20-7"><a href="#cb20-7"></a><span class="co">#&gt;    &lt;chr&gt;                             </span></span>
-<span id="cb20-8"><a href="#cb20-8"></a><span class="co">#&gt;  1 Schr A. G. Brooks                 </span></span>
-<span id="cb20-9"><a href="#cb20-9"></a><span class="co">#&gt;  2 schr Fremont Capt Elisher Bickford</span></span>
-<span id="cb20-10"><a href="#cb20-10"></a><span class="co">#&gt;  3 Schr Sea Flower                   </span></span>
-<span id="cb20-11"><a href="#cb20-11"></a><span class="co">#&gt;  4 schr Roamer                       </span></span>
-<span id="cb20-12"><a href="#cb20-12"></a><span class="co">#&gt;  5 schr Virgin                       </span></span>
-<span id="cb20-13"><a href="#cb20-13"></a><span class="co">#&gt;  6 schr Virgins                      </span></span>
-<span id="cb20-14"><a href="#cb20-14"></a><span class="co">#&gt;  7 Schr Roamer                       </span></span>
-<span id="cb20-15"><a href="#cb20-15"></a><span class="co">#&gt;  8 Schr Neptune                      </span></span>
-<span id="cb20-16"><a href="#cb20-16"></a><span class="co">#&gt;  9 Schr Banner                       </span></span>
-<span id="cb20-17"><a href="#cb20-17"></a><span class="co">#&gt; 10 Schr Signal                       </span></span>
-<span id="cb20-18"><a href="#cb20-18"></a><span class="co">#&gt; # ℹ 28 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="extracting-schooner-name" class="slide level2">
-<h2>Extracting Schooner name</h2>
-</section>
-<section id="extracting-the-thermometer-data" class="slide level2">
-<h2>Extracting the thermometer data</h2>
-<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/extract journal entries with the word thermometer ignore below code_a253c3dce29119c145b9a6db5630d67c">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>journals <span class="sc">%&gt;%</span></span>
-<span id="cb21-2"><a href="#cb21-2"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(<span class="at">string =</span> journal_entry, <span class="at">pattern =</span> <span class="st">"Thermometer | thermometer"</span>)) <span class="sc">%&gt;%</span> <span class="co"># filter rows for mentions of word thermometer</span></span>
-<span id="cb21-3"><a href="#cb21-3"></a>  <span class="fu">mutate</span>(<span class="at">temp =</span> <span class="fu">as.numeric</span>(<span class="fu">str_extract</span>(journal_entry, <span class="at">pattern =</span> <span class="st">'(?&lt;=thermometer |Thermometer )</span><span class="sc">\\</span><span class="st">d+'</span>))) <span class="sc">%&gt;%</span> <span class="co"># extract digits following the word thermometer in a sentence.</span></span>
-<span id="cb21-4"><a href="#cb21-4"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> date_mdy, <span class="at">y =</span> <span class="fu">as.numeric</span>(temp))) <span class="sc">+</span></span>
-<span id="cb21-5"><a href="#cb21-5"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb21-6"><a href="#cb21-6"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Date"</span>, <span class="at">y =</span> <span class="st">"Recorded Temperature"</span>)</span>
-<span id="cb21-7"><a href="#cb21-7"></a>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="extracting-the-thermometer-data-1" class="slide level2">
-<h2>Extracting the thermometer data</h2>
-
-<img data-src="01-fb-tidytext_files/figure-revealjs/extract journal entries with the word thermometer ignore below-1.png" width="3000" class="r-stretch"></section>
-<section id="extracting-the-thermometer-data-2" class="slide level2">
-<h2>Extracting the thermometer data</h2>
-<div class="cell" data-hash="01-fb-tidytext_cache/revealjs/extract journal entries with the word thermometer code_04b5a547f5baa637816b5f0833cd8e18">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>journals <span class="sc">%&gt;%</span></span>
-<span id="cb22-2"><a href="#cb22-2"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(<span class="at">string =</span> journal_entry, <span class="at">pattern =</span> <span class="st">"Thermometer | thermometer"</span>)) <span class="sc">%&gt;%</span> <span class="co"># filter rows for mentions of word thermometer</span></span>
-<span id="cb22-3"><a href="#cb22-3"></a>  <span class="fu">mutate</span>(<span class="at">temp =</span> <span class="fu">as.numeric</span>(<span class="fu">str_extract</span>(journal_entry, <span class="at">pattern =</span> <span class="st">'(?&lt;=thermometer |Thermometer )</span><span class="sc">\\</span><span class="st">d+'</span>))) <span class="sc">%&gt;%</span> <span class="co"># extract digits following the word thermometer in a sentence.</span></span>
-<span id="cb22-4"><a href="#cb22-4"></a>  <span class="fu">mutate</span>(<span class="at">temp_below =</span> <span class="fu">ifelse</span>(<span class="fu">str_detect</span>(<span class="at">string =</span> journal_entry, <span class="at">pattern =</span> <span class="st">"below zero"</span>), <span class="st">"yes"</span>, <span class="st">"no"</span>)) <span class="sc">%&gt;%</span> <span class="co"># if the word below zero is included mark yes or no.</span></span>
-<span id="cb22-5"><a href="#cb22-5"></a>  <span class="fu">filter</span>(<span class="fu">is.na</span>(temp) <span class="sc">==</span> <span class="cn">FALSE</span>) <span class="sc">%&gt;%</span> <span class="co"># remove missing values</span></span>
-<span id="cb22-6"><a href="#cb22-6"></a>  <span class="fu">mutate</span>(<span class="at">temp =</span> <span class="fu">case_when</span>(temp_below <span class="sc">==</span> <span class="st">"yes"</span> <span class="sc">~</span> temp<span class="sc">*</span>(<span class="sc">-</span><span class="dv">1</span>), </span>
-<span id="cb22-7"><a href="#cb22-7"></a>                          <span class="cn">TRUE</span> <span class="sc">~</span> temp)) <span class="sc">%&gt;%</span> <span class="co"># Make below zero values negative</span></span>
-<span id="cb22-8"><a href="#cb22-8"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> date_mdy, <span class="at">y =</span> <span class="fu">as.numeric</span>(temp))) <span class="sc">+</span></span>
-<span id="cb22-9"><a href="#cb22-9"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
-<span id="cb22-10"><a href="#cb22-10"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Date"</span>, <span class="at">y =</span> <span class="st">"Recorded Temperature"</span>)</span>
-<span id="cb22-11"><a href="#cb22-11"></a>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-</div>
-</section>
-<section id="extracting-the-thermometer-data-3" class="slide level2">
-<h2>Extracting the thermometer data</h2>
-
-<img data-src="01-fb-tidytext_files/figure-revealjs/extract journal entries with the word thermometer-1.png" width="3000" class="r-stretch"></section></section>
 <section id="thanks" class="title-slide slide level1 center" data-background-image="figs/water2.jpg" data-background-size="cover" data-background-opacity="0.5">
 <h1>Thanks!</h1>
 <center>
@@ -926,11 +967,36 @@ By Laurie Baker
 <div class="footer">
 <p>Slides created with <a href="https://quarto.org/">Quarto</a></p>
 </div>
+</section>
 
-<div class="footer footer-default">
+<section id="additional-slides" class="title-slide slide level1 center">
+<h1>Additional Slides</h1>
+
+</section>
+
+<section>
+<section id="guide-to-logical-operators" class="title-slide slide level1 center">
+<h1>Guide to Logical Operators</h1>
+
+</section>
+<section id="logical-operators-in-r" class="slide level2">
+<h2>Logical operators in R</h2>
+<p><br></p>
+<p>operator | definition || operator | definition ————|——————————||————–|—————- <code>&lt;</code> | less than ||<code>x</code>&nbsp;|&nbsp;<code>y</code> | <code>x</code> OR <code>y</code> <code>&lt;=</code> | less than or equal to ||<code>is.na(x)</code> | test if <code>x</code> is <code>NA</code> <code>&gt;</code> | greater than ||<code>!is.na(x)</code> | test if <code>x</code> is not <code>NA</code> <code>&gt;=</code> | greater than or equal to ||<code>x %in% y</code> | test if <code>x</code> is in <code>y</code> <code>==</code> | exactly equal to ||<code>!(x %in% y)</code> | test if <code>x</code> is not in <code>y</code> <code>!=</code> | not equal to ||<code>!x</code> | not <code>x</code> <code>x &amp; y</code> | <code>x</code> AND <code>y</code> || |</p>
+</section></section>
+<section>
+<section id="what-was-the-weather-like" class="title-slide slide level1 center" data-background-image="figs/water2.jpg" data-background-size="cover" data-background-opacity="1">
+<h1>What was the weather like?</h1>
+
+</section>
+<section id="section-1" class="slide level2" data-background-color="white">
+<h2></h2>
+
+
+<img data-src="01-fb-tidytext_files/figure-revealjs/unnamed-chunk-34-1.png" width="3000" class="r-stretch quarto-figure-center"><div class="footer footer-default">
 <p><a href="https:coa-navigating-change.netlify.app" class="uri">https:coa-navigating-change.netlify.app</a></p>
 </div>
-</section>
+</section></section>
     </div>
   </div>
 

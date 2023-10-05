@@ -1243,7 +1243,7 @@
     "href": "slides/01-fb-tidytext.html#what-are-the-most-common-words-1",
     "title": "Mining Historical Texts",
     "section": "What are the most common words?",
-    "text": "What are the most common words?\nWhat do you predict will happen if we run the following code? 🤔\n\ntidy_journal %>%\n    count(word, sort = TRUE)\n#> # A tibble: 4,108 × 2\n#>    word            n\n#>    <chr>       <int>\n#>  1 the          5116\n#>  2 wind         3052\n#>  3 and          2301\n#>  4 in           2181\n#>  5 to           1959\n#>  6 at           1422\n#>  7 thermometer  1071\n#>  8 of            948\n#>  9 west          933\n#> 10 went          909\n#> # ℹ 4,098 more rows"
+    "text": "What are the most common words?\nWhat do you predict will happen if we run the following code? 🤔\n\ntidy_journal %>%\n    count(word, sort = TRUE)\n#> # A tibble: 4,105 × 2\n#>    word            n\n#>    <chr>       <int>\n#>  1 the          5116\n#>  2 wind         3052\n#>  3 and          2301\n#>  4 in           2181\n#>  5 to           1959\n#>  6 at           1422\n#>  7 thermometer  1071\n#>  8 of            948\n#>  9 west          933\n#> 10 went          909\n#> # ℹ 4,095 more rows"
   },
   {
     "objectID": "slides/01-fb-tidytext.html#stop-words",
@@ -1838,21 +1838,21 @@
     "href": "slides/01-fb-tidytext.html#journals-1871-1880-transcribed",
     "title": "Mining Historical Texts",
     "section": "9 journals (1871-1880) transcribed",
-    "text": "9 journals (1871-1880) transcribed\n\n\nlibrary(readxl)\njournal_1871_1872 <- read_excel(\"data/journal_1871_1872.xlsx\")\njournal_1873 <- read_excel(\"data/journal_1873.xlsx\")\njournal_1874 <- read_excel(\"data/journal_1874.xlsx\")\njournal_1875 <- read_excel(\"data/journal_1875.xlsx\")\njournal_1876 <- read_excel(\"data/journal_1876.xlsx\")\njournal_1877 <- read_excel(\"data/journal_1877.xlsx\")\njournal_1878 <- read_excel(\"data/journal_1878.xlsx\")\njournal_1879 <- read_excel(\"data/journal_1879.xlsx\")\njournal_1880 <- read_excel(\"data/journal_1880.xlsx\")\n\n*N.B. excel is just one format"
+    "text": "9 journals (1871-1880) transcribed\n\n\njournals <- read_csv(file = \"data/journals.csv\")\n\njournals %>%\n    distinct(journal)\n#> # A tibble: 9 × 1\n#>   journal\n#>     <dbl>\n#> 1       1\n#> 2       2\n#> 3       3\n#> 4       4\n#> 5       5\n#> 6       6\n#> 7       7\n#> 8       8\n#> 9       9"
   },
   {
     "objectID": "slides/01-fb-tidytext.html#journal-date-text-and-location",
     "href": "slides/01-fb-tidytext.html#journal-date-text-and-location",
     "title": "Mining Historical Texts",
     "section": "Journal Date, Text, and Location",
-    "text": "Journal Date, Text, and Location\n\njournals %>%\n    select(date_mdy, journal_entry, location)\n#> # A tibble: 3,951 × 3\n#>    date_mdy   journal_entry                                             location\n#>    <chr>      <chr>                                                     <chr>   \n#>  1 12/23/1871 Was married at home in evening by William Rand Esqr.      home    \n#>  2 12/24/1871 Went to meeting.                                          NA      \n#>  3 12/25/1871 Shooting match all day in the evening to Christmas tree … hall    \n#>  4 12/26/1871 About home at work fobbing.                               home    \n#>  5 12/27/1871 Work about home reed letter from N. H. Higgins Ins agt.   home    \n#>  6 12/28/1871 Work about home.                                          home    \n#>  7 12/29/1871 To work in shop.                                          shop    \n#>  8 12/30/1871 To work in shop.                                          shop    \n#>  9 12/31/1871 Went to meeting.                                          NA      \n#> 10 1/1/1872   Work in shop.                                             shop    \n#> # ℹ 3,941 more rows"
+    "text": "Journal Date, Text, and Location\n\njournals %>%\n    select(date_mdy, journal_entry, location)\n#> # A tibble: 3,951 × 3\n#>    date_mdy   journal_entry                                             location\n#>    <chr>      <chr>                                                     <chr>   \n#>  1 12/23/1871 Was married at home in evening by William Rand Esqr.      Winter …\n#>  2 12/24/1871 Went to meeting.                                          <NA>    \n#>  3 12/25/1871 Shooting match all day in the evening to Christmas tree … Winter …\n#>  4 12/26/1871 About home at work fobbing.                               Winter …\n#>  5 12/27/1871 Work about home reed letter from N. H. Higgins Ins agt.   Winter …\n#>  6 12/28/1871 Work about home.                                          Winter …\n#>  7 12/29/1871 To work in shop.                                          Winter …\n#>  8 12/30/1871 To work in shop.                                          Winter …\n#>  9 12/31/1871 Went to meeting.                                          <NA>    \n#> 10 1/1/1872   Work in shop.                                             Winter …\n#> # ℹ 3,941 more rows"
   },
   {
     "objectID": "slides/01-fb-tidytext.html#making-our-text-data-tidy",
     "href": "slides/01-fb-tidytext.html#making-our-text-data-tidy",
     "title": "Mining Historical Texts",
     "section": "Making our text data tidy",
-    "text": "Making our text data tidy\n\n(tidy_journal <- journals %>%\n    unnest_tokens(word, journal_entry))\n#> # A tibble: 65,118 × 6\n#>    date_mdy   journal location  year month word   \n#>    <date>       <dbl> <chr>    <dbl> <dbl> <chr>  \n#>  1 1871-12-23       1 home      1871    12 was    \n#>  2 1871-12-23       1 home      1871    12 married\n#>  3 1871-12-23       1 home      1871    12 at     \n#>  4 1871-12-23       1 home      1871    12 home   \n#>  5 1871-12-23       1 home      1871    12 in     \n#>  6 1871-12-23       1 home      1871    12 evening\n#>  7 1871-12-23       1 home      1871    12 by     \n#>  8 1871-12-23       1 home      1871    12 william\n#>  9 1871-12-23       1 home      1871    12 rand   \n#> 10 1871-12-23       1 home      1871    12 esqr   \n#> # ℹ 65,108 more rows"
+    "text": "Making our text data tidy\n\n(tidy_journal <- journals %>%\n    unnest_tokens(word, journal_entry))\n#> # A tibble: 65,118 × 6\n#>    date_mdy   journal location       year month word   \n#>    <date>       <dbl> <chr>         <dbl> <dbl> <chr>  \n#>  1 1871-12-23       1 Winter Harbor  1871    12 was    \n#>  2 1871-12-23       1 Winter Harbor  1871    12 married\n#>  3 1871-12-23       1 Winter Harbor  1871    12 at     \n#>  4 1871-12-23       1 Winter Harbor  1871    12 home   \n#>  5 1871-12-23       1 Winter Harbor  1871    12 in     \n#>  6 1871-12-23       1 Winter Harbor  1871    12 evening\n#>  7 1871-12-23       1 Winter Harbor  1871    12 by     \n#>  8 1871-12-23       1 Winter Harbor  1871    12 william\n#>  9 1871-12-23       1 Winter Harbor  1871    12 rand   \n#> 10 1871-12-23       1 Winter Harbor  1871    12 esqr   \n#> # ℹ 65,108 more rows"
   },
   {
     "objectID": "slides/01-fb-tidytext.html#creating-date-variables-using-lubridate",
@@ -1866,7 +1866,7 @@
     "href": "slides/01-fb-tidytext.html#creating-date-variables-using-lubridate-1",
     "title": "Mining Historical Texts",
     "section": "Creating date variables using lubridate",
-    "text": "Creating date variables using lubridate\n\nlibrary(lubridate)\n(journals <- journals %>%\n    select(date_mdy, journal_entry, journal, location) %>%\n    mutate(date_mdy = mdy(date_mdy),\n           year = year(date_mdy),\n           month = month(date_mdy)))\n#> # A tibble: 3,951 × 6\n#>    date_mdy   journal_entry                         journal location  year month\n#>    <date>     <chr>                                   <dbl> <chr>    <dbl> <dbl>\n#>  1 1871-12-23 Was married at home in evening by Wi…       1 home      1871    12\n#>  2 1871-12-24 Went to meeting.                            1 NA        1871    12\n#>  3 1871-12-25 Shooting match all day in the evenin…       1 hall      1871    12\n#>  4 1871-12-26 About home at work fobbing.                 1 home      1871    12\n#>  5 1871-12-27 Work about home reed letter from N. …       1 home      1871    12\n#>  6 1871-12-28 Work about home.                            1 home      1871    12\n#>  7 1871-12-29 To work in shop.                            1 shop      1871    12\n#>  8 1871-12-30 To work in shop.                            1 shop      1871    12\n#>  9 1871-12-31 Went to meeting.                            1 NA        1871    12\n#> 10 1872-01-01 Work in shop.                               1 shop      1872     1\n#> # ℹ 3,941 more rows"
+    "text": "Creating date variables using lubridate\n\nlibrary(lubridate)\n(journals <- journals %>%\n    select(date_mdy, journal_entry, journal, location) %>%\n    mutate(date_mdy = mdy(date_mdy),\n           year = year(date_mdy),\n           month = month(date_mdy)))\n#> # A tibble: 3,951 × 6\n#>    date_mdy   journal_entry                         journal location  year month\n#>    <date>     <chr>                                   <dbl> <chr>    <dbl> <dbl>\n#>  1 1871-12-23 Was married at home in evening by Wi…       1 Winter …  1871    12\n#>  2 1871-12-24 Went to meeting.                            1 <NA>      1871    12\n#>  3 1871-12-25 Shooting match all day in the evenin…       1 Winter …  1871    12\n#>  4 1871-12-26 About home at work fobbing.                 1 Winter …  1871    12\n#>  5 1871-12-27 Work about home reed letter from N. …       1 Winter …  1871    12\n#>  6 1871-12-28 Work about home.                            1 Winter …  1871    12\n#>  7 1871-12-29 To work in shop.                            1 Winter …  1871    12\n#>  8 1871-12-30 To work in shop.                            1 Winter …  1871    12\n#>  9 1871-12-31 Went to meeting.                            1 <NA>      1871    12\n#> 10 1872-01-01 Work in shop.                               1 Winter …  1872     1\n#> # ℹ 3,941 more rows"
   },
   {
     "objectID": "slides/01-fb-tidytext.html#how-did-freeland-refer-to-wind",
@@ -1887,7 +1887,7 @@
     "href": "slides/01-fb-tidytext.html#extracting-the-thermometer-data",
     "title": "Mining Historical Texts",
     "section": "Extracting the thermometer data",
-    "text": "Extracting the thermometer data\n\njournals %>%\n  filter(str_detect(string = journal_entry, pattern = \"Thermometer | thermometer\")) %>% # filter rows for mentions of word thermometer\n  mutate(temp = as.numeric(str_extract(journal_entry, pattern = '(?<=thermometer |Thermometer )\\\\d+'))) %>% # extract digits following the word thermometer in a sentence.\n  ggplot(aes(x = date_mdy, y = as.numeric(temp))) +\n  geom_point() +\n  labs(x = \"Date\", y = \"Recorded Temperature\")"
+    "text": "Extracting the thermometer data"
   },
   {
     "objectID": "slides/01-fb-tidytext.html#extracting-the-thermometer-data-1",
@@ -1908,14 +1908,14 @@
     "href": "slides/01-fb-tidytext.html#recap",
     "title": "Mining Historical Texts",
     "section": "Recap",
-    "text": "Recap\n\nWe can put each word on its own row using unnest_tokens\nWe can use anti_join to get rid of stop words\nWe can use filter and summarize to see how word use has changed over time and space"
+    "text": "Recap\n\nWe can put each word on its own row using unnest_tokens\nWe can use anti_join to get rid of stop words\nWe can use filter and summarize to see how word use has changed over time and space\nWe can use str_detect to find patterns in our text\nWe can use regular expressions to extract more complicated patterns"
   },
   {
     "objectID": "slides/01-fb-tidytext.html#extracting-the-thermometer-data-2",
     "href": "slides/01-fb-tidytext.html#extracting-the-thermometer-data-2",
     "title": "Mining Historical Texts",
     "section": "Extracting the thermometer data",
-    "text": "Extracting the thermometer data\n\njournals %>%\n  filter(str_detect(string = journal_entry, pattern = \"Thermometer | thermometer\")) %>% # filter rows for mentions of word thermometer\n  mutate(temp = as.numeric(str_extract(journal_entry, pattern = '(?<=thermometer |Thermometer )\\\\d+'))) %>% # extract digits following the word thermometer in a sentence.\n  mutate(temp_below = ifelse(str_detect(string = journal_entry, pattern = \"below zero\"), \"yes\", \"no\")) %>% # if the word below zero is included mark yes or no.\n  filter(is.na(temp) == FALSE) %>% # remove missing values\n  mutate(temp = case_when(temp_below == \"yes\" ~ temp*(-1), \n                          TRUE ~ temp)) %>% # Make below zero values negative\n  ggplot(aes(x = date_mdy, y = as.numeric(temp))) +\n  geom_point() +\n  labs(x = \"Date\", y = \"Recorded Temperature\")"
+    "text": "Extracting the thermometer data\n\njournals %>%\n  filter(str_detect(string = journal_entry, pattern = \"Thermometer | thermometer\")) %>% # filter rows for mentions of word thermometer\n  mutate(temp = as.numeric(str_extract(journal_entry, pattern = '(?<=thermometer |Thermometer )\\\\d+'))) %>% # extract digits following the word thermometer in a sentence.\n  mutate(temp_below = case_when(str_detect(string = journal_entry, pattern = \"below zero\") ~ \"yes\", TRUE ~ \"no\")) %>% # if the word below zero is included mark yes or no.\n  filter(is.na(temp) == FALSE) %>% # remove missing values\n  mutate(temp = case_when(temp_below == \"yes\" ~ temp*(-1), \n                          TRUE ~ temp)) %>% # Make below zero values negative\n  ggplot(aes(x = date_mdy, y = as.numeric(temp))) +\n  geom_point() +\n  labs(x = \"Date\", y = \"Recorded Temperature\")"
   },
   {
     "objectID": "slides/01-fb-tidytext.html#extracting-the-thermometer-data-3",
@@ -1929,7 +1929,7 @@
     "href": "slides/01-fb-tidytext.html#looking-at-word-trends-through-space",
     "title": "Mining Historical Texts",
     "section": "Looking at word trends through space",
-    "text": "Looking at word trends through space"
+    "text": "Looking at word trends through space\n\ntidy_journal %>%\n    anti_join(get_stopwords(source = \"smart\")) %>%\n    filter(str_detect(location, pattern = \"Matinicus\")) %>%\n    count(word, sort = TRUE) %>%\n    filter(word != \"home\") %>%\n    slice_max(n, n = 10, with_ties = FALSE) %>%\n    ggplot(aes(n, fct_reorder(word, n))) +  \n    geom_col() +\n    labs(fill = \"Word Type\", y = \"word\", title = \"Matinicus\") +\n    scale_fill_viridis_d(direction = -1)"
   },
   {
     "objectID": "slides/01-fb-tidytext.html#looking-at-word-trends-through-space-1",
@@ -1977,15 +1977,15 @@
     "objectID": "slides/01-fb-tidytext.html#extracting-names-of-schooners",
     "href": "slides/01-fb-tidytext.html#extracting-names-of-schooners",
     "title": "Mining Historical Texts",
-    "section": "Extracting Names of Schooners",
-    "text": "Extracting Names of Schooners\n\njournals %>%\n    filter(str_detect(journal_entry, pattern = \"Schr|schr|schooner\")) %>%\n    mutate(schooners = str_extract(journal_entry, pattern = \"\\\\b(Schr|Schr.|schr|schr.)(\\\\b\\\\s*([A-Z]\\\\w+|[A-Z]\\\\.\\\\w+\\\\.\\\\w+|[A-Z]\\\\. \\\\w+\\\\. \\\\w+)){0,4}\")) %>%\n    distinct(schooners)\n#> # A tibble: 38 × 1\n#>    schooners                         \n#>    <chr>                             \n#>  1 Schr A. G. Brooks                 \n#>  2 schr Fremont Capt Elisher Bickford\n#>  3 Schr Sea Flower                   \n#>  4 schr Roamer                       \n#>  5 schr Virgin                       \n#>  6 schr Virgins                      \n#>  7 Schr Roamer                       \n#>  8 Schr Neptune                      \n#>  9 Schr Banner                       \n#> 10 Schr Signal                       \n#> # ℹ 28 more rows"
+    "section": "Extracting names of schooners",
+    "text": "Extracting names of schooners\n\njournals %>%\n    filter(str_detect(journal_entry, pattern = \"Schr|schr|schooner\")) %>%\n    mutate(schooners = str_extract(journal_entry, pattern = \"\\\\b(Schr|Schr.|schr|schr.)(\\\\b\\\\s*([A-Z]\\\\w+|[A-Z]\\\\.\\\\w+\\\\.\\\\w+|[A-Z]\\\\. \\\\w+\\\\. \\\\w+)){0,4}\")) %>%\n    distinct(schooners)\n#> # A tibble: 38 × 1\n#>    schooners                         \n#>    <chr>                             \n#>  1 Schr A. G. Brooks                 \n#>  2 schr Fremont Capt Elisher Bickford\n#>  3 Schr Sea Flower                   \n#>  4 schr Roamer                       \n#>  5 schr Virgin                       \n#>  6 schr Virgins                      \n#>  7 Schr Roamer                       \n#>  8 Schr Neptune                      \n#>  9 Schr Banner                       \n#> 10 Schr Signal                       \n#> # ℹ 28 more rows"
   },
   {
     "objectID": "slides/01-fb-tidytext.html#how-much-did-freeland-write",
     "href": "slides/01-fb-tidytext.html#how-much-did-freeland-write",
     "title": "Mining Historical Texts",
     "section": "How much did Freeland write?",
-    "text": "How much did Freeland write?\n\ntidy_journal %>%\n  group_by(month, year) %>%\n  filter(is.na(year) == FALSE) %>%\n  summarize(nwords = n()) %>%\n  ggplot(aes(x = month, y = nwords, group = year)) +\n  geom_line() +\n  geom_point() +\n  facet_wrap(~year) +\n  labs(title = \"How much did Freeland write a month?\",\n       y = \"Number of words\",\n       x = \"Month\") +\n  scale_x_continuous(breaks = c(0, 3, 6, 9, 12))"
+    "text": "How much did Freeland write?\n\n(monthly_word_count <- tidy_journal %>%\n  group_by(month, year) %>%\n  filter(is.na(year) == FALSE) %>%\n  summarize(nwords = n()))\n#> # A tibble: 97 × 3\n#> # Groups:   month [12]\n#>    month  year nwords\n#>    <dbl> <dbl>  <int>\n#>  1     1  1872    193\n#>  2     1  1873    569\n#>  3     1  1874    371\n#>  4     1  1875    565\n#>  5     1  1876    610\n#>  6     1  1877    441\n#>  7     1  1879    950\n#>  8     1  1880    748\n#>  9     2  1872    224\n#> 10     2  1873    564\n#> # ℹ 87 more rows"
   },
   {
     "objectID": "slides/01-fb-tidytext.html#how-much-did-freeland-write-1",
@@ -2006,7 +2006,7 @@
     "href": "slides/01-fb-tidytext.html#your-turn-what-were-the-most-common-words-in-journal-5-and-6",
     "title": "Mining Historical Texts",
     "section": "Your Turn: What were the most common words in Journal 5 and 6?",
-    "text": "Your Turn: What were the most common words in Journal 5 and 6?"
+    "text": "Your Turn: What were the most common words in Journal 5 and 6?\n\ntidy_journal %>%\n    anti_join(get_stopwords(source = \"smart\")) %>%\n    filter(journal %in% c(____, ____)) %>%\n    count(word, sort = TRUE) %>%\n    slice_max(n, n = 25) %>%\n    ggplot(aes(n, fct_reorder(word, n))) +  \n    geom_col(aes(fill = color)) +\n    labs(fill = \"Word Type\", y = \"word\") +\n    scale_fill_viridis_d(direction = -1)"
   },
   {
     "objectID": "slides/02-more-eda-fb.html#lets-install-some-packages",
@@ -2546,5 +2546,89 @@
     "title": "Wrangling and Visualizing Historical Texts",
     "section": "Where did Freeland go less? Step by Step",
     "text": "Where did Freeland go less? Step by Step\nAnd then arrange the locations in ascending order from least to most visited.\n\njournals_sub %>%\n    filter(is.na(location) == FALSE, location != \"NA\") %>%\n    separate_rows(location, sep = \", \") %>%\n    count(location) %>%\n    arrange(n) \n#> # A tibble: 281 × 2\n#>    location                       n\n#>    <chr>                      <int>\n#>  1 \" Handkerchief Light Ship\"     1\n#>  2 \" North East Harbor\"           1\n#>  3 \"Azores/Western Islands\"       1\n#>  4 \"Baker's Island\"               1\n#>  5 \"Bakers Island\"                1\n#>  6 \"Barbacoa Harbor\"              1\n#>  7 \"Bass Habor\"                   1\n#>  8 \"Bath\"                         1\n#>  9 \"Block Island Channel\"         1\n#> 10 \"Boothbay\"                     1\n#> # ℹ 271 more rows"
+  },
+  {
+    "objectID": "slides/01-fb-tidytext.html#looking-for-schooners",
+    "href": "slides/01-fb-tidytext.html#looking-for-schooners",
+    "title": "Mining Historical Texts",
+    "section": "Looking for Schooners",
+    "text": "Looking for Schooners\n\njournals %>%\n    filter(str_detect(journal_entry, pattern = \"Schr|schr|schooner\")) %>%\n    select(date_mdy, journal_entry) %>%\n    DT::datatable()"
+  },
+  {
+    "objectID": "slides/01-fb-tidytext.html#your-turn",
+    "href": "slides/01-fb-tidytext.html#your-turn",
+    "title": "Mining Historical Texts",
+    "section": "Your Turn",
+    "text": "Your Turn\nWhat is something you are curious about in Freeland’s journals that you’d like to investigate? Be creative with the time period, place, and what you’re looking for.\n\njournals %>%\n    filter(str_detect(journal_entry, pattern = \"What are you looking for?\")) %>%\n    select(date_mdy, journal_entry)"
+  },
+  {
+    "objectID": "slides/01-fb-tidytext.html#section-1",
+    "href": "slides/01-fb-tidytext.html#section-1",
+    "title": "Mining Historical Texts",
+    "section": "",
+    "text": "https:coa-navigating-change.netlify.app"
+  },
+  {
+    "objectID": "slides/01-fb-tidytext.html#plotting-monthly-word-count-through-time",
+    "href": "slides/01-fb-tidytext.html#plotting-monthly-word-count-through-time",
+    "title": "Mining Historical Texts",
+    "section": "Plotting monthly word count through time",
+    "text": "Plotting monthly word count through time\nWhat plot do you expect to see?\n\nmonthly_word_count %>%\n  ggplot(aes(x = month, y = nwords, group = year)) +\n  geom_line() +\n  geom_point() +\n  facet_wrap(~year) +\n  labs(title = \"How much did Freeland write a month?\",\n       y = \"Number of words\",\n       x = \"Month\") +\n  scale_x_continuous(breaks = c(0, 3, 6, 9, 12))"
+  },
+  {
+    "objectID": "slides/01-fb-tidytext.html#your-turn-what-were-the-most-common-words-in-your-journal-period",
+    "href": "slides/01-fb-tidytext.html#your-turn-what-were-the-most-common-words-in-your-journal-period",
+    "title": "Mining Historical Texts",
+    "section": "Your Turn: What were the most common words in your journal period?",
+    "text": "Your Turn: What were the most common words in your journal period?\n\ntidy_journal %>%\n    anti_join(get_stopwords(source = \"smart\")) %>%\n    filter(year _______,\n           month %in% c(_________)) %>%\n    count(word, sort = TRUE) %>%\n    slice_max(n, n = 25) %>%\n    ggplot(aes(n, fct_reorder(word, n))) +  \n    geom_col(aes(fill = color)) +\n    labs(fill = \"Word Type\", y = \"word\") +\n    scale_fill_viridis_d(direction = -1)"
+  },
+  {
+    "objectID": "slides/01-fb-tidytext.html#your-turn-looking-at-word-trends-through-space",
+    "href": "slides/01-fb-tidytext.html#your-turn-looking-at-word-trends-through-space",
+    "title": "Mining Historical Texts",
+    "section": "Your Turn: Looking at word trends through space",
+    "text": "Your Turn: Looking at word trends through space\n\ntidy_journal %>%\n    anti_join(get_stopwords(source = \"smart\")) %>%\n    filter(str_detect(location, \"__________\")) %>%\n    count(word, sort = TRUE) %>%\n    slice_max(n, n = 10, with_ties = FALSE) %>%\n    ggplot(aes(n, fct_reorder(word, n))) +  \n    geom_col() +\n    labs(fill = \"Word Type\", y = \"word\", title = \"_______\") +\n    scale_fill_viridis_d(direction = -1)"
+  },
+  {
+    "objectID": "slides/01-fb-tidytext.html#extracting-thermometer-readings",
+    "href": "slides/01-fb-tidytext.html#extracting-thermometer-readings",
+    "title": "Mining Historical Texts",
+    "section": "Extracting thermometer readings",
+    "text": "Extracting thermometer readings"
+  },
+  {
+    "objectID": "slides/01-fb-tidytext.html#extracting-thermometer-readings-1",
+    "href": "slides/01-fb-tidytext.html#extracting-thermometer-readings-1",
+    "title": "Mining Historical Texts",
+    "section": "Extracting thermometer readings",
+    "text": "Extracting thermometer readings\n\njournals %>%\n  filter(str_detect(string = journal_entry, pattern = \"Thermometer | thermometer\")) %>% # filter rows for mentions of word thermometer\n  mutate(temp = as.numeric(str_extract(journal_entry, pattern = '(?<=thermometer |Thermometer )\\\\d+'))) %>% # extract digits following the word thermometer in a sentence.\n  ggplot(aes(x = date_mdy, y = as.numeric(temp))) +\n  geom_point() +\n  labs(x = \"Date\", y = \"Recorded Temperature\")"
+  },
+  {
+    "objectID": "slides/01-fb-tidytext.html#extracting-the-thermometer-readings",
+    "href": "slides/01-fb-tidytext.html#extracting-the-thermometer-readings",
+    "title": "Mining Historical Texts",
+    "section": "Extracting the thermometer readings",
+    "text": "Extracting the thermometer readings\n\njournals %>%\n  filter(str_detect(string = journal_entry, pattern = \"Thermometer | thermometer\")) %>% # filter rows for mentions of word thermometer\n  mutate(temp = as.numeric(str_extract(journal_entry, pattern = '(?<=thermometer |Thermometer )\\\\d+'))) %>% # extract digits following the word thermometer in a sentence.\n  mutate(temp_below = case_when(str_detect(string = journal_entry, pattern = \"below zero\") ~ \"yes\", TRUE ~ \"no\")) %>% # if the word below zero is included mark yes or no.\n  filter(is.na(temp) == FALSE) %>% # remove missing values\n  mutate(temp = case_when(temp_below == \"yes\" ~ temp*(-1), \n                          TRUE ~ temp)) %>% # Make below zero values negative\n  ggplot(aes(x = date_mdy, y = as.numeric(temp))) +\n  geom_point() +\n  labs(x = \"Date\", y = \"Recorded Temperature\")"
+  },
+  {
+    "objectID": "slides/01-fb-tidytext.html#extracting-the-thermometer-data-including-below-zero",
+    "href": "slides/01-fb-tidytext.html#extracting-the-thermometer-data-including-below-zero",
+    "title": "Mining Historical Texts",
+    "section": "Extracting the thermometer data including below zero",
+    "text": "Extracting the thermometer data including below zero"
+  },
+  {
+    "objectID": "slides/01-fb-tidytext.html#extracting-the-thermometer-readings-including-below-zero",
+    "href": "slides/01-fb-tidytext.html#extracting-the-thermometer-readings-including-below-zero",
+    "title": "Mining Historical Texts",
+    "section": "Extracting the thermometer readings including below zero",
+    "text": "Extracting the thermometer readings including below zero\n\njournals %>%\n  filter(str_detect(string = journal_entry, pattern = \"Thermometer | thermometer\")) %>% # filter rows for mentions of word thermometer\n  mutate(temp = as.numeric(str_extract(journal_entry, pattern = '(?<=thermometer |Thermometer )\\\\d+'))) %>% # extract digits following the word thermometer in a sentence.\n  mutate(temp_below = ifelse(str_detect(string = journal_entry, pattern = \"below zero\"), \"yes\", \"no\")) %>% # if the word below zero is included mark yes or no.\n  filter(is.na(temp) == FALSE) %>% # remove missing values\n  mutate(temp = ifelse(temp_below == \"yes\", temp*(-1), \n                          temp)) %>% # Make below zero values negative\n  ggplot(aes(x = date_mdy, y = as.numeric(temp))) +\n  geom_point() +\n  labs(x = \"Date\", y = \"Recorded Temperature\")"
+  },
+  {
+    "objectID": "slides/01-fb-tidytext.html#logical-operators-in-r",
+    "href": "slides/01-fb-tidytext.html#logical-operators-in-r",
+    "title": "Mining Historical Texts",
+    "section": "Logical operators in R",
+    "text": "Logical operators in R\n\noperator | definition || operator | definition ————|——————————||————–|—————- < | less than ||x | y | x OR y <= | less than or equal to ||is.na(x) | test if x is NA > | greater than ||!is.na(x) | test if x is not NA >= | greater than or equal to ||x %in% y | test if x is in y == | exactly equal to ||!(x %in% y) | test if x is not in y != | not equal to ||!x | not x x & y | x AND y || |"
   }
 ]
