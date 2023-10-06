@@ -348,9 +348,6 @@ Is [bigram_graph]{.codedarkbg} a tidy dataset?
 -   Yes ☑️
 -   No 🚫
 
-## Network analysis
-
-
 ## Network analysis {background-color="white"}
 
 ```{r}
@@ -386,7 +383,7 @@ bigram_graph %>%
     theme_graph()
 ```
 
-### What could we learn from trigrams?
+## What can we learn from trigrams?
 
 ```{r}
 (tidy_trigram <- journals %>%
@@ -394,7 +391,7 @@ bigram_graph %>%
     drop_na(trigram) %>%
     select(journal, trigram, date_mdy, location))
 ```
-### Trigram counts
+## Trigram counts
 
 ```{r}
 #| code-line-numbers: "|2"

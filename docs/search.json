@@ -2195,7 +2195,7 @@
     "href": "slides/02-more-eda-fb.html#network-analysis-2",
     "title": "Comparing Historical Texts",
     "section": "Network analysis",
-    "text": "Network analysis"
+    "text": "Network analysis\n\nbigram_graph %>%\n    ggraph(layout = \"kk\") +\n    geom_edge_link(aes(edge_alpha = n), \n                   show.legend = FALSE, \n                   arrow = arrow(length = unit(1.5, 'mm')), \n                   start_cap = circle(3, 'mm'),\n                   end_cap = circle(3, 'mm')) +\n    geom_node_text(aes(label = name)) + \n    theme_graph()"
   },
   {
     "objectID": "slides/02-more-eda-fb.html#network-analysis-3",
@@ -2651,5 +2651,19 @@
     "title": "Comparing Historical Texts",
     "section": "Let’s remove stopwords, wind, and more",
     "text": "Let’s remove stopwords, wind, and more\n\nwords_to_remove <- c(\"wind\", \"thermometer\", \"north\", \"west\", \"south\", \"east\", \"degrees\", \"afternoon\", \"morning\")\n\nbigram_counts <- tidy_ngram %>%\n    separate(bigram, c(\"word1\", \"word2\"), sep = \" \") %>%\n    filter(!word1 %in% c(stop_words$word, words_to_remove),\n           !word2 %in% c(stop_words$word, words_to_remove)) %>%\n    count(word1, word2, sort = TRUE)"
+  },
+  {
+    "objectID": "slides/02-more-eda-fb.html#what-can-we-learn-from-trigrams",
+    "href": "slides/02-more-eda-fb.html#what-can-we-learn-from-trigrams",
+    "title": "Comparing Historical Texts",
+    "section": "What can we learn from trigrams?",
+    "text": "What can we learn from trigrams?\n\n(tidy_trigram <- journals %>%\n    unnest_tokens(trigram, journal_entry, token = \"ngrams\", n = 3) %>% \n    drop_na(trigram) %>%\n    select(journal, trigram, date_mdy, location))\n#> # A tibble: 57,904 × 4\n#>    journal trigram            date_mdy   location\n#>      <dbl> <chr>              <chr>      <chr>   \n#>  1       1 was married at     12/23/1871 home    \n#>  2       1 married at home    12/23/1871 home    \n#>  3       1 at home in         12/23/1871 home    \n#>  4       1 home in evening    12/23/1871 home    \n#>  5       1 in evening by      12/23/1871 home    \n#>  6       1 evening by william 12/23/1871 home    \n#>  7       1 by william rand    12/23/1871 home    \n#>  8       1 william rand esqr  12/23/1871 home    \n#>  9       1 went to meeting    12/24/1871 NA      \n#> 10       1 shooting match all 12/25/1871 hall    \n#> # ℹ 57,894 more rows"
+  },
+  {
+    "objectID": "slides/02-more-eda-fb.html#trigram-counts",
+    "href": "slides/02-more-eda-fb.html#trigram-counts",
+    "title": "Comparing Historical Texts",
+    "section": "Trigram counts",
+    "text": "Trigram counts\n\nwords_to_remove <- c(\"wind\", \"thermometer\", \"north\", \"west\", \"south\", \"east\", \"degrees\", \"afternoon\", \"morning\")\n\n(trigram_counts <- tidy_trigram %>%\n    separate(trigram, c(\"word1\", \"word2\", \"word3\"), sep = \" \") %>%\n    filter(!word1 %in% c(stop_words$word, words_to_remove),\n           !word2 %in% c(stop_words$word, words_to_remove),\n           !word3 %in% c(stop_words$word, words_to_remove)) %>%\n    count(word1, word2, word3, sort = TRUE))\n#> # A tibble: 3,881 × 4\n#>    word1    word2   word3          n\n#>    <chr>    <chr>   <chr>      <int>\n#>  1 wrote    letter  home          44\n#>  2 steam    boat    wharf         14\n#>  3 top      gallant sail          12\n#>  4 top      gallant sails         12\n#>  5 1        2       day           11\n#>  6 easterly fresh   breeze        11\n#>  7 post     office  department    11\n#>  8 capt     thomas  bunker        10\n#>  9 home     cutting wood           9\n#> 10 main     top     gallant        9\n#> # ℹ 3,871 more rows"
   }
 ]

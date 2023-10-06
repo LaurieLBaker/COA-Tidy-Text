@@ -791,10 +791,7 @@ by Laurie Baker
 <li>No 🚫</li>
 </ul>
 </section>
-<section id="network-analysis-2" class="slide level2">
-<h2>Network analysis</h2>
-</section>
-<section id="network-analysis-3" class="slide level2" data-background-color="white">
+<section id="network-analysis-2" class="slide level2" data-background-color="white">
 <h2>Network analysis</h2>
 <div class="cell" data-hash="02-more-eda-fb_cache/revealjs/unnamed-chunk-22_d0de9676a6c04545eadb489dcade4ab1">
 <div class="sourceCode cell-code" id="cb18" data-code-line-numbers="|3,8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>bigram_graph <span class="sc">%&gt;%</span></span>
@@ -811,7 +808,9 @@ by Laurie Baker
 <section id="section-3" class="slide level2">
 <h2></h2>
 
-<img data-src="02-more-eda-fb_files/figure-revealjs/unnamed-chunk-23-1.png" width="2400" class="r-stretch quarto-figure-center"><h3 id="what-could-we-learn-from-trigrams">What could we learn from trigrams?</h3>
+<img data-src="02-more-eda-fb_files/figure-revealjs/unnamed-chunk-23-1.png" width="2400" class="r-stretch quarto-figure-center"></section>
+<section id="what-can-we-learn-from-trigrams" class="slide level2">
+<h2>What can we learn from trigrams?</h2>
 <div class="cell" data-hash="02-more-eda-fb_cache/revealjs/unnamed-chunk-24_5a5ecd359db55f031679a4402bae87ba">
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>(tidy_trigram <span class="ot">&lt;-</span> journals <span class="sc">%&gt;%</span></span>
 <span id="cb19-2"><a href="#cb19-2"></a>    <span class="fu">unnest_tokens</span>(trigram, journal_entry, <span class="at">token =</span> <span class="st">"ngrams"</span>, <span class="at">n =</span> <span class="dv">3</span>) <span class="sc">%&gt;%</span> </span>
@@ -832,7 +831,9 @@ by Laurie Baker
 <span id="cb19-17"><a href="#cb19-17"></a><span class="co">#&gt; 10       1 shooting match all 12/25/1871 hall    </span></span>
 <span id="cb19-18"><a href="#cb19-18"></a><span class="co">#&gt; # ℹ 57,894 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
-<h3 id="trigram-counts">Trigram counts</h3>
+</section>
+<section id="trigram-counts" class="slide level2">
+<h2>Trigram counts</h2>
 <div class="cell" data-hash="02-more-eda-fb_cache/revealjs/unnamed-chunk-25_f085f939bf8bf9c409d9856fd7f0a101">
 <div class="sourceCode cell-code" id="cb20" data-code-line-numbers="|2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>words_to_remove <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"wind"</span>, <span class="st">"thermometer"</span>, <span class="st">"north"</span>, <span class="st">"west"</span>, <span class="st">"south"</span>, <span class="st">"east"</span>, <span class="st">"degrees"</span>, <span class="st">"afternoon"</span>, <span class="st">"morning"</span>)</span>
 <span id="cb20-2"><a href="#cb20-2"></a></span>
