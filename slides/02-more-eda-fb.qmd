@@ -230,36 +230,6 @@ journal_tf_idf %>%
     scale_x_continuous(expand = c(0,0)) +
     labs(y = NULL, x = "tf-idf", title = "Highest tf-idf words in Freeland Bunker's Journals")
 ```
-
-
-# WHAT IS A DOCUMENT ABOUT? 🤔 {background-image="figs/water2.jpg" background-size="cover" background-opacity="0.5"}
-
-## What is a document about?
-
--   Term frequency
--   Inverse document frequency
-
-. . .
-
-### Weighted log odds ⚖️
-
-- Log odds ratio expresses probabilities
-- Weighting helps deal with power law distribution
-
-## Weighted log odds ⚖️ {background-color="white"}
-
-```{r}
-library(tidylo)
-journal_words %>%
-    bind_log_odds(journal, word, n) %>%
-    arrange(-log_odds_weighted)
-```
-
-. . .
-
-Weighted log odds can distinguish between words that are used in all texts.
-
-
 # More insight from bigrams! {background-image="figs/water2.jpg" background-size="cover" background-opacity="1"}
 
 ```{r}
@@ -313,6 +283,19 @@ bigram_counts %>%
     filter(str_detect(string = word1, pattern = "wind|Wind")) %>% 
     with(wordcloud::wordcloud(word2, n, random.order = FALSE, max.words = 50, colors = brewer.pal(8,"Dark2")))
 ```
+## Let's remove stopwords, wind, and more
+
+```{r}
+#| code-line-numbers: "|2"
+
+words_to_remove <- c("wind", "thermometer", "north", "west", "south", "east", "degrees", "afternoon", "morning")
+
+bigram_counts <- tidy_ngram %>%
+    separate(bigram, c("word1", "word2"), sep = " ") %>%
+    filter(!word1 %in% c(stop_words$word, words_to_remove),
+           !word2 %in% c(stop_words$word, words_to_remove)) %>%
+    count(word1, word2, sort = TRUE)
+```
 
 
 ## What can you do with n-grams? {background-image="figs/water2.jpg" background-size="cover" background-opacity="0.5"}
@@ -335,15 +318,6 @@ bigram_counts %>%
 [https://pudding.cool/2017/08/screen-direction/]{.blue}
 :::
 
-##  {background-image="https://juliasilge.github.io/tidylo/articles/tidylo_files/figure-html/bigram_plot-1.png" background-size="60%" background-color="white"}
-
-::: footer
-:::
-
-## {background-image="figs/change_overall-1.svg" background-size="70%" background-color="white"}
-
-::: footer
-:::
 
 ## Network analysis {background-color="white"}
 
@@ -354,31 +328,6 @@ library(ggraph)
 library(tidygraph)
 
 bigram_graph <- bigram_counts %>%
-    filter(!word1 %in% c("Wind", "wind", "thermometer", "degrees", "oclock", "pm", "p.m"), !word2 %in% c("Wind", "wind", "thermometer", "degrees", "oclock", "pm", "p.m")) %>%
-    mutate(word1 = case_when(word1 %in% c("E", "easterly", "East") ~ "east",
-                             word1 %in% c("S", "S.", "southerly", "South") ~ "south",
-                             word1 %in% c("n.w", "N.W.") ~ "northwest",
-                             word1 %in% c("northerly", "N", "n", "North") ~ "north",
-                             word1 %in% c("westerly", "w", "W", "West") ~ "west",
-           TRUE ~ word1)) %>%
-    mutate(word2 = case_when(word2 %in% c("E", "easterly") ~ "east",
-                             word2 %in% c("S", "S.", "southerly") ~ "south",
-                             word2 %in% "n.w" ~ "northwest",
-                             word2 %in% c("northerly", "N", "n") ~ "north",
-                             word2 %in% c("westerly", "w", "W") ~ "west",
-           TRUE ~ word2)) %>%
-    mutate(word1 = case_when(word1 %in% c("reed", "recd") ~ "received",
-           TRUE ~ word1),
-           word2 = case_when(word2 %in% c("reed", "recd") ~ "received",
-           TRUE ~ word2)) %>%
-    mutate(word1 = case_when(word1 %in% c("letters") ~ "letter",
-           TRUE ~ word1),
-           word2 = case_when(word2 %in% c("letters") ~ "letter",
-           TRUE ~ word2)) %>%
-    mutate(word1 = case_when(word1 %in% c("lobster") ~ "lobsters",
-           TRUE ~ word1),
-           word2 = case_when(word2 %in% c("lobster") ~ "lobsters",
-           TRUE ~ word2)) %>%
     filter(n > 15) %>%
     as_tbl_graph() 
 ```
@@ -401,15 +350,6 @@ Is [bigram_graph]{.codedarkbg} a tidy dataset?
 
 ## Network analysis
 
-```{r eval = FALSE}
-#| eval: false
-#| code-line-numbers: "|3,4"
-bigram_graph %>%
-    ggraph(layout = "kk") +
-    geom_edge_link(aes(edge_alpha = n)) + 
-    geom_node_text(aes(label = name)) +  
-    theme_graph() 
-```
 
 ## Network analysis {background-color="white"}
 
@@ -446,6 +386,28 @@ bigram_graph %>%
     theme_graph()
 ```
 
+### What could we learn from trigrams?
+
+```{r}
+(tidy_trigram <- journals %>%
+    unnest_tokens(trigram, journal_entry, token = "ngrams", n = 3) %>% 
+    drop_na(trigram) %>%
+    select(journal, trigram, date_mdy, location))
+```
+### Trigram counts
+
+```{r}
+#| code-line-numbers: "|2"
+
+words_to_remove <- c("wind", "thermometer", "north", "west", "south", "east", "degrees", "afternoon", "morning")
+
+(trigram_counts <- tidy_trigram %>%
+    separate(trigram, c("word1", "word2", "word3"), sep = " ") %>%
+    filter(!word1 %in% c(stop_words$word, words_to_remove),
+           !word2 %in% c(stop_words$word, words_to_remove),
+           !word3 %in% c(stop_words$word, words_to_remove)) %>%
+    count(word1, word2, word3, sort = TRUE))
+```
 
 
 # Thanks! {background-image="figs/p_and_p_cover.png" background-size="cover" background-opacity="0.5"}
@@ -463,3 +425,34 @@ bigram_graph %>%
 ::: footer
 Slides created with [Quarto](https://quarto.org/)
 :::
+
+# Additional Slides
+
+# WHAT IS A DOCUMENT ABOUT - other methods? 🤔 {background-image="figs/water2.jpg" background-size="cover" background-opacity="0.5"}
+
+## What is a document about?
+
+-   Term frequency
+-   Inverse document frequency
+
+. . .
+
+### Weighted log odds ⚖️
+
+- Log odds ratio expresses probabilities
+- Weighting helps deal with power law distribution
+
+## Weighted log odds ⚖️ {background-color="white"}
+
+```{r}
+library(tidylo)
+journal_words %>%
+    bind_log_odds(journal, word, n) %>%
+    arrange(-log_odds_weighted)
+```
+
+. . .
+
+Weighted log odds can distinguish between words that are used in all texts.
+
+

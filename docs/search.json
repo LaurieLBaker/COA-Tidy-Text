@@ -2104,7 +2104,7 @@
     "href": "slides/02-more-eda-fb.html#weighted-log-odds-1",
     "title": "Comparing Historical Texts",
     "section": "Weighted log odds ⚖️",
-    "text": "Weighted log odds ⚖️\n\nlibrary(tidylo)\njournal_words %>%\n    bind_log_odds(journal, word, n) %>%\n    arrange(-log_odds_weighted)\n#> # A tibble: 9,200 × 4\n#>    journal word            n log_odds_weighted\n#>      <dbl> <chr>       <int>             <dbl>\n#>  1       7 <NA>          640              47.8\n#>  2       9 thermometer   357              27.5\n#>  3       9 degrees       239              27.1\n#>  4       8 thermometer   353              26.8\n#>  5       7 thermometer   351              26.8\n#>  6       8 degrees       200              25.1\n#>  7       6 <NA>            2              23.9\n#>  8       7 degrees       166              23.6\n#>  9       6 thermometer    10              17.5\n#> 10       9 troll          46              14.4\n#> # ℹ 9,190 more rows\n\n\nWeighted log odds can distinguish between words that are used in all texts."
+    "text": "Weighted log odds ⚖️\n\nlibrary(tidylo)\njournal_words %>%\n    bind_log_odds(journal, word, n) %>%\n    arrange(-log_odds_weighted)\n#> # A tibble: 9,200 × 4\n#>    journal word            n log_odds_weighted\n#>      <dbl> <chr>       <int>             <dbl>\n#>  1       7 <NA>          640              47.8\n#>  2       9 thermometer   357              27.5\n#>  3       9 degrees       239              27.1\n#>  4       8 thermometer   353              26.8\n#>  5       7 thermometer   351              26.8\n#>  6       8 degrees       200              25.1\n#>  7       6 <NA>            2              23.9\n#>  8       7 degrees       166              23.6\n#>  9       6 thermometer    10              17.5\n#> 10       9 troll          46              14.4\n#> # ℹ 9,190 more rows\n\n\nWeighted log odds can distinguish between words that are used in all texts.\n\n\nhttps:coa-navigating-change.netlify.app"
   },
   {
     "objectID": "slides/02-more-eda-fb.html#n-grams-and-beyond",
@@ -2167,21 +2167,21 @@
     "href": "slides/02-more-eda-fb.html#section-3",
     "title": "Comparing Historical Texts",
     "section": "",
-    "text": "https://pudding.cool/2017/08/screen-direction/"
+    "text": "What could we learn from trigrams?\n\n(tidy_trigram <- journals %>%\n    unnest_tokens(trigram, journal_entry, token = \"ngrams\", n = 3) %>% \n    drop_na(trigram) %>%\n    select(journal, trigram, date_mdy, location))\n#> # A tibble: 57,904 × 4\n#>    journal trigram            date_mdy   location\n#>      <dbl> <chr>              <chr>      <chr>   \n#>  1       1 was married at     12/23/1871 home    \n#>  2       1 married at home    12/23/1871 home    \n#>  3       1 at home in         12/23/1871 home    \n#>  4       1 home in evening    12/23/1871 home    \n#>  5       1 in evening by      12/23/1871 home    \n#>  6       1 evening by william 12/23/1871 home    \n#>  7       1 by william rand    12/23/1871 home    \n#>  8       1 william rand esqr  12/23/1871 home    \n#>  9       1 went to meeting    12/24/1871 NA      \n#> 10       1 shooting match all 12/25/1871 hall    \n#> # ℹ 57,894 more rows\n\nTrigram counts\n\nwords_to_remove <- c(\"wind\", \"thermometer\", \"north\", \"west\", \"south\", \"east\", \"degrees\", \"afternoon\", \"morning\")\n\n(trigram_counts <- tidy_trigram %>%\n    separate(trigram, c(\"word1\", \"word2\", \"word3\"), sep = \" \") %>%\n    filter(!word1 %in% c(stop_words$word, words_to_remove),\n           !word2 %in% c(stop_words$word, words_to_remove),\n           !word3 %in% c(stop_words$word, words_to_remove)) %>%\n    count(word1, word2, word3, sort = TRUE))\n#> # A tibble: 3,881 × 4\n#>    word1    word2   word3          n\n#>    <chr>    <chr>   <chr>      <int>\n#>  1 wrote    letter  home          44\n#>  2 steam    boat    wharf         14\n#>  3 top      gallant sail          12\n#>  4 top      gallant sails         12\n#>  5 1        2       day           11\n#>  6 easterly fresh   breeze        11\n#>  7 post     office  department    11\n#>  8 capt     thomas  bunker        10\n#>  9 home     cutting wood           9\n#> 10 main     top     gallant        9\n#> # ℹ 3,871 more rows"
   },
   {
     "objectID": "slides/02-more-eda-fb.html#network-analysis",
     "href": "slides/02-more-eda-fb.html#network-analysis",
     "title": "Comparing Historical Texts",
     "section": "Network analysis",
-    "text": "Network analysis\n\nlibrary(widyr)\nlibrary(ggraph)\nlibrary(tidygraph)\n\nbigram_graph <- bigram_counts %>%\n    filter(!word1 %in% c(\"Wind\", \"wind\", \"thermometer\", \"degrees\", \"oclock\", \"pm\", \"p.m\"), !word2 %in% c(\"Wind\", \"wind\", \"thermometer\", \"degrees\", \"oclock\", \"pm\", \"p.m\")) %>%\n    mutate(word1 = case_when(word1 %in% c(\"E\", \"easterly\", \"East\") ~ \"east\",\n                             word1 %in% c(\"S\", \"S.\", \"southerly\", \"South\") ~ \"south\",\n                             word1 %in% c(\"n.w\", \"N.W.\") ~ \"northwest\",\n                             word1 %in% c(\"northerly\", \"N\", \"n\", \"North\") ~ \"north\",\n                             word1 %in% c(\"westerly\", \"w\", \"W\", \"West\") ~ \"west\",\n           TRUE ~ word1)) %>%\n    mutate(word2 = case_when(word2 %in% c(\"E\", \"easterly\") ~ \"east\",\n                             word2 %in% c(\"S\", \"S.\", \"southerly\") ~ \"south\",\n                             word2 %in% \"n.w\" ~ \"northwest\",\n                             word2 %in% c(\"northerly\", \"N\", \"n\") ~ \"north\",\n                             word2 %in% c(\"westerly\", \"w\", \"W\") ~ \"west\",\n           TRUE ~ word2)) %>%\n    mutate(word1 = case_when(word1 %in% c(\"reed\", \"recd\") ~ \"received\",\n           TRUE ~ word1),\n           word2 = case_when(word2 %in% c(\"reed\", \"recd\") ~ \"received\",\n           TRUE ~ word2)) %>%\n    mutate(word1 = case_when(word1 %in% c(\"letters\") ~ \"letter\",\n           TRUE ~ word1),\n           word2 = case_when(word2 %in% c(\"letters\") ~ \"letter\",\n           TRUE ~ word2)) %>%\n    mutate(word1 = case_when(word1 %in% c(\"lobster\") ~ \"lobsters\",\n           TRUE ~ word1),\n           word2 = case_when(word2 %in% c(\"lobster\") ~ \"lobsters\",\n           TRUE ~ word2)) %>%\n    filter(n > 15) %>%\n    as_tbl_graph()"
+    "text": "Network analysis\n\nlibrary(widyr)\nlibrary(ggraph)\nlibrary(tidygraph)\n\nbigram_graph <- bigram_counts %>%\n    filter(n > 15) %>%\n    as_tbl_graph()"
   },
   {
     "objectID": "slides/02-more-eda-fb.html#network-analysis-1",
     "href": "slides/02-more-eda-fb.html#network-analysis-1",
     "title": "Comparing Historical Texts",
     "section": "Network analysis",
-    "text": "Network analysis\n\nbigram_graph\n#> # A tbl_graph: 82 nodes and 92 edges\n#> #\n#> # A directed multigraph with 16 components\n#> #\n#> # A tibble: 82 × 1\n#>   name \n#>   <chr>\n#> 1 wind \n#> 2 north\n#> 3 south\n#> 4 wrote\n#> 5 west \n#> 6 fresh\n#> # ℹ 76 more rows\n#> #\n#> # A tibble: 92 × 3\n#>    from    to     n\n#>   <int> <int> <int>\n#> 1     1     2   572\n#> 2     1     3   543\n#> 3     2     5   402\n#> # ℹ 89 more rows"
+    "text": "Network analysis\n\nbigram_graph\n#> # A tbl_graph: 106 nodes and 104 edges\n#> #\n#> # A directed multigraph with 20 components\n#> #\n#> # A tibble: 106 × 1\n#>   name     \n#>   <chr>    \n#> 1 north    \n#> 2 south    \n#> 3 wrote    \n#> 4 west     \n#> 5 fresh    \n#> 6 southerly\n#> # ℹ 100 more rows\n#> #\n#> # A tibble: 104 × 3\n#>    from    to     n\n#>   <int> <int> <int>\n#> 1     1     4   402\n#> 2     2     4   275\n#> 3     3    14   263\n#> # ℹ 101 more rows"
   },
   {
     "objectID": "slides/02-more-eda-fb.html#jane-wants-to-know",
@@ -2195,7 +2195,7 @@
     "href": "slides/02-more-eda-fb.html#network-analysis-2",
     "title": "Comparing Historical Texts",
     "section": "Network analysis",
-    "text": "Network analysis\n\nbigram_graph %>%\n    ggraph(layout = \"kk\") +\n    geom_edge_link(aes(edge_alpha = n)) + \n    geom_node_text(aes(label = name)) +  \n    theme_graph()"
+    "text": "Network analysis"
   },
   {
     "objectID": "slides/02-more-eda-fb.html#network-analysis-3",
@@ -2630,5 +2630,26 @@
     "title": "Mining Historical Texts",
     "section": "Logical operators in R",
     "text": "Logical operators in R\n\noperator | definition || operator | definition ————|——————————||————–|—————- < | less than ||x | y | x OR y <= | less than or equal to ||is.na(x) | test if x is NA > | greater than ||!is.na(x) | test if x is not NA >= | greater than or equal to ||x %in% y | test if x is in y == | exactly equal to ||!(x %in% y) | test if x is not in y != | not equal to ||!x | not x x & y | x AND y || |"
+  },
+  {
+    "objectID": "slides/02-more-eda-fb.html#what-is-a-document-about-2",
+    "href": "slides/02-more-eda-fb.html#what-is-a-document-about-2",
+    "title": "Comparing Historical Texts",
+    "section": "What is a document about?",
+    "text": "What is a document about?\n\nTerm frequency\nInverse document frequency\n\n\nWeighted log odds ⚖️\n\nLog odds ratio expresses probabilities\nWeighting helps deal with power law distribution"
+  },
+  {
+    "objectID": "slides/02-more-eda-fb.html#lets-remove-stopwords-and-wind",
+    "href": "slides/02-more-eda-fb.html#lets-remove-stopwords-and-wind",
+    "title": "Comparing Historical Texts",
+    "section": "Let’s remove stopwords and wind…",
+    "text": "Let’s remove stopwords and wind…\n\nbigram_counts <- tidy_ngram %>%\n    separate(bigram, c(\"word1\", \"word2\"), sep = \" \") %>%\n    filter(!word1 %in% c(stop_words$word, \"wind\"),\n           !word2 %in% c(stop_words$word, \"wind\")) %>%\n    count(word1, word2, sort = TRUE)"
+  },
+  {
+    "objectID": "slides/02-more-eda-fb.html#lets-remove-stopwords-wind-and-more",
+    "href": "slides/02-more-eda-fb.html#lets-remove-stopwords-wind-and-more",
+    "title": "Comparing Historical Texts",
+    "section": "Let’s remove stopwords, wind, and more",
+    "text": "Let’s remove stopwords, wind, and more\n\nwords_to_remove <- c(\"wind\", \"thermometer\", \"north\", \"west\", \"south\", \"east\", \"degrees\", \"afternoon\", \"morning\")\n\nbigram_counts <- tidy_ngram %>%\n    separate(bigram, c(\"word1\", \"word2\"), sep = \" \") %>%\n    filter(!word1 %in% c(stop_words$word, words_to_remove),\n           !word2 %in% c(stop_words$word, words_to_remove)) %>%\n    count(word1, word2, sort = TRUE)"
   }
 ]
