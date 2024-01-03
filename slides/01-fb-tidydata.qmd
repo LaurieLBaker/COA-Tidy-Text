@@ -322,7 +322,7 @@ install.packages(c("tidyverse", # data wrangling
 
 ##  The Journals (1870-1906) {background-image="figs/freeland_bunker_journal.jpg" background-size="45%" background-color="white"}
 
-## 9 journals (1871-1880) transcribed
+## 12 journals (1871-1883) transcribed
 
 
 ```{r}
@@ -337,6 +337,9 @@ journal_1877 <- read_excel("data/journal_1877.xlsx")
 journal_1878 <- read_excel("data/journal_1878.xlsx")
 journal_1879 <- read_excel("data/journal_1879.xlsx")
 journal_1880 <- read_excel("data/journal_1880.xlsx")
+journal_1881 <- read_excel("data/journal_1881.xlsx")
+journal_1882 <- read_excel("data/journal_1882.xlsx")
+journal_1883 <- read_excel("data/journal_1883.xlsx")
 
 ```
 
@@ -354,6 +357,9 @@ journal_1877$temperature_night <- as.numeric(journal_1877$temperature_night)
 journal_1878$temperature_night <- as.numeric(journal_1878$temperature_night)
 journal_1879$temperature_night <- as.numeric(journal_1879$temperature_night)
 journal_1880$temperature_night <- as.numeric(journal_1880$temperature_night)
+journal_1881$temperature_night <- as.numeric(journal_1881$temperature_night)
+journal_1882$temperature_night <- as.numeric(journal_1882$temperature_night)
+journal_1883$temperature_night <- as.numeric(journal_1883$temperature_night)
 ```
 
 ```{r}
@@ -370,10 +376,14 @@ journal_1877$journal <- 6
 journal_1878$journal <- 7
 journal_1879$journal <- 8
 journal_1880$journal <- 9
+journal_1881$journal <- 10
+journal_1882$journal <- 11
+journal_1883$journal <- 12
 
 journals <- dplyr::bind_rows(journal_1871_1872, journal_1873, journal_1874, 
                              journal_1875, journal_1876, journal_1877, 
-                             journal_1878, journal_1879, journal_1880)
+                             journal_1878, journal_1879, journal_1880, 
+                             journal_1881, journal_1882, journal_1883)
 ```
 
 
@@ -449,13 +459,13 @@ journals_sub %>%
 
 ## Where did Freeland go? Step by Step
 
-And then `separate_rows` so each location is on its own row
+And then `separate_longer_delim` so each location is on its own row
 
 ```{r}
 #| code-line-numbers: "|3"
 journals_sub %>%
     filter(is.na(location) == FALSE, location != "NA") %>%
-    separate_rows(location, sep = ", ")
+    separate_longer_delim(location, delim = ", |,")
 
 ```
 
@@ -467,7 +477,7 @@ And then `count` the number of times he was at that location
 #| code-line-numbers: "|4"
 journals_sub %>%
     filter(is.na(location) == FALSE, location != "NA") %>%
-    separate_rows(location, sep = ", ") %>%
+    separate_longer_delim(location, delim = ", |,") %>%
     count(location)
 
 ```
@@ -481,7 +491,7 @@ And then `arrange` the locations in `desc`ending order from most to least visite
 #| code-line-numbers: "|5"
 journals_sub %>%
     filter(is.na(location) == FALSE, location != "NA") %>%
-    separate_rows(location, sep = ", ") %>%
+    separate_longer_delim(location, delim = ", |,") %>%
     count(location) %>%
     arrange(desc(n))
 
@@ -495,7 +505,7 @@ And then `arrange` the locations in ascending order from least to most visited.
 #| code-line-numbers: "|5"
 journals_sub %>%
     filter(is.na(location) == FALSE, location != "NA") %>%
-    separate_rows(location, sep = ", ") %>%
+    separate_longer_delim(location, delim = ", |,") %>%
     count(location) %>%
     arrange(n) 
 ```
@@ -505,7 +515,7 @@ journals_sub %>%
 ```{r}
 (common_places <- journals_sub %>%
     filter(is.na(location) == FALSE, location != "NA") %>%
-    separate_rows(location, sep = ", ") %>%
+    separate_longer_delim(location, delim = ", |,") %>%
     count(location) %>%
     slice_max(n, n = 15, with_ties = FALSE))
 ```
@@ -533,9 +543,19 @@ journals_sub %>%
 ## Use `distinct` to detect mispellings and look at unique entries
 
 ```{r}
+#| echo = FALSE
+
+journals_sub <- journals_sub %>%
+    mutate(location = case_when(location %in% c("Cranberry Isles") ~ "Cranberry Island",
+                                TRUE ~ location))
+
+```
+
+
+```{r}
 #| code-line-numbers: "|4"
 journals_sub %>%
-    separate_rows(location, sep = ", ") %>%
+    separate_longer_delim(location, delim = ", |,") %>%
     filter(str_detect(string = location, pattern = "Cranberry")) %>%
     distinct(location)
 ```
@@ -543,27 +563,45 @@ journals_sub %>%
 
 ## Tidying words using `case_when`
 
+
 ```{r}
 #| code-line-numbers: "|3,4"
 
 journals_sub <- journals_sub %>%
-    separate_rows(location, sep = ", ") %>%
-    mutate(location = case_when(location %in% c("Cranberry IIsles", "Cranberry Isle", "Cranberry Island") ~ "Cranberry Isles",
-                            TRUE ~ location))
+    separate_rows(location, sep = ",") %>%
+    mutate(location = case_when(location %in% c("Cranberry Isle", "Cranberry Island") ~ "Cranberry Isles",
+                            TRUE ~ location)) 
 
 
 journals_sub %>%
-    separate_rows(location, sep = ", ") %>%
+    filter(str_detect(string = location, pattern = "Cranberry")) %>%
+    distinct(location)
+```
+---
+## Why are places still coming up as different?
+
+We can use `str_trim()` to get rid of white space. 
+
+```{r}
+#| code-line-numbers: "|2,3"
+
+journals_sub <- journals_sub %>%
+    mutate(location = str_trim(location, side = "both"))
+
+
+journals_sub %>%
     filter(str_detect(string = location, pattern = "Cranberry")) %>%
     distinct(location)
 ```
 
+
+---
 ## Your Turn: Fix Bass Harbor misspellings
 
 
 ```{r}
 journals_sub %>%
-    separate_rows(location, sep = ", ") %>%
+    separate_longer_delim(location, delim = ", |,") %>%
     filter(str_detect(string = location, pattern = "Bass|bass")) %>%
     distinct(location)
 ```
@@ -589,7 +627,7 @@ journals_sub <- journals_sub %>%
 ```{r echo = FALSE}
 journals_sub %>%
     filter(is.na(location) == FALSE, location != "NA", location != "Winter Harbor") %>%
-    separate_rows(location, sep = ", ") %>%
+    separate_longer_delim(location, delim = ", |,") %>%
     count(location) %>%
     slice_max(n, n = 15) %>%
     ggplot(aes(x = n, y = fct_reorder(location, n))) +
@@ -601,7 +639,6 @@ journals_sub %>%
 
 ```{r echo = FALSE}
 journals_loc_count <- journals_sub %>%
-    separate_rows(location, sep = ", ") %>%
     filter(location %in% c("West Gouldsboro", "Ellsworth", "Rockland", "Bar Harbor", "Sullivan", "Calais", "Prospect Harbor", "East Sullivan", "Boston", "Bass Harbor", "Cranberry Isles")) %>%
     group_by(year) %>%
     count(location)
@@ -616,7 +653,6 @@ journals_loc_count %>%
 
 ```{r eval = TRUE}
 (journals_loc_count <- journals_sub %>%
-    separate_rows(location, sep = ", ") %>%
     filter(location %in% c("West Gouldsboro", "Ellsworth", "Rockland", "Bar Harbor", "Sullivan", "Calais", "Prospect Harbor", "East Sullivan", "Boston", "Bass Harbor", "Cranberry Isles")) %>%
     group_by(year) %>%
     count(location))
@@ -648,7 +684,8 @@ Where did Freeland visit during your journal year? Fill in the blanks to find ou
 ```{r}
 location_coordinates <- read_excel(path = "data/location_coordinates.xlsx")
 
-head(location_coordinates)
+location_coordinates <- location_coordinates %>%
+    rename(location = location_list)
 
 ```
 
@@ -656,7 +693,6 @@ head(location_coordinates)
 
 ```{r}
 (loc_count <- journals_sub %>%
-    separate_rows(location, sep = ", ")  %>%
     count(location) %>%
     arrange(desc(n)))
 ```
@@ -666,7 +702,10 @@ head(location_coordinates)
 ```{r}
 (loc_df <- loc_count %>%
     left_join(location_coordinates, by = "location") %>%
-    drop_na(latitude))
+    drop_na(latitude) %>%
+    mutate(latitude = as.numeric(latitude),
+           longitude = as.numeric(longitude))
+           )
 ```
 
 ## Where did Freeland go?
