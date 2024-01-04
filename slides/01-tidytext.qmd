@@ -110,8 +110,11 @@ You can access the full text of many public domain works from Project Gutenberg 
 
 ```{r}
 library(gutenbergr)
+gutenberg_works() %>%
+  filter(title == "Anne of Green Gables")
 
-full_text <- gutenberg_download(1342, mirror = my_mirror)
+my_mirror <- gutenberg_get_mirror()
+full_text <- gutenberg_download(45, mirror = my_mirror)
 ```
 
 <!-- What book do *you* want to analyze today? 📖🥳📖 -->
@@ -465,7 +468,7 @@ tidy_book %>%
     ungroup() %>%
     ggplot(aes(n, fct_reorder(word, n), fill = sentiment)) +
     geom_col() +
-    facet_wrap(vars(sentiment), scales = "free") 
+    facet_wrap(~sentiment, scales = "free") 
 ```
 
 ## {background-color="white"}
@@ -481,7 +484,7 @@ tidy_book %>%
     ungroup %>%
     ggplot(aes(n, fct_reorder(word, n), fill = sentiment)) +
     geom_col(alpha = 0.9, show.legend = FALSE) +
-    facet_wrap(vars(sentiment), scales = "free") +
+   # facet_wrap(~sentiment, scales = "free") +
     scale_x_continuous(expand = c(0,0)) +
     labs(y = NULL, x = "Number of occurrences")
 ```

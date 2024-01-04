@@ -513,10 +513,18 @@ by Julia Silge adapted with a COA twist by Laurie Baker
 <section id="gathering-more-data" class="slide level2" data-background-color="white">
 <h2>Gathering more data</h2>
 <p>You can access the full text of many public domain works from Project Gutenberg using the gutenbergr package.</p>
-<div class="cell" data-hash="01-tidytext_cache/revealjs/unnamed-chunk-6_ea8376baa677076518294830c998579a">
+<div class="cell" data-hash="01-tidytext_cache/revealjs/unnamed-chunk-6_01c0cdc72fed2ca3599d501db4e45610">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">library</span>(gutenbergr)</span>
-<span id="cb5-2"><a href="#cb5-2"></a></span>
-<span id="cb5-3"><a href="#cb5-3"></a>full_text <span class="ot">&lt;-</span> <span class="fu">gutenberg_download</span>(<span class="dv">1342</span>, <span class="at">mirror =</span> my_mirror)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="fu">gutenberg_works</span>() <span class="sc">%&gt;%</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>  <span class="fu">filter</span>(title <span class="sc">==</span> <span class="st">"Anne of Green Gables"</span>)</span>
+<span id="cb5-4"><a href="#cb5-4"></a><span class="co">#&gt; # A tibble: 1 × 8</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a><span class="co">#&gt;   gutenberg_id title     author gutenberg_author_id language gutenberg_bookshelf</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a><span class="co">#&gt;          &lt;int&gt; &lt;chr&gt;     &lt;chr&gt;                &lt;int&gt; &lt;chr&gt;    &lt;chr&gt;              </span></span>
+<span id="cb5-7"><a href="#cb5-7"></a><span class="co">#&gt; 1           45 Anne of … Montg…                  36 en       Children's Literat…</span></span>
+<span id="cb5-8"><a href="#cb5-8"></a><span class="co">#&gt; # ℹ 2 more variables: rights &lt;chr&gt;, has_text &lt;lgl&gt;</span></span>
+<span id="cb5-9"><a href="#cb5-9"></a></span>
+<span id="cb5-10"><a href="#cb5-10"></a>my_mirror <span class="ot">&lt;-</span> <span class="fu">gutenberg_get_mirror</span>()</span>
+<span id="cb5-11"><a href="#cb5-11"></a>full_text <span class="ot">&lt;-</span> <span class="fu">gutenberg_download</span>(<span class="dv">45</span>, <span class="at">mirror =</span> my_mirror)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <!-- What book do *you* want to analyze today? 📖🥳📖 -->
 
@@ -531,11 +539,11 @@ by Julia Silge adapted with a COA twist by Laurie Baker
 <span id="cb6-3"><a href="#cb6-3"></a>    <span class="fu">unnest_tokens</span>(word, text)         </span>
 <span id="cb6-4"><a href="#cb6-4"></a></span>
 <span id="cb6-5"><a href="#cb6-5"></a><span class="fu">glimpse</span>(tidy_book)</span>
-<span id="cb6-6"><a href="#cb6-6"></a><span class="co">#&gt; Rows: 127,996</span></span>
+<span id="cb6-6"><a href="#cb6-6"></a><span class="co">#&gt; Rows: 0</span></span>
 <span id="cb6-7"><a href="#cb6-7"></a><span class="co">#&gt; Columns: 3</span></span>
-<span id="cb6-8"><a href="#cb6-8"></a><span class="co">#&gt; $ gutenberg_id &lt;int&gt; 1342, 1342, 1342, 1342, 1342, 1342, 1342, 1342, 1342, 134…</span></span>
-<span id="cb6-9"><a href="#cb6-9"></a><span class="co">#&gt; $ line         &lt;int&gt; 1, 3, 3, 4, 6, 6, 6, 6, 7, 9, 9, 12, 14, 14, 14, 14, 14, …</span></span>
-<span id="cb6-10"><a href="#cb6-10"></a><span class="co">#&gt; $ word         &lt;chr&gt; "illustration", "george", "allen", "publisher", "156", "c…</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="co">#&gt; $ gutenberg_id &lt;int&gt; </span></span>
+<span id="cb6-9"><a href="#cb6-9"></a><span class="co">#&gt; $ line         &lt;int&gt; </span></span>
+<span id="cb6-10"><a href="#cb6-10"></a><span class="co">#&gt; $ word         &lt;chr&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="what-are-the-most-common-words" class="slide level2" data-background-color="white">
@@ -552,20 +560,8 @@ by Julia Silge adapted with a COA twist by Laurie Baker
 <div class="cell" data-hash="01-tidytext_cache/revealjs/unnamed-chunk-9_46e39044fb03058f9cf06d29b6b87d6a">
 <div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>tidy_book <span class="sc">%&gt;%</span></span>
 <span id="cb8-2"><a href="#cb8-2"></a>    <span class="fu">count</span>(word, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb8-3"><a href="#cb8-3"></a><span class="co">#&gt; # A tibble: 7,118 × 2</span></span>
-<span id="cb8-4"><a href="#cb8-4"></a><span class="co">#&gt;    word      n</span></span>
-<span id="cb8-5"><a href="#cb8-5"></a><span class="co">#&gt;    &lt;chr&gt; &lt;int&gt;</span></span>
-<span id="cb8-6"><a href="#cb8-6"></a><span class="co">#&gt;  1 the    4656</span></span>
-<span id="cb8-7"><a href="#cb8-7"></a><span class="co">#&gt;  2 to     4323</span></span>
-<span id="cb8-8"><a href="#cb8-8"></a><span class="co">#&gt;  3 of     3838</span></span>
-<span id="cb8-9"><a href="#cb8-9"></a><span class="co">#&gt;  4 and    3763</span></span>
-<span id="cb8-10"><a href="#cb8-10"></a><span class="co">#&gt;  5 her    2260</span></span>
-<span id="cb8-11"><a href="#cb8-11"></a><span class="co">#&gt;  6 i      2095</span></span>
-<span id="cb8-12"><a href="#cb8-12"></a><span class="co">#&gt;  7 a      2036</span></span>
-<span id="cb8-13"><a href="#cb8-13"></a><span class="co">#&gt;  8 in     1991</span></span>
-<span id="cb8-14"><a href="#cb8-14"></a><span class="co">#&gt;  9 was    1871</span></span>
-<span id="cb8-15"><a href="#cb8-15"></a><span class="co">#&gt; 10 she    1732</span></span>
-<span id="cb8-16"><a href="#cb8-16"></a><span class="co">#&gt; # ℹ 7,108 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="co">#&gt; # A tibble: 0 × 2</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a><span class="co">#&gt; # ℹ 2 variables: word &lt;chr&gt;, n &lt;int&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="stop-words" class="slide level2" data-background-color="white">
@@ -723,7 +719,7 @@ by Julia Silge adapted with a COA twist by Laurie Baker
 <span id="cb14-10"><a href="#cb14-10"></a><span class="co">#&gt; 1 12/23/1871 December Was married at home in evening by William Rand Esqr.      </span></span>
 <span id="cb14-11"><a href="#cb14-11"></a><span class="co">#&gt; 2 12/24/1871 December Went to meeting.                                          </span></span>
 <span id="cb14-12"><a href="#cb14-12"></a><span class="co">#&gt; 3 12/25/1871 December Shooting match all day in the evening to Christmas tree a…</span></span>
-<span id="cb14-13"><a href="#cb14-13"></a><span class="co">#&gt; 4 12/26/1871 December About home at work fobbing.                               </span></span>
+<span id="cb14-13"><a href="#cb14-13"></a><span class="co">#&gt; 4 12/26/1871 December About home at work jobbing.                               </span></span>
 <span id="cb14-14"><a href="#cb14-14"></a><span class="co">#&gt; 5 12/27/1871 December Work about home reed letter from N. H. Higgins Ins agt.   </span></span>
 <span id="cb14-15"><a href="#cb14-15"></a><span class="co">#&gt; 6 12/28/1871 December Work about home.</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -776,7 +772,7 @@ by Julia Silge adapted with a COA twist by Laurie Baker
 <span id="cb17-6"><a href="#cb17-6"></a>    <span class="fu">unnest_tokens</span>(word, journal_entry)  <span class="sc">%&gt;%</span></span>
 <span id="cb17-7"><a href="#cb17-7"></a>    <span class="fu">mutate</span>(<span class="at">word =</span> <span class="fu">case_when</span>(word <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"reed"</span>, <span class="st">"read"</span>) <span class="sc">~</span> <span class="st">"received"</span>,</span>
 <span id="cb17-8"><a href="#cb17-8"></a>                            <span class="cn">TRUE</span> <span class="sc">~</span> word)))</span>
-<span id="cb17-9"><a href="#cb17-9"></a><span class="co">#&gt; # A tibble: 65,118 × 5</span></span>
+<span id="cb17-9"><a href="#cb17-9"></a><span class="co">#&gt; # A tibble: 65,125 × 5</span></span>
 <span id="cb17-10"><a href="#cb17-10"></a><span class="co">#&gt;    date_mdy   month    journal  year word   </span></span>
 <span id="cb17-11"><a href="#cb17-11"></a><span class="co">#&gt;    &lt;date&gt;     &lt;chr&gt;      &lt;dbl&gt; &lt;dbl&gt; &lt;chr&gt;  </span></span>
 <span id="cb17-12"><a href="#cb17-12"></a><span class="co">#&gt;  1 1871-12-23 December       1  1871 was    </span></span>
@@ -789,7 +785,7 @@ by Julia Silge adapted with a COA twist by Laurie Baker
 <span id="cb17-19"><a href="#cb17-19"></a><span class="co">#&gt;  8 1871-12-23 December       1  1871 william</span></span>
 <span id="cb17-20"><a href="#cb17-20"></a><span class="co">#&gt;  9 1871-12-23 December       1  1871 rand   </span></span>
 <span id="cb17-21"><a href="#cb17-21"></a><span class="co">#&gt; 10 1871-12-23 December       1  1871 esqr   </span></span>
-<span id="cb17-22"><a href="#cb17-22"></a><span class="co">#&gt; # ℹ 65,108 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb17-22"><a href="#cb17-22"></a><span class="co">#&gt; # ℹ 65,115 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="most-common-words" class="slide level2">
@@ -797,20 +793,20 @@ by Julia Silge adapted with a COA twist by Laurie Baker
 <div class="cell" data-hash="01-tidytext_cache/revealjs/unnamed-chunk-21_faa8a904ae2e53062b47f49d17c1113d">
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>tidy_journal <span class="sc">%&gt;%</span></span>
 <span id="cb18-2"><a href="#cb18-2"></a>    <span class="fu">count</span>(word, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb18-3"><a href="#cb18-3"></a><span class="co">#&gt; # A tibble: 4,109 × 2</span></span>
+<span id="cb18-3"><a href="#cb18-3"></a><span class="co">#&gt; # A tibble: 4,083 × 2</span></span>
 <span id="cb18-4"><a href="#cb18-4"></a><span class="co">#&gt;    word            n</span></span>
 <span id="cb18-5"><a href="#cb18-5"></a><span class="co">#&gt;    &lt;chr&gt;       &lt;int&gt;</span></span>
-<span id="cb18-6"><a href="#cb18-6"></a><span class="co">#&gt;  1 the          5116</span></span>
+<span id="cb18-6"><a href="#cb18-6"></a><span class="co">#&gt;  1 the          5119</span></span>
 <span id="cb18-7"><a href="#cb18-7"></a><span class="co">#&gt;  2 wind         3052</span></span>
-<span id="cb18-8"><a href="#cb18-8"></a><span class="co">#&gt;  3 and          2301</span></span>
+<span id="cb18-8"><a href="#cb18-8"></a><span class="co">#&gt;  3 and          2302</span></span>
 <span id="cb18-9"><a href="#cb18-9"></a><span class="co">#&gt;  4 in           2181</span></span>
 <span id="cb18-10"><a href="#cb18-10"></a><span class="co">#&gt;  5 to           1959</span></span>
-<span id="cb18-11"><a href="#cb18-11"></a><span class="co">#&gt;  6 at           1422</span></span>
+<span id="cb18-11"><a href="#cb18-11"></a><span class="co">#&gt;  6 at           1421</span></span>
 <span id="cb18-12"><a href="#cb18-12"></a><span class="co">#&gt;  7 thermometer  1071</span></span>
-<span id="cb18-13"><a href="#cb18-13"></a><span class="co">#&gt;  8 of            948</span></span>
-<span id="cb18-14"><a href="#cb18-14"></a><span class="co">#&gt;  9 west          933</span></span>
-<span id="cb18-15"><a href="#cb18-15"></a><span class="co">#&gt; 10 went          909</span></span>
-<span id="cb18-16"><a href="#cb18-16"></a><span class="co">#&gt; # ℹ 4,099 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb18-13"><a href="#cb18-13"></a><span class="co">#&gt;  8 of            949</span></span>
+<span id="cb18-14"><a href="#cb18-14"></a><span class="co">#&gt;  9 west          932</span></span>
+<span id="cb18-15"><a href="#cb18-15"></a><span class="co">#&gt; 10 went          910</span></span>
+<span id="cb18-16"><a href="#cb18-16"></a><span class="co">#&gt; # ℹ 4,073 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="removing-stop-words" class="slide level2">
@@ -929,11 +925,8 @@ by Julia Silge adapted with a COA twist by Laurie Baker
 <div class="sourceCode cell-code" id="cb24" data-code-line-numbers="|2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>tidy_book <span class="sc">%&gt;%</span></span>
 <span id="cb24-2"><a href="#cb24-2"></a>    <span class="fu">inner_join</span>(<span class="fu">get_sentiments</span>(<span class="st">"bing"</span>)) <span class="sc">%&gt;%</span> </span>
 <span id="cb24-3"><a href="#cb24-3"></a>    <span class="fu">count</span>(sentiment, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb24-4"><a href="#cb24-4"></a><span class="co">#&gt; # A tibble: 2 × 2</span></span>
-<span id="cb24-5"><a href="#cb24-5"></a><span class="co">#&gt;   sentiment     n</span></span>
-<span id="cb24-6"><a href="#cb24-6"></a><span class="co">#&gt;   &lt;chr&gt;     &lt;int&gt;</span></span>
-<span id="cb24-7"><a href="#cb24-7"></a><span class="co">#&gt; 1 positive   5306</span></span>
-<span id="cb24-8"><a href="#cb24-8"></a><span class="co">#&gt; 2 negative   3864</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb24-4"><a href="#cb24-4"></a><span class="co">#&gt; # A tibble: 0 × 2</span></span>
+<span id="cb24-5"><a href="#cb24-5"></a><span class="co">#&gt; # ℹ 2 variables: sentiment &lt;chr&gt;, n &lt;int&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="jane-wants-to-know-1" class="slide level2" data-transition="slide-in">
@@ -963,25 +956,13 @@ by Julia Silge adapted with a COA twist by Laurie Baker
 <div class="sourceCode cell-code" id="cb26" data-code-line-numbers="3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb26-1"><a href="#cb26-1"></a>tidy_book <span class="sc">%&gt;%</span></span>
 <span id="cb26-2"><a href="#cb26-2"></a>    <span class="fu">inner_join</span>(<span class="fu">get_sentiments</span>(<span class="st">"bing"</span>)) <span class="sc">%&gt;%</span>            </span>
 <span id="cb26-3"><a href="#cb26-3"></a>    <span class="fu">count</span>(sentiment, word, <span class="at">sort =</span> <span class="cn">TRUE</span>)   </span>
-<span id="cb26-4"><a href="#cb26-4"></a><span class="co">#&gt; # A tibble: 1,503 × 3</span></span>
-<span id="cb26-5"><a href="#cb26-5"></a><span class="co">#&gt;    sentiment word         n</span></span>
-<span id="cb26-6"><a href="#cb26-6"></a><span class="co">#&gt;    &lt;chr&gt;     &lt;chr&gt;    &lt;int&gt;</span></span>
-<span id="cb26-7"><a href="#cb26-7"></a><span class="co">#&gt;  1 negative  miss       315</span></span>
-<span id="cb26-8"><a href="#cb26-8"></a><span class="co">#&gt;  2 positive  well       230</span></span>
-<span id="cb26-9"><a href="#cb26-9"></a><span class="co">#&gt;  3 positive  good       208</span></span>
-<span id="cb26-10"><a href="#cb26-10"></a><span class="co">#&gt;  4 positive  great      148</span></span>
-<span id="cb26-11"><a href="#cb26-11"></a><span class="co">#&gt;  5 positive  enough     111</span></span>
-<span id="cb26-12"><a href="#cb26-12"></a><span class="co">#&gt;  6 positive  love       102</span></span>
-<span id="cb26-13"><a href="#cb26-13"></a><span class="co">#&gt;  7 positive  better      98</span></span>
-<span id="cb26-14"><a href="#cb26-14"></a><span class="co">#&gt;  8 positive  pleasure    94</span></span>
-<span id="cb26-15"><a href="#cb26-15"></a><span class="co">#&gt;  9 positive  like        89</span></span>
-<span id="cb26-16"><a href="#cb26-16"></a><span class="co">#&gt; 10 positive  happy       83</span></span>
-<span id="cb26-17"><a href="#cb26-17"></a><span class="co">#&gt; # ℹ 1,493 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb26-4"><a href="#cb26-4"></a><span class="co">#&gt; # A tibble: 0 × 3</span></span>
+<span id="cb26-5"><a href="#cb26-5"></a><span class="co">#&gt; # ℹ 3 variables: sentiment &lt;chr&gt;, word &lt;chr&gt;, n &lt;int&gt;</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="implementing-sentiment-analysis-3" class="slide level2" data-background-color="white">
 <h2>Implementing sentiment analysis</h2>
-<div class="cell" data-hash="01-tidytext_cache/revealjs/unnamed-chunk-33_a225e54c5f483614c3d4eb3745d582e3">
+<div class="cell" data-hash="01-tidytext_cache/revealjs/unnamed-chunk-33_acef7138351b38fe412dd86e959479f2">
 <div class="sourceCode cell-code" id="cb27" data-code-line-numbers="|7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a>tidy_book <span class="sc">%&gt;%</span></span>
 <span id="cb27-2"><a href="#cb27-2"></a>    <span class="fu">inner_join</span>(<span class="fu">get_sentiments</span>(<span class="st">"bing"</span>)) <span class="sc">%&gt;%</span></span>
 <span id="cb27-3"><a href="#cb27-3"></a>    <span class="fu">count</span>(sentiment, word, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">%&gt;%</span></span>
@@ -990,7 +971,7 @@ by Julia Silge adapted with a COA twist by Laurie Baker
 <span id="cb27-6"><a href="#cb27-6"></a>    <span class="fu">ungroup</span>() <span class="sc">%&gt;%</span></span>
 <span id="cb27-7"><a href="#cb27-7"></a>    <span class="fu">ggplot</span>(<span class="fu">aes</span>(n, <span class="fu">fct_reorder</span>(word, n), <span class="at">fill =</span> sentiment)) <span class="sc">+</span></span>
 <span id="cb27-8"><a href="#cb27-8"></a>    <span class="fu">geom_col</span>() <span class="sc">+</span></span>
-<span id="cb27-9"><a href="#cb27-9"></a>    <span class="fu">facet_wrap</span>(<span class="fu">vars</span>(sentiment), <span class="at">scales =</span> <span class="st">"free"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb27-9"><a href="#cb27-9"></a>    <span class="fu">facet_wrap</span>(<span class="sc">~</span>sentiment, <span class="at">scales =</span> <span class="st">"free"</span>) </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="section-6" class="slide level2" data-background-color="white">
@@ -1015,7 +996,7 @@ by Julia Silge adapted with a COA twist by Laurie Baker
 <span id="cb28-8"><a href="#cb28-8"></a><span class="co">#&gt;  2 positive  breeze     251</span></span>
 <span id="cb28-9"><a href="#cb28-9"></a><span class="co">#&gt;  3 positive  fresh      199</span></span>
 <span id="cb28-10"><a href="#cb28-10"></a><span class="co">#&gt;  4 positive  calm       177</span></span>
-<span id="cb28-11"><a href="#cb28-11"></a><span class="co">#&gt;  5 positive  pleasant   119</span></span>
+<span id="cb28-11"><a href="#cb28-11"></a><span class="co">#&gt;  5 positive  pleasant   120</span></span>
 <span id="cb28-12"><a href="#cb28-12"></a><span class="co">#&gt;  6 positive  worked      97</span></span>
 <span id="cb28-13"><a href="#cb28-13"></a><span class="co">#&gt;  7 positive  good        85</span></span>
 <span id="cb28-14"><a href="#cb28-14"></a><span class="co">#&gt;  8 negative  cold        75</span></span>
@@ -1063,7 +1044,7 @@ by Julia Silge adapted with a COA twist by Laurie Baker
 <span id="cb30-6"><a href="#cb30-6"></a>    <span class="fu">unnest_tokens</span>(bigram, journal_entry, <span class="at">token =</span> <span class="st">"ngrams"</span>, <span class="at">n =</span> <span class="dv">2</span>) <span class="sc">%&gt;%</span> </span>
 <span id="cb30-7"><a href="#cb30-7"></a>    <span class="fu">drop_na</span>(bigram) <span class="sc">%&gt;%</span></span>
 <span id="cb30-8"><a href="#cb30-8"></a>    <span class="fu">select</span>(journal, bigram, date_mdy))</span>
-<span id="cb30-9"><a href="#cb30-9"></a><span class="co">#&gt; # A tibble: 61,163 × 3</span></span>
+<span id="cb30-9"><a href="#cb30-9"></a><span class="co">#&gt; # A tibble: 61,170 × 3</span></span>
 <span id="cb30-10"><a href="#cb30-10"></a><span class="co">#&gt;    journal bigram       date_mdy  </span></span>
 <span id="cb30-11"><a href="#cb30-11"></a><span class="co">#&gt;      &lt;dbl&gt; &lt;chr&gt;        &lt;chr&gt;     </span></span>
 <span id="cb30-12"><a href="#cb30-12"></a><span class="co">#&gt;  1       1 was married  12/23/1871</span></span>
@@ -1076,7 +1057,7 @@ by Julia Silge adapted with a COA twist by Laurie Baker
 <span id="cb30-19"><a href="#cb30-19"></a><span class="co">#&gt;  8       1 william rand 12/23/1871</span></span>
 <span id="cb30-20"><a href="#cb30-20"></a><span class="co">#&gt;  9       1 rand esqr    12/23/1871</span></span>
 <span id="cb30-21"><a href="#cb30-21"></a><span class="co">#&gt; 10       1 went to      12/24/1871</span></span>
-<span id="cb30-22"><a href="#cb30-22"></a><span class="co">#&gt; # ℹ 61,153 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb30-22"><a href="#cb30-22"></a><span class="co">#&gt; # ℹ 61,160 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="n-grams-and-beyond" class="slide level2" data-background-color="white">
@@ -1084,20 +1065,20 @@ by Julia Silge adapted with a COA twist by Laurie Baker
 <div class="cell" data-hash="01-tidytext_cache/revealjs/unnamed-chunk-40_8646353d2b74471e7a9277bb5aff69cf">
 <div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a>tidy_ngram <span class="sc">%&gt;%</span></span>
 <span id="cb31-2"><a href="#cb31-2"></a>    <span class="fu">count</span>(bigram, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb31-3"><a href="#cb31-3"></a><span class="co">#&gt; # A tibble: 19,415 × 2</span></span>
+<span id="cb31-3"><a href="#cb31-3"></a><span class="co">#&gt; # A tibble: 19,375 × 2</span></span>
 <span id="cb31-4"><a href="#cb31-4"></a><span class="co">#&gt;    bigram             n</span></span>
 <span id="cb31-5"><a href="#cb31-5"></a><span class="co">#&gt;    &lt;chr&gt;          &lt;int&gt;</span></span>
 <span id="cb31-6"><a href="#cb31-6"></a><span class="co">#&gt;  1 the wind        2760</span></span>
-<span id="cb31-7"><a href="#cb31-7"></a><span class="co">#&gt;  2 in the           735</span></span>
+<span id="cb31-7"><a href="#cb31-7"></a><span class="co">#&gt;  2 in the           736</span></span>
 <span id="cb31-8"><a href="#cb31-8"></a><span class="co">#&gt;  3 wind north       572</span></span>
-<span id="cb31-9"><a href="#cb31-9"></a><span class="co">#&gt;  4 went to          557</span></span>
+<span id="cb31-9"><a href="#cb31-9"></a><span class="co">#&gt;  4 went to          558</span></span>
 <span id="cb31-10"><a href="#cb31-10"></a><span class="co">#&gt;  5 wind southerly   543</span></span>
 <span id="cb31-11"><a href="#cb31-11"></a><span class="co">#&gt;  6 all day          483</span></span>
 <span id="cb31-12"><a href="#cb31-12"></a><span class="co">#&gt;  7 north west       402</span></span>
 <span id="cb31-13"><a href="#cb31-13"></a><span class="co">#&gt;  8 wind south       378</span></span>
 <span id="cb31-14"><a href="#cb31-14"></a><span class="co">#&gt;  9 the afternoon    292</span></span>
 <span id="cb31-15"><a href="#cb31-15"></a><span class="co">#&gt; 10 work in          273</span></span>
-<span id="cb31-16"><a href="#cb31-16"></a><span class="co">#&gt; # ℹ 19,405 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb31-16"><a href="#cb31-16"></a><span class="co">#&gt; # ℹ 19,365 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="jane-wants-to-know-2" class="slide level2" data-transition="slide-in">
@@ -1123,7 +1104,7 @@ by Julia Silge adapted with a COA twist by Laurie Baker
 <h2>So many wind directions…! 🚀</h2>
 <div class="cell" data-hash="01-tidytext_cache/revealjs/unnamed-chunk-42_f2878fc60e44280517d2703db93a2680">
 <div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a>bigram_counts</span>
-<span id="cb33-2"><a href="#cb33-2"></a><span class="co">#&gt; # A tibble: 7,244 × 3</span></span>
+<span id="cb33-2"><a href="#cb33-2"></a><span class="co">#&gt; # A tibble: 7,230 × 3</span></span>
 <span id="cb33-3"><a href="#cb33-3"></a><span class="co">#&gt;    word1 word2           n</span></span>
 <span id="cb33-4"><a href="#cb33-4"></a><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;       &lt;int&gt;</span></span>
 <span id="cb33-5"><a href="#cb33-5"></a><span class="co">#&gt;  1 wind  north         572</span></span>
@@ -1136,7 +1117,7 @@ by Julia Silge adapted with a COA twist by Laurie Baker
 <span id="cb33-12"><a href="#cb33-12"></a><span class="co">#&gt;  8 west  thermometer   186</span></span>
 <span id="cb33-13"><a href="#cb33-13"></a><span class="co">#&gt;  9 wind  westerly      182</span></span>
 <span id="cb33-14"><a href="#cb33-14"></a><span class="co">#&gt; 10 fresh breeze        175</span></span>
-<span id="cb33-15"><a href="#cb33-15"></a><span class="co">#&gt; # ℹ 7,234 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb33-15"><a href="#cb33-15"></a><span class="co">#&gt; # ℹ 7,220 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section>
 <section id="lets-tidy-these-up" class="slide level2">
@@ -1166,7 +1147,7 @@ by Julia Silge adapted with a COA twist by Laurie Baker
 <div class="cell" data-hash="01-tidytext_cache/revealjs/unnamed-chunk-44_27a88fd16be209deafa44806711046af">
 <div class="sourceCode cell-code" id="cb35"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1"></a>bigram_counts <span class="sc">%&gt;%</span></span>
 <span id="cb35-2"><a href="#cb35-2"></a>    <span class="fu">filter</span>(word1 <span class="sc">!=</span> <span class="st">"wind"</span> <span class="sc">&amp;</span> word1 <span class="sc">!=</span> <span class="st">"north"</span> <span class="sc">&amp;</span> word1 <span class="sc">!=</span> <span class="st">"south"</span>)</span>
-<span id="cb35-3"><a href="#cb35-3"></a><span class="co">#&gt; # A tibble: 6,950 × 3</span></span>
+<span id="cb35-3"><a href="#cb35-3"></a><span class="co">#&gt; # A tibble: 6,937 × 3</span></span>
 <span id="cb35-4"><a href="#cb35-4"></a><span class="co">#&gt;    word1 word2           n</span></span>
 <span id="cb35-5"><a href="#cb35-5"></a><span class="co">#&gt;    &lt;chr&gt; &lt;chr&gt;       &lt;int&gt;</span></span>
 <span id="cb35-6"><a href="#cb35-6"></a><span class="co">#&gt;  1 wrote letter        263</span></span>
@@ -1175,11 +1156,11 @@ by Julia Silge adapted with a COA twist by Laurie Baker
 <span id="cb35-9"><a href="#cb35-9"></a><span class="co">#&gt;  4 west  gouldsboro    116</span></span>
 <span id="cb35-10"><a href="#cb35-10"></a><span class="co">#&gt;  5 east  thermometer    97</span></span>
 <span id="cb35-11"><a href="#cb35-11"></a><span class="co">#&gt;  6 reed  letter         96</span></span>
-<span id="cb35-12"><a href="#cb35-12"></a><span class="co">#&gt;  7 recd  letter         84</span></span>
+<span id="cb35-12"><a href="#cb35-12"></a><span class="co">#&gt;  7 recd  letter         85</span></span>
 <span id="cb35-13"><a href="#cb35-13"></a><span class="co">#&gt;  8 heavy rain           82</span></span>
 <span id="cb35-14"><a href="#cb35-14"></a><span class="co">#&gt;  9 wm    guptill        67</span></span>
 <span id="cb35-15"><a href="#cb35-15"></a><span class="co">#&gt; 10 wrote letters        66</span></span>
-<span id="cb35-16"><a href="#cb35-16"></a><span class="co">#&gt; # ℹ 6,940 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb35-16"><a href="#cb35-16"></a><span class="co">#&gt; # ℹ 6,927 more rows</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 </section></section>
 <section id="thanks" class="title-slide slide level1 center" data-background-image="figs/p_and_p_cover.png" data-background-size="cover" data-background-opacity="0.5">

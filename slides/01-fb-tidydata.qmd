@@ -3,17 +3,17 @@ title: "Wrangling and Visualizing Historical Texts"
 subtitle: ""
 author: "By Laurie Baker"
 format:
-  revealjs: 
+  revealjs:
     footer: <https://coa-navigating-change.netlify.app>
     theme: [dark, fbcustom.scss]
     width: 1280
     height: 720
-highlight-style: "arrow-light"      
+highlight-style: "arrow-light"
 knitr:
-  opts_chunk: 
+  opts_chunk:
     echo: true
     collapse: true
-    comment: "#>"    
+    comment: "#>"
 ---
 
 ```{r}
@@ -326,7 +326,6 @@ install.packages(c("tidyverse", # data wrangling
 
 
 ```{r}
-
 library(readxl)
 journal_1871_1872 <- read_excel("data/journal_1871_1872.xlsx")
 journal_1873 <- read_excel("data/journal_1873.xlsx")
@@ -346,8 +345,6 @@ journal_1883 <- read_excel("data/journal_1883.xlsx")
 ## Keeping Track
 
 ```{r echo = FALSE, message = FALSE, warning = FALSE}
-# We need to make sure the journals are the same type
-
 journal_1871_1872$temperature_night <- as.numeric(journal_1871_1872$temperature_night)
 journal_1873$temperature_night <- as.numeric(journal_1873$temperature_night)
 journal_1874$temperature_night <- as.numeric(journal_1874$temperature_night)
@@ -363,8 +360,6 @@ journal_1883$temperature_night <- as.numeric(journal_1883$temperature_night)
 ```
 
 ```{r}
-# We want to keep track of the journals
-
 library(tidyverse)
 
 journal_1871_1872$journal <- 1
@@ -465,7 +460,7 @@ And then `separate_longer_delim` so each location is on its own row
 #| code-line-numbers: "|3"
 journals_sub %>%
     filter(is.na(location) == FALSE, location != "NA") %>%
-    separate_longer_delim(location, delim = ", |,")
+    separate_longer_delim(location, delim = ", ")
 
 ```
 
@@ -477,7 +472,7 @@ And then `count` the number of times he was at that location
 #| code-line-numbers: "|4"
 journals_sub %>%
     filter(is.na(location) == FALSE, location != "NA") %>%
-    separate_longer_delim(location, delim = ", |,") %>%
+    separate_longer_delim(location, delim = ", ") %>%
     count(location)
 
 ```
@@ -491,7 +486,7 @@ And then `arrange` the locations in `desc`ending order from most to least visite
 #| code-line-numbers: "|5"
 journals_sub %>%
     filter(is.na(location) == FALSE, location != "NA") %>%
-    separate_longer_delim(location, delim = ", |,") %>%
+    separate_longer_delim(location, delim = ", ") %>%
     count(location) %>%
     arrange(desc(n))
 
@@ -505,7 +500,7 @@ And then `arrange` the locations in ascending order from least to most visited.
 #| code-line-numbers: "|5"
 journals_sub %>%
     filter(is.na(location) == FALSE, location != "NA") %>%
-    separate_longer_delim(location, delim = ", |,") %>%
+    separate_longer_delim(location, delim = ", ") %>%
     count(location) %>%
     arrange(n) 
 ```
@@ -515,7 +510,7 @@ journals_sub %>%
 ```{r}
 (common_places <- journals_sub %>%
     filter(is.na(location) == FALSE, location != "NA") %>%
-    separate_longer_delim(location, delim = ", |,") %>%
+    separate_longer_delim(location, delim = ", ") %>%
     count(location) %>%
     slice_max(n, n = 15, with_ties = FALSE))
 ```
@@ -555,7 +550,7 @@ journals_sub <- journals_sub %>%
 ```{r}
 #| code-line-numbers: "|4"
 journals_sub %>%
-    separate_longer_delim(location, delim = ", |,") %>%
+    separate_longer_delim(location, delim = ", ") %>%
     filter(str_detect(string = location, pattern = "Cranberry")) %>%
     distinct(location)
 ```
@@ -577,7 +572,8 @@ journals_sub %>%
     filter(str_detect(string = location, pattern = "Cranberry")) %>%
     distinct(location)
 ```
----
+
+
 ## Why are places still coming up as different?
 
 We can use `str_trim()` to get rid of white space. 
@@ -601,7 +597,7 @@ journals_sub %>%
 
 ```{r}
 journals_sub %>%
-    separate_longer_delim(location, delim = ", |,") %>%
+    separate_longer_delim(location, delim = ", ") %>%
     filter(str_detect(string = location, pattern = "Bass|bass")) %>%
     distinct(location)
 ```
@@ -625,9 +621,11 @@ journals_sub <- journals_sub %>%
 ## Where did Freeland visit
 
 ```{r echo = FALSE}
+journals_sub <- journals_sub %>%
+    filter(is.na(location) == FALSE, location != "NA")
+
 journals_sub %>%
-    filter(is.na(location) == FALSE, location != "NA", location != "Winter Harbor") %>%
-    separate_longer_delim(location, delim = ", |,") %>%
+    separate_longer_delim(location, delim = ", ") %>%
     count(location) %>%
     slice_max(n, n = 15) %>%
     ggplot(aes(x = n, y = fct_reorder(location, n))) +
@@ -689,7 +687,7 @@ location_coordinates <- location_coordinates %>%
 
 ```
 
-## We have `count` of how often Freeland visited that location
+## We have a `count` of how often Freeland visited that location
 
 ```{r}
 (loc_count <- journals_sub %>%
@@ -740,6 +738,7 @@ leaflet(data = loc_df) %>%
 
 ## Homework
 
+- Double check a location's coordinates or
 - Look up two locations and add 2 more sets of coordinates to the [location excel file](https://docs.google.com/spreadsheets/d/1vA5YjlsGHQBSmUOFsBpPSJhObK601zE3/edit?usp=sharing&ouid=104076949272458477636&rtpof=true&sd=true). Add your initials to the excel spreadsheet.
 - Re-upload the location data
 
